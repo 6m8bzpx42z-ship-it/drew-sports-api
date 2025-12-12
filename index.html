@@ -80,6 +80,7 @@
             align-items: center;
             gap: 20px;
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
         }
 
         .game-card:hover {
@@ -181,11 +182,51 @@
             border-radius: 12px;
         }
 
+        /* Weather styles */
+        .weather-info {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .weather-icon {
+            font-size: 1.3rem;
+        }
+
+        .weather-temp {
+            color: #a0aec0;
+        }
+
+        .weather-desc {
+            color: #718096;
+            font-size: 0.75rem;
+        }
+
+        .weather-label {
+            font-size: 0.65rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dome-indicator {
+            background: rgba(100, 100, 255, 0.2);
+            color: #a0aec0;
+        }
+
         @media (max-width: 600px) {
             .game-card {
                 grid-template-columns: 1fr;
                 text-align: center;
                 gap: 15px;
+                padding-top: 50px;
             }
 
             .team, .team.home {
@@ -195,6 +236,12 @@
 
             .scores {
                 font-size: 2.5rem;
+            }
+
+            .weather-info {
+                top: 10px;
+                right: 50%;
+                transform: translateX(50%);
             }
         }
     </style>
@@ -218,6 +265,125 @@
 
     <script>
         let currentDate = new Date();
+
+        // NFL Stadium coordinates and dome status
+        const stadiums = {
+            // AFC East
+            'Buffalo Bills': { lat: 42.7738, lon: -78.7870, dome: false },
+            'Miami Dolphins': { lat: 25.9580, lon: -80.2389, dome: false },
+            'New England Patriots': { lat: 42.0909, lon: -71.2643, dome: false },
+            'New York Jets': { lat: 40.8135, lon: -74.0745, dome: false },
+            // AFC North
+            'Baltimore Ravens': { lat: 39.2780, lon: -76.6227, dome: false },
+            'Cincinnati Bengals': { lat: 39.0955, lon: -84.5161, dome: false },
+            'Cleveland Browns': { lat: 41.5061, lon: -81.6995, dome: false },
+            'Pittsburgh Steelers': { lat: 40.4468, lon: -80.0158, dome: false },
+            // AFC South
+            'Houston Texans': { lat: 29.6847, lon: -95.4107, dome: true },
+            'Indianapolis Colts': { lat: 39.7601, lon: -86.1639, dome: true },
+            'Jacksonville Jaguars': { lat: 30.3240, lon: -81.6373, dome: false },
+            'Tennessee Titans': { lat: 36.1665, lon: -86.7713, dome: false },
+            // AFC West
+            'Denver Broncos': { lat: 39.7439, lon: -105.0201, dome: false },
+            'Kansas City Chiefs': { lat: 39.0489, lon: -94.4839, dome: false },
+            'Las Vegas Raiders': { lat: 36.0909, lon: -115.1833, dome: true },
+            'Los Angeles Chargers': { lat: 33.9535, lon: -118.3392, dome: true },
+            // NFC East
+            'Dallas Cowboys': { lat: 32.7473, lon: -97.0945, dome: true },
+            'New York Giants': { lat: 40.8135, lon: -74.0745, dome: false },
+            'Philadelphia Eagles': { lat: 39.9008, lon: -75.1675, dome: false },
+            'Washington Commanders': { lat: 38.9076, lon: -76.8645, dome: false },
+            // NFC North
+            'Chicago Bears': { lat: 41.8623, lon: -87.6167, dome: false },
+            'Detroit Lions': { lat: 42.3400, lon: -83.0456, dome: true },
+            'Green Bay Packers': { lat: 44.5013, lon: -88.0622, dome: false },
+            'Minnesota Vikings': { lat: 44.9737, lon: -93.2577, dome: true },
+            // NFC South
+            'Atlanta Falcons': { lat: 33.7554, lon: -84.4010, dome: true },
+            'Carolina Panthers': { lat: 35.2258, lon: -80.8528, dome: false },
+            'New Orleans Saints': { lat: 29.9511, lon: -90.0812, dome: true },
+            'Tampa Bay Buccaneers': { lat: 27.9759, lon: -82.5033, dome: false },
+            // NFC West
+            'Arizona Cardinals': { lat: 33.5276, lon: -112.2626, dome: true },
+            'Los Angeles Rams': { lat: 33.9535, lon: -118.3392, dome: true },
+            'San Francisco 49ers': { lat: 37.4033, lon: -121.9694, dome: false },
+            'Seattle Seahawks': { lat: 47.5952, lon: -122.3316, dome: false }
+        };
+
+        // Weather code to icon and description mapping
+        function getWeatherInfo(code, isDay = true) {
+            const weatherMap = {
+                0: { icon: isDay ? '☀️' : '🌙', desc: 'Clear' },
+                1: { icon: isDay ? '🌤️' : '🌙', desc: 'Mostly Clear' },
+                2: { icon: '⛅', desc: 'Partly Cloudy' },
+                3: { icon: '☁️', desc: 'Cloudy' },
+                45: { icon: '🌫️', desc: 'Foggy' },
+                48: { icon: '🌫️', desc: 'Icy Fog' },
+                51: { icon: '🌧️', desc: 'Light Drizzle' },
+                53: { icon: '🌧️', desc: 'Drizzle' },
+                55: { icon: '🌧️', desc: 'Heavy Drizzle' },
+                56: { icon: '🌧️', desc: 'Freezing Drizzle' },
+                57: { icon: '🌧️', desc: 'Heavy Freezing Drizzle' },
+                61: { icon: '🌧️', desc: 'Light Rain' },
+                63: { icon: '🌧️', desc: 'Rain' },
+                65: { icon: '🌧️', desc: 'Heavy Rain' },
+                66: { icon: '🌧️', desc: 'Freezing Rain' },
+                67: { icon: '🌧️', desc: 'Heavy Freezing Rain' },
+                71: { icon: '❄️', desc: 'Light Snow' },
+                73: { icon: '❄️', desc: 'Snow' },
+                75: { icon: '❄️', desc: 'Heavy Snow' },
+                77: { icon: '❄️', desc: 'Snow Grains' },
+                80: { icon: '🌧️', desc: 'Light Showers' },
+                81: { icon: '🌧️', desc: 'Showers' },
+                82: { icon: '🌧️', desc: 'Heavy Showers' },
+                85: { icon: '🌨️', desc: 'Light Snow Showers' },
+                86: { icon: '🌨️', desc: 'Snow Showers' },
+                95: { icon: '⛈️', desc: 'Thunderstorm' },
+                96: { icon: '⛈️', desc: 'Thunderstorm w/ Hail' },
+                99: { icon: '⛈️', desc: 'Thunderstorm w/ Heavy Hail' }
+            };
+            return weatherMap[code] || { icon: '🌡️', desc: 'Unknown' };
+        }
+
+        function celsiusToFahrenheit(celsius) {
+            return Math.round((celsius * 9/5) + 32);
+        }
+
+        async function fetchWeather(lat, lon, gameDate, gameHour) {
+            try {
+                const dateStr = gameDate.toISOString().split('T')[0];
+                const now = new Date();
+                const isHistorical = gameDate < now;
+
+                let url;
+                if (isHistorical) {
+                    // Use historical/archive API for past games
+                    url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${dateStr}&end_date=${dateStr}&hourly=temperature_2m,weather_code`;
+                } else {
+                    // Use forecast API for future games
+                    url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&start_date=${dateStr}&end_date=${dateStr}`;
+                }
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.hourly && data.hourly.time) {
+                    // Find the hour closest to game time
+                    const hourIndex = Math.min(gameHour, data.hourly.time.length - 1);
+                    const temp = data.hourly.temperature_2m[hourIndex];
+                    const code = data.hourly.weather_code[hourIndex];
+                    const isDay = gameHour >= 6 && gameHour < 20;
+
+                    return {
+                        temp: celsiusToFahrenheit(temp),
+                        ...getWeatherInfo(code, isDay)
+                    };
+                }
+            } catch (error) {
+                console.error('Weather fetch error:', error);
+            }
+            return null;
+        }
 
         function formatDate(date) {
             return date.toLocaleDateString('en-US', {
@@ -255,7 +421,8 @@
                     return;
                 }
 
-                container.innerHTML = data.events.map(event => {
+                // First render games without weather
+                const gameCards = data.events.map((event, index) => {
                     const competition = event.competitions[0];
                     const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
                     const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
@@ -277,7 +444,11 @@
                     const awayWinner = status.completed && awayScore > homeScore;
 
                     return `
-                        <div class="game-card">
+                        <div class="game-card" data-game-index="${index}">
+                            <div class="weather-info" id="weather-${index}">
+                                <span class="weather-icon">⏳</span>
+                                <span class="weather-temp">Loading...</span>
+                            </div>
                             <div class="team away">
                                 <img src="${awayTeam.team.logo}" alt="${awayTeam.team.displayName}" class="team-logo">
                                 <div class="team-info">
@@ -303,6 +474,68 @@
                         </div>
                     `;
                 }).join('');
+
+                container.innerHTML = gameCards;
+
+                // Now fetch weather for each game
+                data.events.forEach(async (event, index) => {
+                    const competition = event.competitions[0];
+                    const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
+                    const homeTeamName = homeTeam.team.displayName;
+                    const stadium = stadiums[homeTeamName];
+                    const status = event.status.type;
+
+                    const weatherElement = document.getElementById(`weather-${index}`);
+
+                    if (!stadium) {
+                        weatherElement.innerHTML = `
+                            <span class="weather-icon">❓</span>
+                            <span class="weather-temp">Unknown venue</span>
+                        `;
+                        return;
+                    }
+
+                    // If it's a dome stadium
+                    if (stadium.dome) {
+                        weatherElement.classList.add('dome-indicator');
+                        weatherElement.innerHTML = `
+                            <span class="weather-icon">🏟️</span>
+                            <span class="weather-temp">Dome</span>
+                            <span class="weather-desc">72°F</span>
+                        `;
+                        return;
+                    }
+
+                    // Get game time
+                    const gameDate = new Date(event.date);
+                    const gameHour = gameDate.getHours();
+
+                    // Determine label based on game status
+                    let weatherLabel = '';
+                    if (status.completed) {
+                        weatherLabel = 'At Kickoff';
+                    } else if (status.state === 'in') {
+                        weatherLabel = 'Current';
+                    } else {
+                        weatherLabel = 'Forecast';
+                    }
+
+                    const weather = await fetchWeather(stadium.lat, stadium.lon, gameDate, gameHour);
+
+                    if (weather) {
+                        weatherElement.innerHTML = `
+                            <span class="weather-label">${weatherLabel}</span>
+                            <span class="weather-icon">${weather.icon}</span>
+                            <span class="weather-temp">${weather.temp}°F</span>
+                            <span class="weather-desc">${weather.desc}</span>
+                        `;
+                    } else {
+                        weatherElement.innerHTML = `
+                            <span class="weather-icon">🌡️</span>
+                            <span class="weather-temp">N/A</span>
+                        `;
+                    }
+                });
 
             } catch (error) {
                 console.error('Error fetching scores:', error);
