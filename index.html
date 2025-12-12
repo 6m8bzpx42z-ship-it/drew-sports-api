@@ -350,6 +350,62 @@
             margin-left: 15px;
         }
 
+        /* Favorite team selector styles */
+        .favorite-team-section {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            background: #2d3748;
+            border-radius: 10px;
+        }
+
+        .favorite-team-section label {
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
+        .favorite-team-select {
+            background: #1a1a2e;
+            color: #fff;
+            border: 1px solid #4a5568;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .favorite-team-select:hover {
+            border-color: #68d391;
+        }
+
+        .favorite-team-select:focus {
+            outline: none;
+            border-color: #68d391;
+            box-shadow: 0 0 0 2px rgba(104, 211, 145, 0.2);
+        }
+
+        .game-card.favorite-team {
+            border: 2px solid #68d391;
+            box-shadow: 0 0 15px rgba(104, 211, 145, 0.2);
+        }
+
+        .favorite-badge {
+            position: absolute;
+            top: -8px;
+            left: 15px;
+            background: #68d391;
+            color: #1a1a2e;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
         @media (max-width: 600px) {
             .game-card {
                 grid-template-columns: 1fr;
@@ -390,6 +446,61 @@
             <span class="refresh-status" id="refresh-status"></span>
         </div>
 
+        <div class="favorite-team-section">
+            <label for="favorite-team">Choose your favorite team so they show up at the top:</label>
+            <select id="favorite-team" class="favorite-team-select">
+                <option value="">-- Select a team --</option>
+                <optgroup label="AFC East">
+                    <option value="Buffalo Bills">Buffalo Bills</option>
+                    <option value="Miami Dolphins">Miami Dolphins</option>
+                    <option value="New England Patriots">New England Patriots</option>
+                    <option value="New York Jets">New York Jets</option>
+                </optgroup>
+                <optgroup label="AFC North">
+                    <option value="Baltimore Ravens">Baltimore Ravens</option>
+                    <option value="Cincinnati Bengals">Cincinnati Bengals</option>
+                    <option value="Cleveland Browns">Cleveland Browns</option>
+                    <option value="Pittsburgh Steelers">Pittsburgh Steelers</option>
+                </optgroup>
+                <optgroup label="AFC South">
+                    <option value="Houston Texans">Houston Texans</option>
+                    <option value="Indianapolis Colts">Indianapolis Colts</option>
+                    <option value="Jacksonville Jaguars">Jacksonville Jaguars</option>
+                    <option value="Tennessee Titans">Tennessee Titans</option>
+                </optgroup>
+                <optgroup label="AFC West">
+                    <option value="Denver Broncos">Denver Broncos</option>
+                    <option value="Kansas City Chiefs">Kansas City Chiefs</option>
+                    <option value="Las Vegas Raiders">Las Vegas Raiders</option>
+                    <option value="Los Angeles Chargers">Los Angeles Chargers</option>
+                </optgroup>
+                <optgroup label="NFC East">
+                    <option value="Dallas Cowboys">Dallas Cowboys</option>
+                    <option value="New York Giants">New York Giants</option>
+                    <option value="Philadelphia Eagles">Philadelphia Eagles</option>
+                    <option value="Washington Commanders">Washington Commanders</option>
+                </optgroup>
+                <optgroup label="NFC North">
+                    <option value="Chicago Bears">Chicago Bears</option>
+                    <option value="Detroit Lions">Detroit Lions</option>
+                    <option value="Green Bay Packers">Green Bay Packers</option>
+                    <option value="Minnesota Vikings">Minnesota Vikings</option>
+                </optgroup>
+                <optgroup label="NFC South">
+                    <option value="Atlanta Falcons">Atlanta Falcons</option>
+                    <option value="Carolina Panthers">Carolina Panthers</option>
+                    <option value="New Orleans Saints">New Orleans Saints</option>
+                    <option value="Tampa Bay Buccaneers">Tampa Bay Buccaneers</option>
+                </optgroup>
+                <optgroup label="NFC West">
+                    <option value="Arizona Cardinals">Arizona Cardinals</option>
+                    <option value="Los Angeles Rams">Los Angeles Rams</option>
+                    <option value="San Francisco 49ers">San Francisco 49ers</option>
+                    <option value="Seattle Seahawks">Seattle Seahawks</option>
+                </optgroup>
+            </select>
+        </div>
+
         <div class="games-container" id="games-container">
             <div class="loading">Loading scores...</div>
         </div>
@@ -399,6 +510,23 @@
         let currentDate = new Date();
         let refreshInterval = null;
         let hasLiveGames = false;
+        let favoriteTeam = localStorage.getItem('favoriteTeam') || '';
+
+        // Initialize favorite team dropdown
+        function initFavoriteTeam() {
+            const select = document.getElementById('favorite-team');
+            select.value = favoriteTeam;
+
+            select.addEventListener('change', (e) => {
+                favoriteTeam = e.target.value;
+                if (favoriteTeam) {
+                    localStorage.setItem('favoriteTeam', favoriteTeam);
+                } else {
+                    localStorage.removeItem('favoriteTeam');
+                }
+                fetchScores(); // Refresh to reorder games
+            });
+        }
 
         // Refresh rates in milliseconds
         const REFRESH_RATES = {
@@ -612,8 +740,24 @@
                     return;
                 }
 
+                // Sort games: favorite team first
+                let sortedEvents = [...data.events];
+                if (favoriteTeam) {
+                    sortedEvents.sort((a, b) => {
+                        const aHasFavorite = a.competitions[0].competitors.some(
+                            c => c.team.displayName === favoriteTeam
+                        );
+                        const bHasFavorite = b.competitions[0].competitors.some(
+                            c => c.team.displayName === favoriteTeam
+                        );
+                        if (aHasFavorite && !bHasFavorite) return -1;
+                        if (!aHasFavorite && bHasFavorite) return 1;
+                        return 0;
+                    });
+                }
+
                 // First render games without weather
-                const gameCards = data.events.map((event, index) => {
+                const gameCards = sortedEvents.map((event, index) => {
                     const competition = event.competitions[0];
                     const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
                     const awayTeam = competition.competitors.find(c => c.homeAway === 'away');
@@ -676,8 +820,15 @@
                         }
                     }
 
+                    // Check if this game involves the favorite team
+                    const isFavoriteGame = favoriteTeam && (
+                        homeTeam.team.displayName === favoriteTeam ||
+                        awayTeam.team.displayName === favoriteTeam
+                    );
+
                     return `
-                        <div class="game-card" data-game-index="${index}">
+                        <div class="game-card${isFavoriteGame ? ' favorite-team' : ''}" data-game-index="${index}">
+                            ${isFavoriteGame ? '<span class="favorite-badge">Your Team</span>' : ''}
                             <div class="team away">
                                 <img src="${awayTeam.team.logo}" alt="${awayTeam.team.displayName}" class="team-logo">
                                 <div class="team-info">
@@ -728,7 +879,7 @@
                 }
 
                 // Now fetch weather for each game
-                data.events.forEach(async (event, index) => {
+                sortedEvents.forEach(async (event, index) => {
                     const competition = event.competitions[0];
                     const homeTeam = competition.competitors.find(c => c.homeAway === 'home');
                     const homeTeamName = homeTeam.team.displayName;
@@ -811,6 +962,7 @@
         });
 
         // Initialize
+        initFavoriteTeam();
         updateDateDisplay();
         fetchScores();
         setupRefreshInterval();
