@@ -1,0 +1,25 @@
+{
+  "name": "sports",
+  "version": "1.0.0",
+  "description": "this is a readme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6m8bzpx42z-ship-it/drew-sports-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/6m8bzpx42z-ship-it/drew-sports-api/issues"
+  },
+  "homepage": "https://github.com/6m8bzpx42z-ship-it/drew-sports-api#readme",
+  "dependencies": {
+    "playwright": "^1.57.0",
+    "serve": "^14.2.5"
+  }
+}
