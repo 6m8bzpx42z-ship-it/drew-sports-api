@@ -184,16 +184,15 @@
 
         /* Weather styles */
         .weather-info {
-            position: absolute;
-            top: 10px;
-            right: 15px;
             display: flex;
+            justify-content: center;
             align-items: center;
             gap: 8px;
             background: rgba(0, 0, 0, 0.3);
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
+            margin-bottom: 8px;
         }
 
         .weather-icon {
@@ -221,12 +220,41 @@
             color: #a0aec0;
         }
 
+        /* Stadium info styles */
+        .stadium-info {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+
+        .stadium-name {
+            font-weight: 500;
+            color: #cbd5e0;
+            margin-bottom: 3px;
+        }
+
+        .stadium-details {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            font-size: 0.75rem;
+        }
+
+        .stadium-type {
+            color: #718096;
+        }
+
+        .stadium-capacity {
+            color: #718096;
+        }
+
         @media (max-width: 600px) {
             .game-card {
                 grid-template-columns: 1fr;
                 text-align: center;
                 gap: 15px;
-                padding-top: 50px;
             }
 
             .team, .team.home {
@@ -236,12 +264,6 @@
 
             .scores {
                 font-size: 2.5rem;
-            }
-
-            .weather-info {
-                top: 10px;
-                right: 50%;
-                transform: translateX(50%);
             }
         }
     </style>
@@ -266,48 +288,48 @@
     <script>
         let currentDate = new Date();
 
-        // NFL Stadium coordinates and dome status
+        // NFL Stadium coordinates, dome status, names, and capacities
         const stadiums = {
             // AFC East
-            'Buffalo Bills': { lat: 42.7738, lon: -78.7870, dome: false },
-            'Miami Dolphins': { lat: 25.9580, lon: -80.2389, dome: false },
-            'New England Patriots': { lat: 42.0909, lon: -71.2643, dome: false },
-            'New York Jets': { lat: 40.8135, lon: -74.0745, dome: false },
+            'Buffalo Bills': { lat: 42.7738, lon: -78.7870, dome: false, name: 'Highmark Stadium', capacity: 71608 },
+            'Miami Dolphins': { lat: 25.9580, lon: -80.2389, dome: false, name: 'Hard Rock Stadium', capacity: 64767 },
+            'New England Patriots': { lat: 42.0909, lon: -71.2643, dome: false, name: 'Gillette Stadium', capacity: 65878 },
+            'New York Jets': { lat: 40.8135, lon: -74.0745, dome: false, name: 'MetLife Stadium', capacity: 82500 },
             // AFC North
-            'Baltimore Ravens': { lat: 39.2780, lon: -76.6227, dome: false },
-            'Cincinnati Bengals': { lat: 39.0955, lon: -84.5161, dome: false },
-            'Cleveland Browns': { lat: 41.5061, lon: -81.6995, dome: false },
-            'Pittsburgh Steelers': { lat: 40.4468, lon: -80.0158, dome: false },
+            'Baltimore Ravens': { lat: 39.2780, lon: -76.6227, dome: false, name: 'M&T Bank Stadium', capacity: 71008 },
+            'Cincinnati Bengals': { lat: 39.0955, lon: -84.5161, dome: false, name: 'Paycor Stadium', capacity: 65515 },
+            'Cleveland Browns': { lat: 41.5061, lon: -81.6995, dome: false, name: 'Huntington Bank Field', capacity: 67431 },
+            'Pittsburgh Steelers': { lat: 40.4468, lon: -80.0158, dome: false, name: 'Acrisure Stadium', capacity: 68400 },
             // AFC South
-            'Houston Texans': { lat: 29.6847, lon: -95.4107, dome: true },
-            'Indianapolis Colts': { lat: 39.7601, lon: -86.1639, dome: true },
-            'Jacksonville Jaguars': { lat: 30.3240, lon: -81.6373, dome: false },
-            'Tennessee Titans': { lat: 36.1665, lon: -86.7713, dome: false },
+            'Houston Texans': { lat: 29.6847, lon: -95.4107, dome: true, name: 'NRG Stadium', capacity: 72220 },
+            'Indianapolis Colts': { lat: 39.7601, lon: -86.1639, dome: true, name: 'Lucas Oil Stadium', capacity: 67000 },
+            'Jacksonville Jaguars': { lat: 30.3240, lon: -81.6373, dome: false, name: 'EverBank Stadium', capacity: 67814 },
+            'Tennessee Titans': { lat: 36.1665, lon: -86.7713, dome: false, name: 'Nissan Stadium', capacity: 69143 },
             // AFC West
-            'Denver Broncos': { lat: 39.7439, lon: -105.0201, dome: false },
-            'Kansas City Chiefs': { lat: 39.0489, lon: -94.4839, dome: false },
-            'Las Vegas Raiders': { lat: 36.0909, lon: -115.1833, dome: true },
-            'Los Angeles Chargers': { lat: 33.9535, lon: -118.3392, dome: true },
+            'Denver Broncos': { lat: 39.7439, lon: -105.0201, dome: false, name: 'Empower Field at Mile High', capacity: 76125 },
+            'Kansas City Chiefs': { lat: 39.0489, lon: -94.4839, dome: false, name: 'GEHA Field at Arrowhead Stadium', capacity: 76416 },
+            'Las Vegas Raiders': { lat: 36.0909, lon: -115.1833, dome: true, name: 'Allegiant Stadium', capacity: 65000 },
+            'Los Angeles Chargers': { lat: 33.9535, lon: -118.3392, dome: true, name: 'SoFi Stadium', capacity: 70240 },
             // NFC East
-            'Dallas Cowboys': { lat: 32.7473, lon: -97.0945, dome: true },
-            'New York Giants': { lat: 40.8135, lon: -74.0745, dome: false },
-            'Philadelphia Eagles': { lat: 39.9008, lon: -75.1675, dome: false },
-            'Washington Commanders': { lat: 38.9076, lon: -76.8645, dome: false },
+            'Dallas Cowboys': { lat: 32.7473, lon: -97.0945, dome: true, name: 'AT&T Stadium', capacity: 80000 },
+            'New York Giants': { lat: 40.8135, lon: -74.0745, dome: false, name: 'MetLife Stadium', capacity: 82500 },
+            'Philadelphia Eagles': { lat: 39.9008, lon: -75.1675, dome: false, name: 'Lincoln Financial Field', capacity: 69796 },
+            'Washington Commanders': { lat: 38.9076, lon: -76.8645, dome: false, name: 'Northwest Stadium', capacity: 67617 },
             // NFC North
-            'Chicago Bears': { lat: 41.8623, lon: -87.6167, dome: false },
-            'Detroit Lions': { lat: 42.3400, lon: -83.0456, dome: true },
-            'Green Bay Packers': { lat: 44.5013, lon: -88.0622, dome: false },
-            'Minnesota Vikings': { lat: 44.9737, lon: -93.2577, dome: true },
+            'Chicago Bears': { lat: 41.8623, lon: -87.6167, dome: false, name: 'Soldier Field', capacity: 61500 },
+            'Detroit Lions': { lat: 42.3400, lon: -83.0456, dome: true, name: 'Ford Field', capacity: 65000 },
+            'Green Bay Packers': { lat: 44.5013, lon: -88.0622, dome: false, name: 'Lambeau Field', capacity: 81441 },
+            'Minnesota Vikings': { lat: 44.9737, lon: -93.2577, dome: true, name: 'U.S. Bank Stadium', capacity: 66860 },
             // NFC South
-            'Atlanta Falcons': { lat: 33.7554, lon: -84.4010, dome: true },
-            'Carolina Panthers': { lat: 35.2258, lon: -80.8528, dome: false },
-            'New Orleans Saints': { lat: 29.9511, lon: -90.0812, dome: true },
-            'Tampa Bay Buccaneers': { lat: 27.9759, lon: -82.5033, dome: false },
+            'Atlanta Falcons': { lat: 33.7554, lon: -84.4010, dome: true, name: 'Mercedes-Benz Stadium', capacity: 71000 },
+            'Carolina Panthers': { lat: 35.2258, lon: -80.8528, dome: false, name: 'Bank of America Stadium', capacity: 74867 },
+            'New Orleans Saints': { lat: 29.9511, lon: -90.0812, dome: true, name: 'Caesars Superdome', capacity: 73208 },
+            'Tampa Bay Buccaneers': { lat: 27.9759, lon: -82.5033, dome: false, name: 'Raymond James Stadium', capacity: 65890 },
             // NFC West
-            'Arizona Cardinals': { lat: 33.5276, lon: -112.2626, dome: true },
-            'Los Angeles Rams': { lat: 33.9535, lon: -118.3392, dome: true },
-            'San Francisco 49ers': { lat: 37.4033, lon: -121.9694, dome: false },
-            'Seattle Seahawks': { lat: 47.5952, lon: -122.3316, dome: false }
+            'Arizona Cardinals': { lat: 33.5276, lon: -112.2626, dome: true, name: 'State Farm Stadium', capacity: 63400 },
+            'Los Angeles Rams': { lat: 33.9535, lon: -118.3392, dome: true, name: 'SoFi Stadium', capacity: 70240 },
+            'San Francisco 49ers': { lat: 37.4033, lon: -121.9694, dome: false, name: "Levi's Stadium", capacity: 68500 },
+            'Seattle Seahawks': { lat: 47.5952, lon: -122.3316, dome: false, name: 'Lumen Field', capacity: 68740 }
         };
 
         // Weather code to icon and description mapping
@@ -443,12 +465,24 @@
                     const homeWinner = status.completed && homeScore > awayScore;
                     const awayWinner = status.completed && awayScore > homeScore;
 
+                    // Stadium info
+                    const homeTeamName = homeTeam.team.displayName;
+                    const stadium = stadiums[homeTeamName];
+                    const stadiumName = stadium ? stadium.name : 'Unknown Stadium';
+                    const stadiumType = stadium ? (stadium.dome ? 'Dome' : 'Open Air') : '';
+                    const attendance = competition.attendance;
+                    const capacity = stadium ? stadium.capacity : null;
+
+                    // Show attendance for completed/in-progress games, capacity for future games
+                    let capacityText = '';
+                    if (attendance) {
+                        capacityText = `Attendance: ${attendance.toLocaleString()}`;
+                    } else if (capacity) {
+                        capacityText = `Capacity: ${capacity.toLocaleString()}`;
+                    }
+
                     return `
                         <div class="game-card" data-game-index="${index}">
-                            <div class="weather-info" id="weather-${index}">
-                                <span class="weather-icon">⏳</span>
-                                <span class="weather-temp">Loading...</span>
-                            </div>
                             <div class="team away">
                                 <img src="${awayTeam.team.logo}" alt="${awayTeam.team.displayName}" class="team-logo">
                                 <div class="team-info">
@@ -457,12 +491,23 @@
                                 </div>
                             </div>
                             <div class="score-section">
+                                <div class="weather-info" id="weather-${index}">
+                                    <span class="weather-icon">⏳</span>
+                                    <span class="weather-temp">Loading...</span>
+                                </div>
                                 <div class="scores">
                                     <span class="score ${awayWinner ? 'winner' : 'loser'}">${awayTeam.score || '-'}</span>
                                     <span>-</span>
                                     <span class="score ${homeWinner ? 'winner' : 'loser'}">${homeTeam.score || '-'}</span>
                                 </div>
                                 <div class="game-status ${statusClass}">${statusText}</div>
+                                <div class="stadium-info">
+                                    <div class="stadium-name">${stadiumName}</div>
+                                    <div class="stadium-details">
+                                        <span class="stadium-type">${stadiumType}</span>
+                                        <span class="stadium-capacity">${capacityText}</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="team home">
                                 <img src="${homeTeam.team.logo}" alt="${homeTeam.team.displayName}" class="team-logo">
