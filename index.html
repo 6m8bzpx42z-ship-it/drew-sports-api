@@ -250,6 +250,34 @@
             color: #718096;
         }
 
+        /* Odds styles */
+        .odds-info {
+            margin-top: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.8rem;
+        }
+
+        .odds-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .odds-label {
+            font-size: 0.65rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .odds-value {
+            color: #68d391;
+            font-weight: 500;
+        }
+
         @media (max-width: 600px) {
             .game-card {
                 grid-template-columns: 1fr;
@@ -481,6 +509,32 @@
                         capacityText = `Capacity: ${capacity.toLocaleString()}`;
                     }
 
+                    // Odds info (only for non-completed games)
+                    const odds = competition.odds && competition.odds[0];
+                    let oddsHtml = '';
+                    if (odds && !status.completed) {
+                        const spread = odds.details || '';
+                        const overUnder = odds.overUnder;
+                        if (spread || overUnder) {
+                            oddsHtml = `
+                                <div class="odds-info">
+                                    ${spread ? `
+                                    <div class="odds-item">
+                                        <span class="odds-label">Spread</span>
+                                        <span class="odds-value">${spread}</span>
+                                    </div>
+                                    ` : ''}
+                                    ${overUnder ? `
+                                    <div class="odds-item">
+                                        <span class="odds-label">O/U</span>
+                                        <span class="odds-value">${overUnder}</span>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        }
+                    }
+
                     return `
                         <div class="game-card" data-game-index="${index}">
                             <div class="team away">
@@ -508,6 +562,7 @@
                                         <span class="stadium-capacity">${capacityText}</span>
                                     </div>
                                 </div>
+                                ${oddsHtml}
                             </div>
                             <div class="team home">
                                 <img src="${homeTeam.team.logo}" alt="${homeTeam.team.displayName}" class="team-logo">
