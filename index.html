@@ -278,6 +278,78 @@
             font-weight: 500;
         }
 
+        /* Refresh toggle styles */
+        .refresh-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+
+        .refresh-toggle label {
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .toggle-slider {
+            width: 44px;
+            height: 24px;
+            background: #4a5568;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-slider::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: #68d391;
+        }
+
+        .toggle-switch input:checked + .toggle-slider::after {
+            transform: translateX(20px);
+        }
+
+        .toggle-label {
+            font-size: 0.8rem;
+            min-width: 60px;
+        }
+
+        .toggle-label.active {
+            color: #68d391;
+            font-weight: 500;
+        }
+
+        .refresh-status {
+            font-size: 0.7rem;
+            color: #718096;
+            margin-left: 15px;
+        }
+
         @media (max-width: 600px) {
             .game-card {
                 grid-template-columns: 1fr;
@@ -308,6 +380,16 @@
             <button id="next-day">Next &rarr;</button>
         </div>
 
+        <div class="refresh-toggle">
+            <span class="toggle-label" id="hourly-label">Hourly</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="refresh-toggle" checked>
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label" id="minute-label">Every min</span>
+            <span class="refresh-status" id="refresh-status"></span>
+        </div>
+
         <div class="games-container" id="games-container">
             <div class="loading">Loading scores...</div>
         </div>
@@ -315,6 +397,65 @@
 
     <script>
         let currentDate = new Date();
+        let refreshInterval = null;
+        let hasLiveGames = false;
+
+        // Refresh rates in milliseconds
+        const REFRESH_RATES = {
+            minute: 60 * 1000,        // 1 minute
+            fiveMin: 5 * 60 * 1000,   // 5 minutes
+            hourly: 60 * 60 * 1000    // 1 hour
+        };
+
+        function updateRefreshStatus(rate) {
+            const statusEl = document.getElementById('refresh-status');
+            let text = '';
+            if (rate === REFRESH_RATES.minute) {
+                text = 'Refreshing every minute';
+            } else if (rate === REFRESH_RATES.fiveMin) {
+                text = 'Refreshing every 5 min';
+            } else if (rate === REFRESH_RATES.hourly) {
+                text = 'Refreshing hourly';
+            }
+            statusEl.textContent = text;
+        }
+
+        function updateToggleLabels() {
+            const toggle = document.getElementById('refresh-toggle');
+            const hourlyLabel = document.getElementById('hourly-label');
+            const minuteLabel = document.getElementById('minute-label');
+
+            if (toggle.checked) {
+                minuteLabel.classList.add('active');
+                hourlyLabel.classList.remove('active');
+            } else {
+                hourlyLabel.classList.add('active');
+                minuteLabel.classList.remove('active');
+            }
+        }
+
+        function setupRefreshInterval() {
+            // Clear existing interval
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+
+            const toggle = document.getElementById('refresh-toggle');
+            const isMinuteMode = toggle.checked;
+
+            let rate;
+            if (isMinuteMode) {
+                // Minute mode: 1 min if live games, 5 min otherwise
+                rate = hasLiveGames ? REFRESH_RATES.minute : REFRESH_RATES.fiveMin;
+            } else {
+                // Hourly mode
+                rate = REFRESH_RATES.hourly;
+            }
+
+            updateRefreshStatus(rate);
+            updateToggleLabels();
+            refreshInterval = setInterval(fetchScores, rate);
+        }
 
         // NFL Stadium coordinates, dome status, names, and capacities
         const stadiums = {
@@ -577,6 +718,15 @@
 
                 container.innerHTML = gameCards;
 
+                // Check if any games are live and update refresh interval
+                const previousHasLiveGames = hasLiveGames;
+                hasLiveGames = data.events.some(event => event.status.type.state === 'in');
+
+                // Only reset interval if live game status changed
+                if (previousHasLiveGames !== hasLiveGames) {
+                    setupRefreshInterval();
+                }
+
                 // Now fetch weather for each game
                 data.events.forEach(async (event, index) => {
                     const competition = event.competitions[0];
@@ -655,12 +805,15 @@
             fetchScores();
         });
 
+        // Toggle event listener
+        document.getElementById('refresh-toggle').addEventListener('change', () => {
+            setupRefreshInterval();
+        });
+
         // Initialize
         updateDateDisplay();
         fetchScores();
-
-        // Auto-refresh every 30 seconds for live games
-        setInterval(fetchScores, 30000);
+        setupRefreshInterval();
     </script>
 </body>
 </html>
