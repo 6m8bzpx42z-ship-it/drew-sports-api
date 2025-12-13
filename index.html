@@ -1410,22 +1410,34 @@
 
         function celsiusToFahrenheit(c) { return Math.round((c * 9/5) + 32); }
 
-        async function fetchWeather(lat, lon, gameDate, gameHour) {
+        async function fetchWeather(lat, lon, gameDate) {
             try {
-                const dateStr = gameDate.toISOString().split('T')[0];
-                const isHistorical = gameDate < new Date();
+                // Format date as YYYY-MM-DD in local time
+                const year = gameDate.getFullYear();
+                const month = String(gameDate.getMonth() + 1).padStart(2, '0');
+                const day = String(gameDate.getDate()).padStart(2, '0');
+                const dateStr = `${year}-${month}-${day}`;
+                const gameHour = gameDate.getHours();
+
+                const now = new Date();
+                const isHistorical = gameDate < now && (now - gameDate) > 24 * 60 * 60 * 1000; // More than 1 day ago
                 const baseUrl = isHistorical ? 'https://archive-api.open-meteo.com/v1/archive' : 'https://api.open-meteo.com/v1/forecast';
-                const url = `${baseUrl}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&start_date=${dateStr}&end_date=${dateStr}`;
+                const url = `${baseUrl}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&start_date=${dateStr}&end_date=${dateStr}&timezone=auto`;
                 const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                if (data.hourly?.time) {
-                    const hourIndex = Math.min(gameHour, data.hourly.time.length - 1);
-                    return {
-                        temp: celsiusToFahrenheit(data.hourly.temperature_2m[hourIndex]),
-                        ...getWeatherInfo(data.hourly.weather_code[hourIndex], gameHour >= 6 && gameHour < 20)
-                    };
+                if (data.hourly?.time && data.hourly.temperature_2m && data.hourly.weather_code) {
+                    const hourIndex = Math.min(Math.max(gameHour, 0), data.hourly.time.length - 1);
+                    const temp = data.hourly.temperature_2m[hourIndex];
+                    const code = data.hourly.weather_code[hourIndex];
+                    if (temp !== null && temp !== undefined) {
+                        return {
+                            temp: celsiusToFahrenheit(temp),
+                            ...getWeatherInfo(code, gameHour >= 6 && gameHour < 20)
+                        };
+                    }
                 }
-            } catch (e) { console.error('Weather error:', e); }
+            } catch (e) { console.error('Weather fetch error:', e); }
             return null;
         }
 
@@ -1715,7 +1727,7 @@
                     }
 
                     const gameDate = new Date(event.date);
-                    const weather = await fetchWeather(stadium.lat, stadium.lon, gameDate, gameDate.getHours());
+                    const weather = await fetchWeather(stadium.lat, stadium.lon, gameDate);
                     if (weather) {
                         weatherEl.innerHTML = `<span class="icon">${weather.icon}</span><span class="value">${weather.temp}°F • ${weather.desc}</span>`;
                     } else {
