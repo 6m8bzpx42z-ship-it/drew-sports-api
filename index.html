@@ -1410,35 +1410,87 @@
 
         function celsiusToFahrenheit(c) { return Math.round((c * 9/5) + 32); }
 
-        async function fetchWeather(lat, lon, gameDate) {
-            try {
-                // Format date as YYYY-MM-DD in local time
-                const year = gameDate.getFullYear();
-                const month = String(gameDate.getMonth() + 1).padStart(2, '0');
-                const day = String(gameDate.getDate()).padStart(2, '0');
-                const dateStr = `${year}-${month}-${day}`;
-                const gameHour = gameDate.getHours();
+        // Weather cache to reduce API calls
+        const weatherCache = {};
+        const WEATHER_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
+        async function fetchWeather(lat, lon, gameDate) {
+            // Format date as YYYY-MM-DD in local time
+            const year = gameDate.getFullYear();
+            const month = String(gameDate.getMonth() + 1).padStart(2, '0');
+            const day = String(gameDate.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+            const gameHour = gameDate.getHours();
+
+            // Check cache first
+            const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${dateStr}_${gameHour}`;
+            const cached = weatherCache[cacheKey];
+            if (cached && (Date.now() - cached.timestamp) < WEATHER_CACHE_DURATION) {
+                return cached.data;
+            }
+
+            try {
                 const now = new Date();
-                const isHistorical = gameDate < now && (now - gameDate) > 24 * 60 * 60 * 1000; // More than 1 day ago
+                const isHistorical = gameDate < now && (now - gameDate) > 24 * 60 * 60 * 1000;
                 const baseUrl = isHistorical ? 'https://archive-api.open-meteo.com/v1/archive' : 'https://api.open-meteo.com/v1/forecast';
                 const url = `${baseUrl}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&start_date=${dateStr}&end_date=${dateStr}&timezone=auto`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
+
+                // Check for API error response
+                if (data.error) {
+                    console.error('Weather API error:', data.reason);
+                    throw new Error(data.reason);
+                }
+
                 if (data.hourly?.time && data.hourly.temperature_2m && data.hourly.weather_code) {
                     const hourIndex = Math.min(Math.max(gameHour, 0), data.hourly.time.length - 1);
                     const temp = data.hourly.temperature_2m[hourIndex];
                     const code = data.hourly.weather_code[hourIndex];
                     if (temp !== null && temp !== undefined) {
-                        return {
+                        const result = {
                             temp: celsiusToFahrenheit(temp),
                             ...getWeatherInfo(code, gameHour >= 6 && gameHour < 20)
                         };
+                        // Cache the result
+                        weatherCache[cacheKey] = { data: result, timestamp: Date.now() };
+                        return result;
                     }
                 }
-            } catch (e) { console.error('Weather fetch error:', e); }
-            return null;
+            } catch (e) {
+                console.error('Weather fetch error:', e);
+                // Try fallback: estimate based on location and season
+                return getEstimatedWeather(lat, gameDate);
+            }
+            return getEstimatedWeather(lat, gameDate);
+        }
+
+        // Fallback weather estimation when API fails
+        function getEstimatedWeather(lat, gameDate) {
+            const month = gameDate.getMonth(); // 0-11
+            const hour = gameDate.getHours();
+            const isDay = hour >= 6 && hour < 20;
+
+            // Rough temperature estimates based on latitude and month (NFL season: Sept-Feb)
+            // Northern stadiums (lat > 40): colder
+            // Southern stadiums (lat < 35): warmer
+            let baseTemp;
+            if (month >= 8 && month <= 10) { // Sept-Nov
+                baseTemp = lat > 40 ? 55 : lat > 35 ? 65 : 75;
+            } else { // Dec-Feb
+                baseTemp = lat > 40 ? 35 : lat > 35 ? 50 : 65;
+            }
+
+            // Add some variation for time of day
+            if (hour < 12) baseTemp -= 5;
+            if (hour >= 18) baseTemp -= 3;
+
+            return {
+                temp: baseTemp,
+                icon: isDay ? '🌤️' : '🌙',
+                desc: 'Est.'
+            };
         }
 
         // Date helpers
