@@ -1412,85 +1412,119 @@
 
         // Weather cache to reduce API calls
         const weatherCache = {};
+        const gridPointCache = {};
         const WEATHER_CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
+        // Get NWS grid point for a location (cached)
+        async function getNWSGridPoint(lat, lon) {
+            const key = `${lat.toFixed(2)}_${lon.toFixed(2)}`;
+            if (gridPointCache[key]) return gridPointCache[key];
+
+            const response = await fetch(`https://api.weather.gov/points/${lat},${lon}`, {
+                headers: { 'User-Agent': 'NFLScores/1.0' }
+            });
+            if (!response.ok) throw new Error(`NWS points API error: ${response.status}`);
+            const data = await response.json();
+            const result = {
+                forecastHourly: data.properties.forecastHourly,
+                gridId: data.properties.gridId,
+                gridX: data.properties.gridX,
+                gridY: data.properties.gridY
+            };
+            gridPointCache[key] = result;
+            return result;
+        }
+
+        // Parse NWS weather icon to get conditions
+        function parseNWSConditions(shortForecast) {
+            const lower = shortForecast.toLowerCase();
+            if (lower.includes('snow')) return { icon: '❄️', desc: 'Snow' };
+            if (lower.includes('thunder') || lower.includes('storm')) return { icon: '⛈️', desc: 'Storms' };
+            if (lower.includes('rain') || lower.includes('shower')) return { icon: '🌧️', desc: 'Rain' };
+            if (lower.includes('fog')) return { icon: '🌫️', desc: 'Fog' };
+            if (lower.includes('cloud') || lower.includes('overcast')) return { icon: '☁️', desc: 'Cloudy' };
+            if (lower.includes('partly')) return { icon: '⛅', desc: 'Partly Cloudy' };
+            if (lower.includes('sun') || lower.includes('clear')) return { icon: '☀️', desc: 'Clear' };
+            return { icon: '🌤️', desc: shortForecast.split(' ').slice(0, 2).join(' ') };
+        }
+
         async function fetchWeather(lat, lon, gameDate) {
-            // Format date as YYYY-MM-DD in local time
-            const year = gameDate.getFullYear();
-            const month = String(gameDate.getMonth() + 1).padStart(2, '0');
-            const day = String(gameDate.getDate()).padStart(2, '0');
-            const dateStr = `${year}-${month}-${day}`;
             const gameHour = gameDate.getHours();
+            const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${gameDate.toDateString()}_${gameHour}`;
 
             // Check cache first
-            const cacheKey = `${lat.toFixed(2)}_${lon.toFixed(2)}_${dateStr}_${gameHour}`;
             const cached = weatherCache[cacheKey];
             if (cached && (Date.now() - cached.timestamp) < WEATHER_CACHE_DURATION) {
                 return cached.data;
             }
 
             try {
-                const now = new Date();
-                const isHistorical = gameDate < now && (now - gameDate) > 24 * 60 * 60 * 1000;
-                const baseUrl = isHistorical ? 'https://archive-api.open-meteo.com/v1/archive' : 'https://api.open-meteo.com/v1/forecast';
-                const url = `${baseUrl}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&start_date=${dateStr}&end_date=${dateStr}&timezone=auto`;
+                // Use National Weather Service API (free, no rate limits)
+                const gridPoint = await getNWSGridPoint(lat, lon);
+                const forecastResponse = await fetch(gridPoint.forecastHourly, {
+                    headers: { 'User-Agent': 'NFLScores/1.0' }
+                });
+                if (!forecastResponse.ok) throw new Error(`NWS forecast API error: ${forecastResponse.status}`);
+                const forecastData = await forecastResponse.json();
+
+                // Find the forecast period closest to game time
+                const periods = forecastData.properties.periods;
+                let bestPeriod = periods[0];
+                const gameTime = gameDate.getTime();
+
+                for (const period of periods) {
+                    const periodTime = new Date(period.startTime).getTime();
+                    if (Math.abs(periodTime - gameTime) < Math.abs(new Date(bestPeriod.startTime).getTime() - gameTime)) {
+                        bestPeriod = period;
+                    }
+                }
+
+                const result = {
+                    temp: bestPeriod.temperature,
+                    ...parseNWSConditions(bestPeriod.shortForecast)
+                };
+
+                // Cache the result
+                weatherCache[cacheKey] = { data: result, timestamp: Date.now() };
+                return result;
+
+            } catch (e) {
+                console.error('NWS Weather fetch error:', e);
+                // Fallback to Open-Meteo if NWS fails
+                return await fetchWeatherOpenMeteo(lat, lon, gameDate);
+            }
+        }
+
+        // Fallback to Open-Meteo API
+        async function fetchWeatherOpenMeteo(lat, lon, gameDate) {
+            try {
+                const year = gameDate.getFullYear();
+                const month = String(gameDate.getMonth() + 1).padStart(2, '0');
+                const day = String(gameDate.getDate()).padStart(2, '0');
+                const dateStr = `${year}-${month}-${day}`;
+                const gameHour = gameDate.getHours();
+
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code&start_date=${dateStr}&end_date=${dateStr}&timezone=auto`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
+                if (data.error) throw new Error(data.reason);
 
-                // Check for API error response
-                if (data.error) {
-                    console.error('Weather API error:', data.reason);
-                    throw new Error(data.reason);
-                }
-
-                if (data.hourly?.time && data.hourly.temperature_2m && data.hourly.weather_code) {
+                if (data.hourly?.time && data.hourly.temperature_2m) {
                     const hourIndex = Math.min(Math.max(gameHour, 0), data.hourly.time.length - 1);
                     const temp = data.hourly.temperature_2m[hourIndex];
                     const code = data.hourly.weather_code[hourIndex];
                     if (temp !== null && temp !== undefined) {
-                        const result = {
+                        return {
                             temp: celsiusToFahrenheit(temp),
                             ...getWeatherInfo(code, gameHour >= 6 && gameHour < 20)
                         };
-                        // Cache the result
-                        weatherCache[cacheKey] = { data: result, timestamp: Date.now() };
-                        return result;
                     }
                 }
             } catch (e) {
-                console.error('Weather fetch error:', e);
-                // Try fallback: estimate based on location and season
-                return getEstimatedWeather(lat, gameDate);
+                console.error('Open-Meteo fallback error:', e);
             }
-            return getEstimatedWeather(lat, gameDate);
-        }
-
-        // Fallback weather estimation when API fails
-        function getEstimatedWeather(lat, gameDate) {
-            const month = gameDate.getMonth(); // 0-11
-            const hour = gameDate.getHours();
-            const isDay = hour >= 6 && hour < 20;
-
-            // Rough temperature estimates based on latitude and month (NFL season: Sept-Feb)
-            // Northern stadiums (lat > 40): colder
-            // Southern stadiums (lat < 35): warmer
-            let baseTemp;
-            if (month >= 8 && month <= 10) { // Sept-Nov
-                baseTemp = lat > 40 ? 55 : lat > 35 ? 65 : 75;
-            } else { // Dec-Feb
-                baseTemp = lat > 40 ? 35 : lat > 35 ? 50 : 65;
-            }
-
-            // Add some variation for time of day
-            if (hour < 12) baseTemp -= 5;
-            if (hour >= 18) baseTemp -= 3;
-
-            return {
-                temp: baseTemp,
-                icon: isDay ? '🌤️' : '🌙',
-                desc: 'Est.'
-            };
+            return null;
         }
 
         // Date helpers
