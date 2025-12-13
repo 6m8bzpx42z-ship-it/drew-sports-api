@@ -250,6 +250,541 @@
             color: #718096;
         }
 
+        /* Player stats styles */
+        .player-stats {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-toggle {
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            color: #a0aec0;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 0 auto;
+        }
+
+        .stats-toggle:hover {
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        .stats-toggle .arrow {
+            transition: transform 0.3s;
+        }
+
+        .stats-toggle.expanded .arrow {
+            transform: rotate(180deg);
+        }
+
+        .stats-content {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .stats-content.show {
+            display: block;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .stat-leader {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+        }
+
+        .stat-leader-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+
+        .stat-leader-type {
+            color: #718096;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-leader-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-leader-headshot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1a1a2e;
+        }
+
+        .stat-leader-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .stat-leader-name {
+            color: #e2e8f0;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stat-leader-value {
+            color: #68d391;
+            font-size: 0.7rem;
+        }
+
+        /* Quarter scores styles */
+        .quarter-scores {
+            margin-top: 8px;
+        }
+
+        .quarter-scores-table {
+            width: 100%;
+            font-size: 0.7rem;
+            border-collapse: collapse;
+        }
+
+        .quarter-scores-table th,
+        .quarter-scores-table td {
+            padding: 4px 6px;
+            text-align: center;
+        }
+
+        .quarter-scores-table th {
+            color: #718096;
+            font-weight: normal;
+        }
+
+        .quarter-scores-table td {
+            color: #a0aec0;
+        }
+
+        .quarter-scores-table .team-col {
+            text-align: left;
+            color: #cbd5e0;
+            font-weight: 500;
+        }
+
+        .quarter-scores-table .total-col {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Live game situation styles */
+        .game-situation {
+            background: rgba(252, 129, 129, 0.1);
+            border: 1px solid rgba(252, 129, 129, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .situation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .possession-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: #feca57;
+        }
+
+        .possession-indicator .ball {
+            font-size: 1rem;
+        }
+
+        .down-distance {
+            font-size: 0.85rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .field-position {
+            font-size: 0.75rem;
+            color: #a0aec0;
+            text-align: center;
+        }
+
+        .red-zone-alert {
+            background: rgba(252, 129, 129, 0.3);
+            color: #fc8181;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        .last-play {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+
+        .last-play-label {
+            color: #718096;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            margin-bottom: 3px;
+        }
+
+        /* Win probability styles */
+        .win-probability {
+            margin-top: 10px;
+        }
+
+        .win-prob-bar {
+            height: 6px;
+            background: #4a5568;
+            border-radius: 3px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .win-prob-away {
+            background: linear-gradient(90deg, #fc8181, #f56565);
+            transition: width 0.5s ease;
+        }
+
+        .win-prob-home {
+            background: linear-gradient(90deg, #68d391, #48bb78);
+            transition: width 0.5s ease;
+        }
+
+        .win-prob-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            margin-top: 4px;
+        }
+
+        .win-prob-label {
+            color: #a0aec0;
+        }
+
+        .win-prob-label span {
+            font-weight: 600;
+        }
+
+        .win-prob-label.away span {
+            color: #fc8181;
+        }
+
+        .win-prob-label.home span {
+            color: #68d391;
+        }
+
+        /* Standings styles */
+        .standings-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .standings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .standings-title {
+            font-size: 1.3rem;
+            color: #feca57;
+        }
+
+        .standings-toggle-btn {
+            background: #2d3748;
+            border: none;
+            color: #a0aec0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .standings-toggle-btn:hover {
+            background: #4a5568;
+            color: #fff;
+        }
+
+        .standings-toggle-btn.active {
+            background: #68d391;
+            color: #1a1a2e;
+        }
+
+        .conference-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .conference-tab {
+            flex: 1;
+            background: #2d3748;
+            border: none;
+            color: #a0aec0;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .conference-tab:hover {
+            background: #4a5568;
+        }
+
+        .conference-tab.active {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: #1a1a2e;
+        }
+
+        .standings-content {
+            display: none;
+        }
+
+        .standings-content.show {
+            display: block;
+        }
+
+        .division-standings {
+            background: #2d3748;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .division-name {
+            font-size: 0.9rem;
+            color: #feca57;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+
+        .standings-table th {
+            color: #718096;
+            font-weight: normal;
+            padding: 6px 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .standings-table th:first-child {
+            text-align: left;
+        }
+
+        .standings-table td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .standings-table td:first-child {
+            text-align: left;
+        }
+
+        .standings-team {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .standings-team-logo {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .standings-team-name {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .standings-record {
+            color: #a0aec0;
+        }
+
+        .standings-pct {
+            color: #68d391;
+        }
+
+        .standings-diff {
+            font-weight: 500;
+        }
+
+        .standings-diff.positive {
+            color: #68d391;
+        }
+
+        .standings-diff.negative {
+            color: #fc8181;
+        }
+
+        .playoff-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .playoff-indicator.clinched {
+            background: #68d391;
+        }
+
+        .playoff-indicator.wildcard {
+            background: #feca57;
+        }
+
+        .playoff-indicator.eliminated {
+            background: #fc8181;
+        }
+
+        .standings-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: #718096;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Injury styles */
+        .injuries-toggle {
+            background: rgba(252, 129, 129, 0.2);
+            border: 1px solid rgba(252, 129, 129, 0.3);
+            color: #fc8181;
+            padding: 4px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+
+        .injuries-toggle:hover {
+            background: rgba(252, 129, 129, 0.3);
+        }
+
+        .injuries-content {
+            display: none;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .injuries-content.show {
+            display: block;
+        }
+
+        .injuries-team {
+            margin-bottom: 10px;
+        }
+
+        .injuries-team-header {
+            font-size: 0.75rem;
+            color: #feca57;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .injury-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 0.7rem;
+        }
+
+        .injury-status {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+        }
+
+        .injury-status.out {
+            background: #fc8181;
+            color: #1a1a2e;
+        }
+
+        .injury-status.doubtful {
+            background: #f6ad55;
+            color: #1a1a2e;
+        }
+
+        .injury-status.questionable {
+            background: #feca57;
+            color: #1a1a2e;
+        }
+
+        .injury-status.probable {
+            background: #68d391;
+            color: #1a1a2e;
+        }
+
+        .injury-player {
+            flex: 1;
+            color: #e2e8f0;
+        }
+
+        .injury-position {
+            color: #718096;
+            font-size: 0.65rem;
+        }
+
+        .injury-description {
+            color: #a0aec0;
+            font-size: 0.65rem;
+        }
+
         /* Odds styles */
         .odds-info {
             margin-top: 8px;
@@ -503,6 +1038,27 @@
 
         <div class="games-container" id="games-container">
             <div class="loading">Loading scores...</div>
+        </div>
+
+        <div class="standings-section">
+            <div class="standings-header">
+                <h2 class="standings-title">Standings</h2>
+                <button class="standings-toggle-btn" id="standings-toggle">Show Standings</button>
+            </div>
+            <div class="standings-content" id="standings-content">
+                <div class="conference-tabs">
+                    <button class="conference-tab active" data-conference="AFC">AFC</button>
+                    <button class="conference-tab" data-conference="NFC">NFC</button>
+                </div>
+                <div id="standings-container">
+                    <div class="loading">Loading standings...</div>
+                </div>
+                <div class="standings-legend">
+                    <div class="legend-item"><span class="playoff-indicator clinched"></span> Clinched Playoff</div>
+                    <div class="legend-item"><span class="playoff-indicator wildcard"></span> Wild Card</div>
+                    <div class="legend-item"><span class="playoff-indicator eliminated"></span> Eliminated</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -826,8 +1382,97 @@
                         awayTeam.team.displayName === favoriteTeam
                     );
 
+                    // Quarter scores (linescores)
+                    const awayLinescores = awayTeam.linescores || [];
+                    const homeLinescores = homeTeam.linescores || [];
+                    let quarterScoresHtml = '';
+                    if (awayLinescores.length > 0 || homeLinescores.length > 0) {
+                        const quarters = Math.max(awayLinescores.length, homeLinescores.length);
+                        let headerCells = '<th class="team-col">Team</th>';
+                        for (let q = 1; q <= quarters; q++) {
+                            headerCells += `<th>${q <= 4 ? 'Q' + q : 'OT' + (q - 4)}</th>`;
+                        }
+                        headerCells += '<th class="total-col">T</th>';
+
+                        let awayRow = `<td class="team-col">${awayTeam.team.abbreviation}</td>`;
+                        let homeRow = `<td class="team-col">${homeTeam.team.abbreviation}</td>`;
+                        for (let q = 0; q < quarters; q++) {
+                            awayRow += `<td>${awayLinescores[q]?.displayValue || '-'}</td>`;
+                            homeRow += `<td>${homeLinescores[q]?.displayValue || '-'}</td>`;
+                        }
+                        awayRow += `<td class="total-col">${awayTeam.score || '-'}</td>`;
+                        homeRow += `<td class="total-col">${homeTeam.score || '-'}</td>`;
+
+                        quarterScoresHtml = `
+                            <div class="quarter-scores">
+                                <table class="quarter-scores-table">
+                                    <tr>${headerCells}</tr>
+                                    <tr>${awayRow}</tr>
+                                    <tr>${homeRow}</tr>
+                                </table>
+                            </div>
+                        `;
+                    }
+
+                    // Player stats leaders
+                    const leaders = competition.leaders || [];
+                    let playerStatsHtml = '';
+                    if (leaders.length > 0 && (status.state === 'in' || status.completed)) {
+                        const passingLeader = leaders.find(l => l.name === 'passingYards');
+                        const rushingLeader = leaders.find(l => l.name === 'rushingYards');
+                        const receivingLeader = leaders.find(l => l.name === 'receivingYards');
+
+                        const formatLeader = (leader, type) => {
+                            if (!leader || !leader.leaders || !leader.leaders[0]) return '';
+                            const l = leader.leaders[0];
+                            const athlete = l.athlete;
+                            return `
+                                <div class="stat-leader">
+                                    <div class="stat-leader-type">${type}</div>
+                                    <div class="stat-leader-player">
+                                        <img src="${athlete.headshot || ''}" alt="${athlete.shortName}" class="stat-leader-headshot" onerror="this.style.display='none'">
+                                        <div class="stat-leader-info">
+                                            <div class="stat-leader-name">${athlete.shortName}</div>
+                                            <div class="stat-leader-value">${l.displayValue}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        };
+
+                        playerStatsHtml = `
+                            <div class="player-stats">
+                                <button class="stats-toggle" onclick="toggleStats(${index})">
+                                    <span>Game Stats</span>
+                                    <span class="arrow">▼</span>
+                                </button>
+                                <div class="stats-content" id="stats-content-${index}">
+                                    ${quarterScoresHtml}
+                                    <div class="stats-row">
+                                        ${formatLeader(passingLeader, 'Passing')}
+                                        ${formatLeader(rushingLeader, 'Rushing')}
+                                        ${formatLeader(receivingLeader, 'Receiving')}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    // Live game situation placeholder
+                    const isLive = status.state === 'in';
+                    const situationHtml = isLive ? `<div class="game-situation" id="situation-${index}"><div style="color:#718096;font-size:0.75rem;text-align:center;">Loading live data...</div></div>` : '';
+
+                    // Injuries section for upcoming games
+                    const isUpcoming = status.state === 'pre';
+                    const injuriesHtml = isUpcoming ? `
+                        <button class="injuries-toggle" onclick="toggleInjuries(${index}, '${awayTeam.team.id}', '${homeTeam.team.id}')">
+                            View Injuries
+                        </button>
+                        <div class="injuries-content" id="injuries-${index}"></div>
+                    ` : '';
+
                     return `
-                        <div class="game-card${isFavoriteGame ? ' favorite-team' : ''}" data-game-index="${index}">
+                        <div class="game-card${isFavoriteGame ? ' favorite-team' : ''}" data-game-index="${index}" data-event-id="${event.id}">
                             ${isFavoriteGame ? '<span class="favorite-badge">Your Team</span>' : ''}
                             <div class="team away">
                                 <img src="${awayTeam.team.logo}" alt="${awayTeam.team.displayName}" class="team-logo">
@@ -847,6 +1492,7 @@
                                     <span class="score ${homeWinner ? 'winner' : 'loser'}">${homeTeam.score || '-'}</span>
                                 </div>
                                 <div class="game-status ${statusClass}">${statusText}</div>
+                                ${situationHtml}
                                 <div class="stadium-info">
                                     <div class="stadium-name">${stadiumName}</div>
                                     <div class="stadium-details">
@@ -855,6 +1501,8 @@
                                     </div>
                                 </div>
                                 ${oddsHtml}
+                                ${injuriesHtml}
+                                ${playerStatsHtml}
                             </div>
                             <div class="team home">
                                 <img src="${homeTeam.team.logo}" alt="${homeTeam.team.displayName}" class="team-logo">
@@ -877,6 +1525,13 @@
                 if (previousHasLiveGames !== hasLiveGames) {
                     setupRefreshInterval();
                 }
+
+                // Fetch live game details for games in progress
+                sortedEvents.forEach((event, index) => {
+                    if (event.status.type.state === 'in') {
+                        fetchLiveGameDetails(event.id, index);
+                    }
+                });
 
                 // Now fetch weather for each game
                 sortedEvents.forEach(async (event, index) => {
@@ -959,6 +1614,457 @@
         // Toggle event listener
         document.getElementById('refresh-toggle').addEventListener('change', () => {
             setupRefreshInterval();
+        });
+
+        // Toggle stats visibility
+        function toggleStats(index) {
+            const content = document.getElementById(`stats-content-${index}`);
+            const button = content.previousElementSibling;
+            content.classList.toggle('show');
+            button.classList.toggle('expanded');
+        }
+
+        // Fetch live game details (situation, win probability, last play)
+        async function fetchLiveGameDetails(eventId, index) {
+            try {
+                const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const situationEl = document.getElementById(`situation-${index}`);
+                if (!situationEl) return;
+
+                // Get situation data
+                const situation = data.situation;
+                const drives = data.drives;
+                const header = data.header;
+
+                if (!situation && !drives) {
+                    situationEl.innerHTML = '<div style="color:#718096;font-size:0.75rem;text-align:center;">No live data available</div>';
+                    return;
+                }
+
+                let html = '';
+
+                // Current situation (down, distance, possession)
+                if (situation) {
+                    const possession = situation.possession;
+                    const down = situation.down;
+                    const distance = situation.distance;
+                    const yardLine = situation.yardLine;
+                    const isRedZone = situation.isRedZone;
+                    const lastPlay = situation.lastPlay;
+
+                    // Get team name for possession
+                    let possessionTeam = '';
+                    if (header && header.competitions && header.competitions[0]) {
+                        const comp = header.competitions[0];
+                        const team = comp.competitors.find(c => c.id === possession);
+                        if (team) {
+                            possessionTeam = team.team.abbreviation;
+                        }
+                    }
+
+                    html += `
+                        <div class="situation-header">
+                            <div class="possession-indicator">
+                                <span class="ball">🏈</span>
+                                <span>${possessionTeam} has the ball</span>
+                            </div>
+                            ${isRedZone ? '<span class="red-zone-alert">Red Zone</span>' : ''}
+                        </div>
+                    `;
+
+                    if (down && distance) {
+                        html += `<div class="down-distance">${down}${getOrdinalSuffix(down)} & ${distance}</div>`;
+                    }
+
+                    if (yardLine) {
+                        const side = situation.possessionText || '';
+                        html += `<div class="field-position">${side}</div>`;
+                    }
+
+                    // Last play
+                    if (lastPlay && lastPlay.text) {
+                        html += `
+                            <div class="last-play">
+                                <div class="last-play-label">Last Play</div>
+                                <div>${lastPlay.text}</div>
+                            </div>
+                        `;
+                    }
+                }
+
+                // Win probability
+                if (data.winprobability && data.winprobability.length > 0) {
+                    const latestProb = data.winprobability[data.winprobability.length - 1];
+                    const homeProb = Math.round(latestProb.homeWinPercentage * 100);
+                    const awayProb = 100 - homeProb;
+
+                    // Get team abbreviations
+                    let awayAbbr = 'AWAY';
+                    let homeAbbr = 'HOME';
+                    if (header && header.competitions && header.competitions[0]) {
+                        const comp = header.competitions[0];
+                        const away = comp.competitors.find(c => c.homeAway === 'away');
+                        const home = comp.competitors.find(c => c.homeAway === 'home');
+                        if (away) awayAbbr = away.team.abbreviation;
+                        if (home) homeAbbr = home.team.abbreviation;
+                    }
+
+                    html += `
+                        <div class="win-probability">
+                            <div class="win-prob-bar">
+                                <div class="win-prob-away" style="width: ${awayProb}%"></div>
+                                <div class="win-prob-home" style="width: ${homeProb}%"></div>
+                            </div>
+                            <div class="win-prob-labels">
+                                <div class="win-prob-label away">${awayAbbr}: <span>${awayProb}%</span></div>
+                                <div class="win-prob-label home">${homeAbbr}: <span>${homeProb}%</span></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                situationEl.innerHTML = html || '<div style="color:#718096;font-size:0.75rem;text-align:center;">No situation data</div>';
+
+            } catch (error) {
+                console.error('Error fetching live game details:', error);
+                const situationEl = document.getElementById(`situation-${index}`);
+                if (situationEl) {
+                    situationEl.innerHTML = '<div style="color:#718096;font-size:0.75rem;text-align:center;">Unable to load live data</div>';
+                }
+            }
+        }
+
+        // Helper for ordinal suffixes (1st, 2nd, 3rd, 4th)
+        function getOrdinalSuffix(num) {
+            const s = ['th', 'st', 'nd', 'rd'];
+            const v = num % 100;
+            return s[(v - 20) % 10] || s[v] || s[0];
+        }
+
+        // Injuries cache
+        let injuriesData = null;
+
+        async function fetchInjuries() {
+            if (injuriesData) return injuriesData;
+            try {
+                const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries');
+                injuriesData = await response.json();
+                return injuriesData;
+            } catch (error) {
+                console.error('Error fetching injuries:', error);
+                return null;
+            }
+        }
+
+        async function toggleInjuries(index, awayTeamId, homeTeamId) {
+            const content = document.getElementById(`injuries-${index}`);
+            const button = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                button.textContent = 'View Injuries';
+                return;
+            }
+
+            button.textContent = 'Loading...';
+            const data = await fetchInjuries();
+
+            if (!data || !data.injuries) {
+                content.innerHTML = '<div style="color:#718096;font-size:0.7rem;padding:10px;">No injury data available</div>';
+                content.classList.add('show');
+                button.textContent = 'Hide Injuries';
+                return;
+            }
+
+            // Find injuries for both teams
+            const awayInjuries = data.injuries.find(t => t.id === awayTeamId);
+            const homeInjuries = data.injuries.find(t => t.id === homeTeamId);
+
+            let html = '';
+
+            const renderTeamInjuries = (teamData, label) => {
+                if (!teamData || !teamData.injuries || teamData.injuries.length === 0) {
+                    return `<div class="injuries-team">
+                        <div class="injuries-team-header">${label}</div>
+                        <div style="color:#68d391;font-size:0.7rem;padding:5px;">No reported injuries</div>
+                    </div>`;
+                }
+
+                // Filter to show only significant injuries (Out, Doubtful, Questionable)
+                const significant = teamData.injuries.filter(inj =>
+                    ['Out', 'Doubtful', 'Questionable'].includes(inj.status)
+                ).slice(0, 5); // Limit to top 5
+
+                if (significant.length === 0) {
+                    return `<div class="injuries-team">
+                        <div class="injuries-team-header">${label}</div>
+                        <div style="color:#68d391;font-size:0.7rem;padding:5px;">No significant injuries</div>
+                    </div>`;
+                }
+
+                let items = '';
+                significant.forEach(inj => {
+                    const statusClass = inj.status.toLowerCase();
+                    const position = inj.athlete?.position?.abbreviation || '';
+                    items += `
+                        <div class="injury-item">
+                            <span class="injury-status ${statusClass}">${inj.status}</span>
+                            <span class="injury-player">${inj.athlete?.shortName || 'Unknown'}</span>
+                            <span class="injury-position">${position}</span>
+                        </div>
+                    `;
+                });
+
+                return `<div class="injuries-team">
+                    <div class="injuries-team-header">${label}</div>
+                    ${items}
+                </div>`;
+            };
+
+            html += renderTeamInjuries(awayInjuries, awayInjuries?.displayName || 'Away Team');
+            html += renderTeamInjuries(homeInjuries, homeInjuries?.displayName || 'Home Team');
+
+            content.innerHTML = html;
+            content.classList.add('show');
+            button.textContent = 'Hide Injuries';
+        }
+
+        // Standings functionality
+        let standingsData = null;
+        let currentConference = 'AFC';
+
+        async function fetchStandings() {
+            try {
+                const response = await fetch('https://site.api.espn.com/apis/v2/sports/football/nfl/standings');
+                standingsData = await response.json();
+                renderStandings();
+            } catch (error) {
+                console.error('Error fetching standings:', error);
+                document.getElementById('standings-container').innerHTML =
+                    '<div class="error">Unable to load standings</div>';
+            }
+        }
+
+        function renderStandings() {
+            if (!standingsData) return;
+
+            const container = document.getElementById('standings-container');
+            const conference = standingsData.children.find(c => c.abbreviation === currentConference);
+
+            if (!conference) {
+                container.innerHTML = '<div class="error">Conference data not found</div>';
+                return;
+            }
+
+            // Group teams by division
+            const divisions = {};
+            const divisionOrder = currentConference === 'AFC'
+                ? ['AFC East', 'AFC North', 'AFC South', 'AFC West']
+                : ['NFC East', 'NFC North', 'NFC South', 'NFC West'];
+
+            // Get division standings from the children
+            if (conference.children) {
+                conference.children.forEach(division => {
+                    if (division.standings && division.standings.entries) {
+                        divisions[division.name] = division.standings.entries;
+                    }
+                });
+            }
+
+            // If no divisions found, try to get from conference standings
+            if (Object.keys(divisions).length === 0 && conference.standings) {
+                // Sort by playoff seed
+                const entries = [...conference.standings.entries].sort((a, b) => {
+                    const seedA = a.stats.find(s => s.name === 'playoffSeed')?.value || 99;
+                    const seedB = b.stats.find(s => s.name === 'playoffSeed')?.value || 99;
+                    return seedA - seedB;
+                });
+
+                // Render as a single table for the conference
+                container.innerHTML = renderConferenceStandings(entries, currentConference);
+                return;
+            }
+
+            let html = '';
+            divisionOrder.forEach(divName => {
+                const teams = divisions[divName];
+                if (teams) {
+                    html += renderDivisionStandings(divName, teams);
+                }
+            });
+
+            container.innerHTML = html || '<div class="error">No standings data available</div>';
+        }
+
+        function renderConferenceStandings(entries, confName) {
+            let rows = '';
+            entries.forEach((entry, index) => {
+                const team = entry.team;
+                const stats = entry.stats;
+
+                const wins = stats.find(s => s.name === 'wins')?.displayValue || '0';
+                const losses = stats.find(s => s.name === 'losses')?.displayValue || '0';
+                const ties = stats.find(s => s.name === 'ties')?.value || 0;
+                const pct = stats.find(s => s.name === 'winPercent')?.displayValue || '.000';
+                const diff = stats.find(s => s.name === 'pointDifferential')?.value || 0;
+                const clincher = stats.find(s => s.name === 'clincher')?.displayValue || '';
+                const streak = stats.find(s => s.name === 'streak')?.displayValue || '-';
+
+                const record = ties > 0 ? `${wins}-${losses}-${ties}` : `${wins}-${losses}`;
+
+                let indicatorClass = '';
+                if (clincher === 'x' || clincher === 'y' || clincher === 'z') {
+                    indicatorClass = 'clinched';
+                } else if (index < 7) {
+                    indicatorClass = 'wildcard';
+                } else if (clincher === 'e') {
+                    indicatorClass = 'eliminated';
+                }
+
+                const diffClass = diff > 0 ? 'positive' : diff < 0 ? 'negative' : '';
+                const diffDisplay = diff > 0 ? `+${diff}` : diff;
+
+                rows += `
+                    <tr>
+                        <td>
+                            <div class="standings-team">
+                                ${indicatorClass ? `<span class="playoff-indicator ${indicatorClass}"></span>` : ''}
+                                <img src="${team.logos?.[0]?.href || ''}" alt="${team.displayName}" class="standings-team-logo">
+                                <span class="standings-team-name">${team.abbreviation}</span>
+                            </div>
+                        </td>
+                        <td class="standings-record">${record}</td>
+                        <td class="standings-pct">${pct}</td>
+                        <td class="standings-diff ${diffClass}">${diffDisplay}</td>
+                        <td>${streak}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <div class="division-standings">
+                    <div class="division-name">${confName} Standings</div>
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>W-L</th>
+                                <th>PCT</th>
+                                <th>DIFF</th>
+                                <th>STRK</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function renderDivisionStandings(divName, teams) {
+            // Sort by wins/pct
+            const sorted = [...teams].sort((a, b) => {
+                const pctA = a.stats.find(s => s.name === 'winPercent')?.value || 0;
+                const pctB = b.stats.find(s => s.name === 'winPercent')?.value || 0;
+                return pctB - pctA;
+            });
+
+            let rows = '';
+            sorted.forEach((entry, index) => {
+                const team = entry.team;
+                const stats = entry.stats;
+
+                const wins = stats.find(s => s.name === 'wins')?.displayValue || '0';
+                const losses = stats.find(s => s.name === 'losses')?.displayValue || '0';
+                const ties = stats.find(s => s.name === 'ties')?.value || 0;
+                const pct = stats.find(s => s.name === 'winPercent')?.displayValue || '.000';
+                const diff = stats.find(s => s.name === 'pointDifferential')?.value || 0;
+                const clincher = stats.find(s => s.name === 'clincher')?.displayValue || '';
+                const streak = stats.find(s => s.name === 'streak')?.displayValue || '-';
+
+                const record = ties > 0 ? `${wins}-${losses}-${ties}` : `${wins}-${losses}`;
+
+                let indicatorClass = '';
+                if (clincher === 'x' || clincher === 'y' || clincher === 'z') {
+                    indicatorClass = 'clinched';
+                } else if (clincher === 'e') {
+                    indicatorClass = 'eliminated';
+                } else if (index === 0) {
+                    indicatorClass = 'wildcard'; // Division leader
+                }
+
+                const diffClass = diff > 0 ? 'positive' : diff < 0 ? 'negative' : '';
+                const diffDisplay = diff > 0 ? `+${diff}` : diff;
+
+                rows += `
+                    <tr>
+                        <td>
+                            <div class="standings-team">
+                                ${indicatorClass ? `<span class="playoff-indicator ${indicatorClass}"></span>` : ''}
+                                <img src="${team.logos?.[0]?.href || ''}" alt="${team.displayName}" class="standings-team-logo">
+                                <span class="standings-team-name">${team.abbreviation}</span>
+                            </div>
+                        </td>
+                        <td class="standings-record">${record}</td>
+                        <td class="standings-pct">${pct}</td>
+                        <td class="standings-diff ${diffClass}">${diffDisplay}</td>
+                        <td>${streak}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <div class="division-standings">
+                    <div class="division-name">${divName}</div>
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>W-L</th>
+                                <th>PCT</th>
+                                <th>DIFF</th>
+                                <th>STRK</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // Standings toggle
+        document.getElementById('standings-toggle').addEventListener('click', function() {
+            const content = document.getElementById('standings-content');
+            const isVisible = content.classList.contains('show');
+
+            if (isVisible) {
+                content.classList.remove('show');
+                this.textContent = 'Show Standings';
+                this.classList.remove('active');
+            } else {
+                content.classList.add('show');
+                this.textContent = 'Hide Standings';
+                this.classList.add('active');
+                if (!standingsData) {
+                    fetchStandings();
+                }
+            }
+        });
+
+        // Conference tabs
+        document.querySelectorAll('.conference-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.conference-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentConference = this.dataset.conference;
+                renderStandings();
+            });
         });
 
         // Initialize
