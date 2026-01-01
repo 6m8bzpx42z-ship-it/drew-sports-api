@@ -898,65 +898,6 @@
             color: var(--text-muted);
         }
 
-        /* Drive summaries */
-        .drives-container {
-            margin-top: 10px;
-        }
-
-        .drive-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            margin-bottom: 8px;
-            border-left: 4px solid var(--team-color, #666);
-        }
-
-        [data-theme="light"] .drive-item {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .drive-item.scoring-drive {
-            background: rgba(104, 211, 145, 0.1);
-            border-left-color: var(--accent-success);
-        }
-
-        .drive-team-logo {
-            width: 28px;
-            height: 28px;
-            object-fit: contain;
-        }
-
-        .drive-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .drive-result {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .drive-result.touchdown { color: var(--accent-success); }
-        .drive-result.field-goal { color: var(--accent-secondary); }
-        .drive-result.turnover { color: var(--accent-danger); }
-
-        .drive-details {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            display: flex;
-            gap: 10px;
-        }
-
-        .drive-stat {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
         /* Team comparison stats */
         .team-comparison {
             padding: 15px 0;
@@ -3066,11 +3007,6 @@
                                 <span class="arrow">▼</span>
                             </button>
                             <div class="expandable-content" id="scoring-${index}"></div>
-                            <button class="expand-btn" onclick="toggleDrives(${index}, '${event.id}')">
-                                <span>🚗 Drive Summary</span>
-                                <span class="arrow">▼</span>
-                            </button>
-                            <div class="expandable-content" id="drives-${index}"></div>
                         `;
                     }
 
@@ -3373,96 +3309,6 @@
             }
 
             btn.querySelector('span:first-child').textContent = '📊 Scoring Plays';
-        }
-
-        // Drive summaries
-        async function toggleDrives(index, eventId) {
-            const content = document.getElementById(`drives-${index}`);
-            const btn = content.previousElementSibling;
-
-            if (content.classList.contains('show')) {
-                content.classList.remove('show');
-                btn.classList.remove('expanded');
-                return;
-            }
-
-            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
-
-            try {
-                let data = scoringPlaysCache[eventId];
-                if (!data) {
-                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
-                    data = await response.json();
-                    scoringPlaysCache[eventId] = data;
-                }
-
-                const drives = data.drives?.previous || [];
-                const header = data.header;
-
-                if (drives.length === 0) {
-                    content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No drive data available</div>';
-                } else {
-                    // Get team info
-                    const teams = {};
-                    if (header?.competitions?.[0]) {
-                        header.competitions[0].competitors.forEach(c => {
-                            teams[c.id] = {
-                                abbr: c.team.abbreviation,
-                                name: c.team.displayName,
-                                logo: c.team.logos?.[0]?.href || '',
-                                color: teamColors[c.team.displayName]?.primary || '#666'
-                            };
-                        });
-                    }
-
-                    // Filter to show only scoring drives or last 10 drives
-                    const scoringDrives = drives.filter(d => d.isScore);
-                    const displayDrives = scoringDrives.length > 0 ? scoringDrives : drives.slice(-10);
-
-                    const drivesHtml = displayDrives.map(drive => {
-                        const team = teams[drive.team?.id] || { abbr: '?', logo: '', color: '#666' };
-                        const result = drive.displayResult || drive.result || 'Unknown';
-                        const isScoring = drive.isScore;
-
-                        let resultClass = '';
-                        if (result.toLowerCase().includes('touchdown')) resultClass = 'touchdown';
-                        else if (result.toLowerCase().includes('field goal')) resultClass = 'field-goal';
-                        else if (result.toLowerCase().includes('interception') || result.toLowerCase().includes('fumble')) resultClass = 'turnover';
-
-                        return `
-                            <div class="drive-item${isScoring ? ' scoring-drive' : ''}" style="--team-color: ${team.color}">
-                                <img src="${team.logo}" class="drive-team-logo" alt="${team.abbr}">
-                                <div class="drive-info">
-                                    <div class="drive-result ${resultClass}">${result}</div>
-                                    <div class="drive-details">
-                                        <span class="drive-stat">📍 ${drive.yards || 0} yds</span>
-                                        <span class="drive-stat">🏃 ${drive.offensivePlays || 0} plays</span>
-                                        <span class="drive-stat">⏱️ ${drive.timeElapsed?.displayValue || '-'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-
-                    const headerText = scoringDrives.length > 0 ? 'Scoring Drives' : 'Recent Drives';
-                    content.innerHTML = `
-                        <div class="drives-container">
-                            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:10px;">${headerText}</div>
-                            ${drivesHtml}
-                        </div>
-                    `;
-                }
-
-                content.classList.add('show');
-                btn.classList.add('expanded');
-            } catch (e) {
-                console.error('Drives error:', e);
-                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load drives</div>';
-                content.classList.add('show');
-                btn.classList.add('expanded');
-            }
-
-            btn.querySelector('span:first-child').textContent = '🚗 Drive Summary';
         }
 
         // Team comparison stats
