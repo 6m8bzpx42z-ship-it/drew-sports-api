@@ -294,6 +294,23 @@
             box-shadow: 0 0 20px rgba(104, 211, 145, 0.2);
         }
 
+        .game-card.team-colored {
+            border-left: 4px solid var(--away-color, #666);
+            border-right: 4px solid var(--home-color, #666);
+            background: linear-gradient(
+                135deg,
+                color-mix(in srgb, var(--away-color, #666) 8%, var(--bg-card)) 0%,
+                var(--bg-card) 50%,
+                color-mix(in srgb, var(--home-color, #666) 8%, var(--bg-card)) 100%
+            );
+        }
+
+        .game-card.team-colored.favorite-team {
+            border: 2px solid var(--accent-success);
+            border-left: 4px solid var(--away-color, #666);
+            border-right: 4px solid var(--home-color, #666);
+        }
+
         .favorite-badge {
             position: absolute;
             top: -8px;
@@ -695,6 +712,905 @@
             animation: pulse 1.5s infinite;
         }
 
+        /* Mini field position graphic */
+        .field-graphic {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(90deg,
+                var(--away-endzone, #333) 0%,
+                var(--away-endzone, #333) 9%,
+                #2d5a27 9%,
+                #2d5a27 91%,
+                var(--home-endzone, #333) 91%,
+                var(--home-endzone, #333) 100%
+            );
+            border-radius: 6px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .field-lines {
+            position: absolute;
+            top: 0;
+            left: 9%;
+            right: 9%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .yard-line {
+            width: 1px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .yard-line.major {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .field-50 {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: bold;
+        }
+
+        .ball-marker {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: #8B4513;
+            border-radius: 40% 40% 40% 40%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            z-index: 10;
+            transition: left 0.5s ease;
+        }
+
+        .ball-marker::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1px;
+            height: 8px;
+            background: #fff;
+        }
+
+        .first-down-marker {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #FFD700;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .endzone-label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.5rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .endzone-label.away { left: 1%; }
+        .endzone-label.home { right: 1%; }
+
+        /* Scoring plays timeline */
+        .scoring-timeline {
+            margin-top: 15px;
+        }
+
+        .scoring-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-bottom: 10px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .scoring-play {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        [data-theme="light"] .scoring-play {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .scoring-play::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 10px 0 0 10px;
+            background: var(--team-color, var(--accent-secondary));
+        }
+
+        .scoring-quarter {
+            background: var(--bg-primary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .scoring-team-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .scoring-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .scoring-type {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .scoring-desc {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .scoring-score {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-success);
+            white-space: nowrap;
+        }
+
+        .scoring-time {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* Drive summaries */
+        .drives-container {
+            margin-top: 10px;
+        }
+
+        .drive-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-left: 4px solid var(--team-color, #666);
+        }
+
+        [data-theme="light"] .drive-item {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .drive-item.scoring-drive {
+            background: rgba(104, 211, 145, 0.1);
+            border-left-color: var(--accent-success);
+        }
+
+        .drive-team-logo {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .drive-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .drive-result {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .drive-result.touchdown { color: var(--accent-success); }
+        .drive-result.field-goal { color: var(--accent-secondary); }
+        .drive-result.turnover { color: var(--accent-danger); }
+
+        .drive-details {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 10px;
+        }
+
+        .drive-stat {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* Team comparison stats */
+        .team-comparison {
+            padding: 15px 0;
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .comparison-team {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .comparison-team img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .comparison-vs {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .stat-comparison {
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .stat-bars {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-bar-container {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-primary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-bar-container.left {
+            direction: rtl;
+        }
+
+        .stat-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .stat-bar.away { background: linear-gradient(90deg, var(--away-color, #666), var(--away-color, #666)); }
+        .stat-bar.home { background: linear-gradient(90deg, var(--home-color, #666), var(--home-color, #666)); }
+
+        .stat-value {
+            font-size: 0.7rem;
+            font-weight: 600;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .stat-value.away { color: var(--away-color, var(--text-secondary)); }
+        .stat-value.home { color: var(--home-color, var(--text-secondary)); }
+
+        .stat-value.better { font-weight: 700; }
+
+        .rank-badge {
+            font-size: 0.55rem;
+            padding: 1px 4px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            margin-left: 3px;
+        }
+
+        /* Share button */
+        .share-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .share-btn:hover {
+            background: var(--accent-success);
+            color: var(--bg-primary);
+            transform: scale(1.1);
+        }
+
+        .share-btn:active {
+            transform: scale(0.95);
+        }
+
+        .share-toast {
+            position: fixed;
+            bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 20px);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent-success);
+            color: var(--bg-primary);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .share-toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Head to head history */
+        .h2h-container {
+            padding: 10px 0;
+        }
+
+        .h2h-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        [data-theme="light"] .h2h-summary {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .h2h-team-record {
+            text-align: center;
+        }
+
+        .h2h-team-record img {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 4px;
+        }
+
+        .h2h-wins {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-success);
+        }
+
+        .h2h-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .h2h-vs {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .h2h-game {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            border-left: 3px solid var(--winner-color, #666);
+        }
+
+        [data-theme="light"] .h2h-game {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .h2h-date {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            min-width: 70px;
+        }
+
+        .h2h-matchup {
+            flex: 1;
+            font-size: 0.8rem;
+        }
+
+        .h2h-winner {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .h2h-loser {
+            color: var(--text-muted);
+        }
+
+        .h2h-score {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-secondary);
+        }
+
+        /* Playoff indicators */
+        .playoff-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+
+        .playoff-indicator.clinched-div {
+            background: rgba(104, 211, 145, 0.2);
+            color: var(--accent-success);
+        }
+
+        .playoff-indicator.clinched-playoff {
+            background: rgba(104, 211, 145, 0.15);
+            color: var(--accent-success);
+        }
+
+        .playoff-indicator.wild-card {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60A5FA;
+        }
+
+        .playoff-indicator.in-hunt {
+            background: rgba(251, 191, 36, 0.2);
+            color: #FBBF24;
+        }
+
+        .playoff-indicator.eliminated {
+            background: rgba(252, 129, 129, 0.2);
+            color: var(--accent-danger);
+        }
+
+        .wild-card-race {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .wild-card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wild-card-team {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .wild-card-team:last-child {
+            border-bottom: none;
+        }
+
+        .wild-card-seed {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 50%;
+            background: var(--bg-primary);
+        }
+
+        .wild-card-seed.in-playoff { background: rgba(104, 211, 145, 0.2); color: var(--accent-success); }
+        .wild-card-seed.chasing { background: rgba(251, 191, 36, 0.2); color: #FBBF24; }
+
+        .wild-card-team-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wild-card-team-info img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .wild-card-record {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Player spotlight modal */
+        .player-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .player-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .player-modal {
+            background: var(--bg-card);
+            border-radius: 20px;
+            max-width: 380px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .player-modal-overlay.show .player-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--team-color, #333) 0%, rgba(0,0,0,0.3) 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .player-headshot {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg-primary);
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .player-info h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .player-meta {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .player-team-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .player-team-badge img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .player-team-badge span {
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .player-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border-color);
+            margin: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .player-stat-box {
+            background: var(--bg-primary);
+            padding: 15px 10px;
+            text-align: center;
+        }
+
+        .player-stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .player-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .player-section {
+            padding: 0 15px 15px;
+        }
+
+        .player-section-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+
+        .player-recent-games {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .player-game-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .player-game-row:last-child {
+            border-bottom: none;
+        }
+
+        .player-game-opp {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+
+        .player-game-opp img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .player-game-stat {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-secondary);
+        }
+
+        .player-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .clickable-player {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 2px;
+        }
+
+        .clickable-player:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* Game highlights */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .highlight-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .highlight-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+
+        .highlight-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .highlight-card:hover .highlight-play-btn {
+            background: var(--accent-danger);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .highlight-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 8px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+            font-size: 0.65rem;
+            line-height: 1.3;
+        }
+
+        .highlight-duration {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+        }
+
+        /* YouTube single video card */
+        .yt-single-video {
+            display: block;
+            text-decoration: none;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            margin: 10px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .yt-single-video:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .yt-single-thumb {
+            position: relative;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+        }
+
+        .yt-single-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .yt-play-icon-lg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,0,0,0.9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .yt-single-video:hover .yt-play-icon-lg {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .yt-single-info {
+            padding: 12px;
+        }
+
+        .yt-single-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+
+        .yt-single-channel {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
         .last-play {
             margin-top: 10px;
             padding-top: 10px;
@@ -1062,14 +1978,106 @@
             animation: scoreFlash 0.5s ease;
         }
 
-        /* Page views */
+        @keyframes scorePop {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.4); color: var(--accent-success); }
+            40% { transform: scale(0.9); }
+            60% { transform: scale(1.2); }
+            80% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .score-updated {
+            animation: scorePop 0.6s ease;
+        }
+
+        @keyframes touchdownCelebrate {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.5) rotate(-5deg); color: #FFD700; text-shadow: 0 0 20px #FFD700; }
+            50% { transform: scale(1.3) rotate(5deg); }
+            75% { transform: scale(1.1) rotate(-2deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        .touchdown-score {
+            animation: touchdownCelebrate 0.8s ease;
+        }
+
+        /* Confetti canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Page views with transitions */
         .page-view {
             display: none;
+            opacity: 0;
+            transform: translateY(10px);
         }
 
         .page-view.active {
             display: block;
+            animation: pageEnter 0.3s ease forwards;
         }
+
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Staggered card entrance */
+        .game-card {
+            animation: cardEnter 0.4s ease backwards;
+        }
+
+        @keyframes cardEnter {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0.05s; }
+        .game-card:nth-child(2) { animation-delay: 0.1s; }
+        .game-card:nth-child(3) { animation-delay: 0.15s; }
+        .game-card:nth-child(4) { animation-delay: 0.2s; }
+        .game-card:nth-child(5) { animation-delay: 0.25s; }
+        .game-card:nth-child(6) { animation-delay: 0.3s; }
+        .game-card:nth-child(7) { animation-delay: 0.35s; }
+        .game-card:nth-child(8) { animation-delay: 0.4s; }
+
+        /* Date change slide animation */
+        .games-container.slide-left {
+            animation: slideLeft 0.3s ease;
+        }
+
+        .games-container.slide-right {
+            animation: slideRight 0.3s ease;
+        }
+
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Division card staggered entrance */
+        .division-card {
+            animation: cardEnter 0.4s ease backwards;
+        }
+
+        .division-card:nth-child(1) { animation-delay: 0.05s; }
+        .division-card:nth-child(2) { animation-delay: 0.1s; }
+        .division-card:nth-child(3) { animation-delay: 0.15s; }
+        .division-card:nth-child(4) { animation-delay: 0.2s; }
 
         /* Desktop styles */
         @media (min-width: 768px) {
@@ -1179,6 +2187,16 @@
     </style>
 </head>
 <body>
+    <canvas id="confetti-canvas"></canvas>
+    <div class="share-toast" id="share-toast">Copied to clipboard!</div>
+    <div class="player-modal-overlay" id="player-modal" onclick="closePlayerModal(event)">
+        <div class="player-modal" onclick="event.stopPropagation()">
+            <button class="player-close" onclick="closePlayerModal()">&times;</button>
+            <div id="player-modal-content">
+                <div style="padding: 40px; text-align: center; color: var(--text-muted);">Loading...</div>
+            </div>
+        </div>
+    </div>
     <div class="pull-indicator" id="pull-indicator">Release to refresh</div>
 
     <div class="container">
@@ -1329,6 +2347,132 @@
         let currentView = 'scores';
         let previousScores = {};
         let countdownIntervals = [];
+        let gameDatesCache = [];
+        let isNavigating = false;
+
+        // Confetti system
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+        let confettiAnimating = false;
+
+        function resizeConfettiCanvas() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        resizeConfettiCanvas();
+        window.addEventListener('resize', resizeConfettiCanvas);
+
+        class ConfettiParticle {
+            constructor() {
+                this.x = Math.random() * confettiCanvas.width;
+                this.y = -20;
+                this.size = Math.random() * 10 + 5;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = Math.random() * 4 - 2;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+                this.color = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'][Math.floor(Math.random() * 8)];
+                this.opacity = 1;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                this.speedY += 0.1; // gravity
+                this.opacity -= 0.005;
+                return this.y < confettiCanvas.height && this.opacity > 0;
+            }
+
+            draw() {
+                confettiCtx.save();
+                confettiCtx.translate(this.x, this.y);
+                confettiCtx.rotate(this.rotation * Math.PI / 180);
+                confettiCtx.fillStyle = this.color;
+                confettiCtx.globalAlpha = this.opacity;
+                confettiCtx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+                confettiCtx.restore();
+            }
+        }
+
+        function launchConfetti(count = 100) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    confettiParticles.push(new ConfettiParticle());
+                }, i * 10);
+            }
+
+            if (!confettiAnimating) {
+                confettiAnimating = true;
+                animateConfetti();
+            }
+        }
+
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+            confettiParticles = confettiParticles.filter(p => {
+                p.draw();
+                return p.update();
+            });
+
+            if (confettiParticles.length > 0) {
+                requestAnimationFrame(animateConfetti);
+            } else {
+                confettiAnimating = false;
+            }
+        }
+
+        // Score change detection
+        function checkScoreChanges(events) {
+            events.forEach((event, index) => {
+                const eventId = event.id;
+                const comp = event.competitions[0];
+                const home = comp.competitors.find(c => c.homeAway === 'home');
+                const away = comp.competitors.find(c => c.homeAway === 'away');
+                const homeScore = parseInt(home.score) || 0;
+                const awayScore = parseInt(away.score) || 0;
+
+                const prevScores = previousScores[eventId];
+                if (prevScores) {
+                    const homeDiff = homeScore - prevScores.home;
+                    const awayDiff = awayScore - prevScores.away;
+
+                    // Animate if scores changed
+                    if (homeDiff > 0) {
+                        const scoreEl = document.getElementById(`score-home-${index}`);
+                        if (scoreEl) {
+                            scoreEl.classList.remove('score-updated', 'touchdown-score');
+                            void scoreEl.offsetWidth; // Force reflow
+                            scoreEl.classList.add(homeDiff >= 6 ? 'touchdown-score' : 'score-updated');
+
+                            // Launch confetti for touchdowns
+                            if (homeDiff >= 6) {
+                                launchConfetti(150);
+                            }
+                        }
+                    }
+
+                    if (awayDiff > 0) {
+                        const scoreEl = document.getElementById(`score-away-${index}`);
+                        if (scoreEl) {
+                            scoreEl.classList.remove('score-updated', 'touchdown-score');
+                            void scoreEl.offsetWidth; // Force reflow
+                            scoreEl.classList.add(awayDiff >= 6 ? 'touchdown-score' : 'score-updated');
+
+                            // Launch confetti for touchdowns
+                            if (awayDiff >= 6) {
+                                launchConfetti(150);
+                            }
+                        }
+                    }
+                }
+
+                // Store current scores for next comparison
+                previousScores[eventId] = { home: homeScore, away: awayScore };
+            });
+        }
 
         // Theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -1382,6 +2526,44 @@
             'Los Angeles Rams': { lat: 33.9535, lon: -118.3392, dome: true, name: 'SoFi Stadium', capacity: 70240 },
             'San Francisco 49ers': { lat: 37.4033, lon: -121.9694, dome: false, name: "Levi's Stadium", capacity: 68500 },
             'Seattle Seahawks': { lat: 47.5952, lon: -122.3316, dome: false, name: 'Lumen Field', capacity: 68740 }
+        };
+
+        // YouTube API handled securely by backend server
+
+        // Team colors
+        const teamColors = {
+            'Arizona Cardinals': { primary: '#97233F', secondary: '#000000' },
+            'Atlanta Falcons': { primary: '#A71930', secondary: '#000000' },
+            'Baltimore Ravens': { primary: '#241773', secondary: '#9E7C0C' },
+            'Buffalo Bills': { primary: '#00338D', secondary: '#C60C30' },
+            'Carolina Panthers': { primary: '#0085CA', secondary: '#000000' },
+            'Chicago Bears': { primary: '#C83803', secondary: '#0B162A' },
+            'Cincinnati Bengals': { primary: '#FB4F14', secondary: '#000000' },
+            'Cleveland Browns': { primary: '#FF3C00', secondary: '#311D00' },
+            'Dallas Cowboys': { primary: '#003594', secondary: '#869397' },
+            'Denver Broncos': { primary: '#FB4F14', secondary: '#002244' },
+            'Detroit Lions': { primary: '#0076B6', secondary: '#B0B7BC' },
+            'Green Bay Packers': { primary: '#203731', secondary: '#FFB612' },
+            'Houston Texans': { primary: '#A71930', secondary: '#03202F' },
+            'Indianapolis Colts': { primary: '#002C5F', secondary: '#A2AAAD' },
+            'Jacksonville Jaguars': { primary: '#006778', secondary: '#D7A22A' },
+            'Kansas City Chiefs': { primary: '#E31837', secondary: '#FFB81C' },
+            'Las Vegas Raiders': { primary: '#A5ACAF', secondary: '#000000' },
+            'Los Angeles Chargers': { primary: '#0080C6', secondary: '#FFC20E' },
+            'Los Angeles Rams': { primary: '#003594', secondary: '#FFA300' },
+            'Miami Dolphins': { primary: '#008E97', secondary: '#FC4C02' },
+            'Minnesota Vikings': { primary: '#4F2683', secondary: '#FFC62F' },
+            'New England Patriots': { primary: '#C60C30', secondary: '#002244' },
+            'New Orleans Saints': { primary: '#D3BC8D', secondary: '#101820' },
+            'New York Giants': { primary: '#0B2265', secondary: '#A71930' },
+            'New York Jets': { primary: '#125740', secondary: '#000000' },
+            'Philadelphia Eagles': { primary: '#004C54', secondary: '#A5ACAF' },
+            'Pittsburgh Steelers': { primary: '#FFB612', secondary: '#101820' },
+            'San Francisco 49ers': { primary: '#AA0000', secondary: '#B3995D' },
+            'Seattle Seahawks': { primary: '#69BE28', secondary: '#002244' },
+            'Tampa Bay Buccaneers': { primary: '#D50A0A', secondary: '#FF7900' },
+            'Tennessee Titans': { primary: '#0C2340', secondary: '#4B92DB' },
+            'Washington Commanders': { primary: '#5A1414', secondary: '#FFB612' }
         };
 
         // Weather
@@ -1579,6 +2761,90 @@
             });
         }
 
+        // Smart date navigation - fetch game dates
+        async function fetchGameDates() {
+            if (gameDatesCache.length > 0) return gameDatesCache;
+
+            try {
+                // Get current NFL season dates (Sep-Feb range)
+                const now = new Date();
+                const year = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+                const startDate = `${year}0901`;
+                const endDate = `${year + 1}0215`;
+
+                const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${startDate}-${endDate}&limit=500`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.events) {
+                    const dates = new Set();
+                    data.events.forEach(event => {
+                        const eventDate = new Date(event.date);
+                        const dateStr = eventDate.toDateString();
+                        dates.add(dateStr);
+                    });
+                    gameDatesCache = Array.from(dates).map(d => new Date(d)).sort((a, b) => a - b);
+                }
+            } catch (e) {
+                console.error('Failed to fetch game dates:', e);
+            }
+            return gameDatesCache;
+        }
+
+        async function navigateToGameDay(direction) {
+            if (isNavigating) return;
+            isNavigating = true;
+
+            const navBtn = document.getElementById(direction > 0 ? 'next-day' : 'prev-day');
+            navBtn.innerHTML = '<span class="loading-dots">...</span>';
+
+            const gameDates = await fetchGameDates();
+
+            if (gameDates.length === 0) {
+                // Fallback to regular navigation if no cache
+                currentDate.setDate(currentDate.getDate() + direction);
+            } else {
+                const currentTime = currentDate.setHours(0, 0, 0, 0);
+
+                if (direction > 0) {
+                    // Find next game day
+                    const nextGame = gameDates.find(d => d.getTime() > currentTime);
+                    if (nextGame) {
+                        currentDate = new Date(nextGame);
+                    } else {
+                        // No more games, go to last game day
+                        currentDate = new Date(gameDates[gameDates.length - 1]);
+                    }
+                } else {
+                    // Find previous game day
+                    const prevGames = gameDates.filter(d => d.getTime() < currentTime);
+                    if (prevGames.length > 0) {
+                        currentDate = new Date(prevGames[prevGames.length - 1]);
+                    } else {
+                        // No previous games, go to first game day
+                        currentDate = new Date(gameDates[0]);
+                    }
+                }
+            }
+
+            navBtn.textContent = direction > 0 ? '▶' : '◀';
+            updateDateDisplay();
+
+            // Add slide animation
+            const container = document.getElementById('games-container');
+            container.classList.remove('slide-left', 'slide-right');
+            container.classList.add(direction > 0 ? 'slide-left' : 'slide-right');
+
+            await fetchScores();
+
+            // Clean up animation class after it completes
+            setTimeout(() => {
+                container.classList.remove('slide-left', 'slide-right');
+            }, 300);
+
+            isNavigating = false;
+        }
+
         // Main fetch
         async function fetchScores() {
             const container = document.getElementById('games-container');
@@ -1639,9 +2905,13 @@
                     const stadium = stadiums[home.team.displayName];
                     const odds = comp.odds?.[0];
 
+                    // Get team colors
+                    const homeColors = teamColors[home.team.displayName] || { primary: '#666', secondary: '#444' };
+                    const awayColors = teamColors[away.team.displayName] || { primary: '#666', secondary: '#444' };
+
                     // Build card HTML
                     let html = `
-                        <div class="game-card${isFavorite ? ' favorite-team' : ''}" data-event-id="${event.id}" data-index="${index}">
+                        <div class="game-card team-colored${isFavorite ? ' favorite-team' : ''}" style="--home-color: ${homeColors.primary}; --away-color: ${awayColors.primary};" data-event-id="${event.id}" data-index="${index}">
                             ${isFavorite ? '<span class="favorite-badge">Your Team</span>' : ''}
                             <div class="game-layout">
                                 <div class="teams-row">
@@ -1697,9 +2967,19 @@
                         html += `<div class="live-situation" id="situation-${index}"><div class="loading">Loading live data...</div></div>`;
                     }
 
-                    // Injuries button for upcoming
+                    // Upcoming game buttons
                     if (isUpcoming) {
                         html += `
+                            <button class="expand-btn" onclick="toggleTeamComparison(${index}, '${away.team.id}', '${home.team.id}', '${away.team.displayName}', '${home.team.displayName}', '${away.team.logo}', '${home.team.logo}')">
+                                <span>📈 Team Comparison</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="comparison-${index}"></div>
+                            <button class="expand-btn" onclick="toggleH2H(${index}, '${away.team.id}', '${home.team.id}', '${away.team.displayName}', '${home.team.displayName}', '${away.team.logo}', '${home.team.logo}')">
+                                <span>⚔️ Head to Head</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="h2h-${index}"></div>
                             <button class="expand-btn injuries-btn" onclick="toggleInjuries(${index}, '${away.team.id}', '${home.team.id}')">
                                 <span>🏥 View Injuries</span>
                                 <span class="arrow">▼</span>
@@ -1757,13 +3037,14 @@
                                 if (leader?.leaders?.[0]) {
                                     const l = leader.leaders[0];
                                     const type = statType.replace('Yards', '');
+                                    const teamForPlayer = l.team?.displayName || home.team.displayName;
                                     html += `
-                                        <div class="stat-card">
+                                        <div class="stat-card" onclick="showPlayerSpotlight('${l.athlete.id}', '${teamForPlayer.replace(/'/g, "\\'")}')" style="cursor: pointer;">
                                             <div class="stat-type">${type}</div>
                                             <div class="stat-player">
                                                 <img src="${l.athlete.headshot || ''}" class="stat-headshot" onerror="this.style.display='none'">
                                                 <div>
-                                                    <div class="stat-name">${l.athlete.shortName}</div>
+                                                    <div class="stat-name clickable-player">${l.athlete.shortName}</div>
                                                     <div class="stat-value">${l.displayValue}</div>
                                                 </div>
                                             </div>
@@ -1777,11 +3058,43 @@
                         html += '</div>';
                     }
 
+                    // Scoring plays timeline (for live and completed games)
+                    if (isLive || status.completed) {
+                        html += `
+                            <button class="expand-btn" onclick="toggleScoringPlays(${index}, '${event.id}')">
+                                <span>📊 Scoring Plays</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="scoring-${index}"></div>
+                            <button class="expand-btn" onclick="toggleDrives(${index}, '${event.id}')">
+                                <span>🚗 Drive Summary</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="drives-${index}"></div>
+                        `;
+                    }
+
+                    // Highlights for completed games
+                    if (status.completed) {
+                        const awayShort = (away.team.shortDisplayName || away.team.displayName).replace(/'/g, "\\'");
+                        const homeShort = (home.team.shortDisplayName || home.team.displayName).replace(/'/g, "\\'");
+                        html += `
+                            <button class="expand-btn" onclick="toggleHighlights(${index}, '${event.id}', '${awayShort}', '${homeShort}')">
+                                <span>🎬 Highlights</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="highlights-${index}"></div>
+                        `;
+                    }
+
                     html += '</div></div></div>';
                     return html;
                 }).join('');
 
                 container.innerHTML = gameCards;
+
+                // Check for score changes and animate
+                checkScoreChanges(events);
 
                 // Update live games status
                 hasLiveGames = events.some(e => e.status.type.state === 'in');
@@ -1847,11 +3160,27 @@
                     return;
                 }
 
-                let possTeam = '';
+                let possTeam = '', possTeamName = '';
+                let awayAbbr = 'AWAY', homeAbbr = 'HOME';
+                let awayTeamName = '', homeTeamName = '';
                 if (header?.competitions?.[0]) {
-                    const team = header.competitions[0].competitors.find(c => c.id === situation.possession);
-                    if (team) possTeam = team.team.abbreviation;
+                    const comp = header.competitions[0];
+                    const team = comp.competitors.find(c => c.id === situation.possession);
+                    if (team) {
+                        possTeam = team.team.abbreviation;
+                        possTeamName = team.team.displayName;
+                    }
+                    const awayTeam = comp.competitors.find(c => c.homeAway === 'away');
+                    const homeTeam = comp.competitors.find(c => c.homeAway === 'home');
+                    awayAbbr = awayTeam?.team.abbreviation || 'AWAY';
+                    homeAbbr = homeTeam?.team.abbreviation || 'HOME';
+                    awayTeamName = awayTeam?.team.displayName || '';
+                    homeTeamName = homeTeam?.team.displayName || '';
                 }
+
+                // Get team colors for field graphic
+                const homeColors = teamColors[homeTeamName] || { primary: '#333' };
+                const awayColors = teamColors[awayTeamName] || { primary: '#333' };
 
                 let html = `
                     <div class="situation-row">
@@ -1868,6 +3197,58 @@
                     html += `<div class="field-position">${situation.possessionText}</div>`;
                 }
 
+                // Add field position graphic
+                if (situation.yardLine !== undefined) {
+                    // Calculate ball position (0-100 where 0=away endzone, 100=home endzone)
+                    // yardLine is the yard line number (1-50)
+                    // We need homeTeamId to know which side of the field
+                    let ballPosition = 50; // Default to midfield
+
+                    if (situation.yardLine) {
+                        // If possession team is going towards home endzone, high yardLine means closer to home endzone
+                        const isPossessionHome = header?.competitions?.[0]?.competitors?.find(c => c.id === situation.possession)?.homeAway === 'home';
+
+                        if (situation.yardLine <= 50) {
+                            // On their own side or past midfield
+                            if (isPossessionHome) {
+                                // Home team on their own side: yardLine from home endzone
+                                ballPosition = 100 - (situation.yardLine * 0.82); // Scale to 9%-91% range
+                            } else {
+                                // Away team on their own side
+                                ballPosition = (situation.yardLine * 0.82) + 9;
+                            }
+                        } else {
+                            ballPosition = 50; // Midfield
+                        }
+                    }
+
+                    // Calculate first down marker position
+                    let firstDownPosition = ballPosition;
+                    if (situation.distance && situation.yardLine) {
+                        const distancePercent = (situation.distance / 100) * 82;
+                        const isPossessionHome = header?.competitions?.[0]?.competitors?.find(c => c.id === situation.possession)?.homeAway === 'home';
+                        firstDownPosition = isPossessionHome ? ballPosition - distancePercent : ballPosition + distancePercent;
+                    }
+
+                    // Generate yard line dividers
+                    let yardLines = '';
+                    for (let i = 0; i <= 10; i++) {
+                        const isMajor = i === 0 || i === 5 || i === 10;
+                        yardLines += `<div class="yard-line${isMajor ? ' major' : ''}"></div>`;
+                    }
+
+                    html += `
+                        <div class="field-graphic" style="--away-endzone: ${awayColors.primary}; --home-endzone: ${homeColors.primary};">
+                            <span class="endzone-label away">${awayAbbr}</span>
+                            <span class="endzone-label home">${homeAbbr}</span>
+                            <div class="field-lines">${yardLines}</div>
+                            <span class="field-50">50</span>
+                            ${situation.distance ? `<div class="first-down-marker" style="left: ${Math.max(9, Math.min(91, firstDownPosition))}%;"></div>` : ''}
+                            <div class="ball-marker" style="left: ${Math.max(9, Math.min(91, ballPosition))}%;"></div>
+                        </div>
+                    `;
+                }
+
                 if (situation.lastPlay?.text) {
                     html += `
                         <div class="last-play">
@@ -1882,13 +3263,6 @@
                     const latest = data.winprobability[data.winprobability.length - 1];
                     const homeProb = Math.round(latest.homeWinPercentage * 100);
                     const awayProb = 100 - homeProb;
-
-                    let awayAbbr = 'AWAY', homeAbbr = 'HOME';
-                    if (header?.competitions?.[0]) {
-                        const comp = header.competitions[0];
-                        awayAbbr = comp.competitors.find(c => c.homeAway === 'away')?.team.abbreviation || 'AWAY';
-                        homeAbbr = comp.competitors.find(c => c.homeAway === 'home')?.team.abbreviation || 'HOME';
-                    }
 
                     html += `
                         <div class="win-prob">
@@ -1922,6 +3296,697 @@
             const btn = content.previousElementSibling;
             content.classList.toggle('show');
             btn.classList.toggle('expanded');
+        }
+
+        // Scoring plays cache
+        const scoringPlaysCache = {};
+
+        async function toggleScoringPlays(index, eventId) {
+            const content = document.getElementById(`scoring-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
+
+            try {
+                let data = scoringPlaysCache[eventId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                    data = await response.json();
+                    scoringPlaysCache[eventId] = data;
+                }
+
+                const scoringPlays = data.scoringPlays || [];
+                const header = data.header;
+
+                if (scoringPlays.length === 0) {
+                    content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No scoring plays yet</div>';
+                } else {
+                    // Get team info
+                    const teams = {};
+                    if (header?.competitions?.[0]) {
+                        header.competitions[0].competitors.forEach(c => {
+                            teams[c.id] = {
+                                abbr: c.team.abbreviation,
+                                name: c.team.displayName,
+                                logo: c.team.logos?.[0]?.href || '',
+                                color: teamColors[c.team.displayName]?.primary || '#666'
+                            };
+                        });
+                    }
+
+                    const playsHtml = scoringPlays.map(play => {
+                        const team = teams[play.team?.id] || { abbr: '?', logo: '', color: '#666' };
+                        const quarter = play.period?.number <= 4 ? `Q${play.period.number}` : 'OT';
+
+                        return `
+                            <div class="scoring-play" style="--team-color: ${team.color}">
+                                <span class="scoring-quarter">${quarter}</span>
+                                <img src="${team.logo}" class="scoring-team-logo" alt="${team.abbr}">
+                                <div class="scoring-info">
+                                    <div class="scoring-type">${play.type?.text || play.scoringType?.displayName || 'Score'}</div>
+                                    <div class="scoring-desc">${play.text || ''}</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div class="scoring-score">${play.awayScore}-${play.homeScore}</div>
+                                    <div class="scoring-time">${play.clock?.displayValue || ''}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    content.innerHTML = `<div class="scoring-timeline">${playsHtml}</div>`;
+                }
+
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            } catch (e) {
+                console.error('Scoring plays error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load scoring plays</div>';
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            }
+
+            btn.querySelector('span:first-child').textContent = '📊 Scoring Plays';
+        }
+
+        // Drive summaries
+        async function toggleDrives(index, eventId) {
+            const content = document.getElementById(`drives-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
+
+            try {
+                let data = scoringPlaysCache[eventId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                    data = await response.json();
+                    scoringPlaysCache[eventId] = data;
+                }
+
+                const drives = data.drives?.previous || [];
+                const header = data.header;
+
+                if (drives.length === 0) {
+                    content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No drive data available</div>';
+                } else {
+                    // Get team info
+                    const teams = {};
+                    if (header?.competitions?.[0]) {
+                        header.competitions[0].competitors.forEach(c => {
+                            teams[c.id] = {
+                                abbr: c.team.abbreviation,
+                                name: c.team.displayName,
+                                logo: c.team.logos?.[0]?.href || '',
+                                color: teamColors[c.team.displayName]?.primary || '#666'
+                            };
+                        });
+                    }
+
+                    // Filter to show only scoring drives or last 10 drives
+                    const scoringDrives = drives.filter(d => d.isScore);
+                    const displayDrives = scoringDrives.length > 0 ? scoringDrives : drives.slice(-10);
+
+                    const drivesHtml = displayDrives.map(drive => {
+                        const team = teams[drive.team?.id] || { abbr: '?', logo: '', color: '#666' };
+                        const result = drive.displayResult || drive.result || 'Unknown';
+                        const isScoring = drive.isScore;
+
+                        let resultClass = '';
+                        if (result.toLowerCase().includes('touchdown')) resultClass = 'touchdown';
+                        else if (result.toLowerCase().includes('field goal')) resultClass = 'field-goal';
+                        else if (result.toLowerCase().includes('interception') || result.toLowerCase().includes('fumble')) resultClass = 'turnover';
+
+                        return `
+                            <div class="drive-item${isScoring ? ' scoring-drive' : ''}" style="--team-color: ${team.color}">
+                                <img src="${team.logo}" class="drive-team-logo" alt="${team.abbr}">
+                                <div class="drive-info">
+                                    <div class="drive-result ${resultClass}">${result}</div>
+                                    <div class="drive-details">
+                                        <span class="drive-stat">📍 ${drive.yards || 0} yds</span>
+                                        <span class="drive-stat">🏃 ${drive.offensivePlays || 0} plays</span>
+                                        <span class="drive-stat">⏱️ ${drive.timeElapsed?.displayValue || '-'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    const headerText = scoringDrives.length > 0 ? 'Scoring Drives' : 'Recent Drives';
+                    content.innerHTML = `
+                        <div class="drives-container">
+                            <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:10px;">${headerText}</div>
+                            ${drivesHtml}
+                        </div>
+                    `;
+                }
+
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            } catch (e) {
+                console.error('Drives error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load drives</div>';
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            }
+
+            btn.querySelector('span:first-child').textContent = '🚗 Drive Summary';
+        }
+
+        // Team comparison stats
+        const teamStatsCache = {};
+
+        async function toggleTeamComparison(index, awayId, homeId, awayName, homeName, awayLogo, homeLogo) {
+            const content = document.getElementById(`comparison-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
+
+            try {
+                // Fetch stats for both teams
+                const fetchTeamStats = async (teamId) => {
+                    if (teamStatsCache[teamId]) return teamStatsCache[teamId];
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${teamId}/statistics`);
+                    const data = await response.json();
+                    teamStatsCache[teamId] = data;
+                    return data;
+                };
+
+                const [awayStats, homeStats] = await Promise.all([
+                    fetchTeamStats(awayId),
+                    fetchTeamStats(homeId)
+                ]);
+
+                const getStat = (data, category, name) => {
+                    const cats = data.results?.stats?.categories || [];
+                    const cat = cats.find(c => c.name === category);
+                    const stat = cat?.stats?.find(s => s.name === name);
+                    return stat ? parseFloat(stat.value) : 0;
+                };
+
+                const awayColor = teamColors[awayName]?.primary || '#666';
+                const homeColor = teamColors[homeName]?.primary || '#666';
+
+                // Get takeaways (interceptions + fumbles recovered)
+                const awayTakeaways = getStat(awayStats, 'defensiveInterceptions', 'interceptions') + getStat(awayStats, 'general', 'fumblesRecovered');
+                const homeTakeaways = getStat(homeStats, 'defensiveInterceptions', 'interceptions') + getStat(homeStats, 'general', 'fumblesRecovered');
+
+                // Get turnovers (interceptions thrown + fumbles lost)
+                const awayTurnovers = getStat(awayStats, 'passing', 'interceptions') + getStat(awayStats, 'general', 'fumblesLost') || getStat(awayStats, 'rushing', 'rushingFumblesLost');
+                const homeTurnovers = getStat(homeStats, 'passing', 'interceptions') + getStat(homeStats, 'general', 'fumblesLost') || getStat(homeStats, 'rushing', 'rushingFumblesLost');
+
+                const stats = [
+                    { label: 'Points/Game', away: getStat(awayStats, 'scoring', 'totalPointsPerGame'), home: getStat(homeStats, 'scoring', 'totalPointsPerGame'), higherBetter: true, format: 1 },
+                    { label: 'Pass Yds/Game', away: getStat(awayStats, 'passing', 'netPassingYardsPerGame'), home: getStat(homeStats, 'passing', 'netPassingYardsPerGame'), higherBetter: true, format: 1 },
+                    { label: 'Rush Yds/Game', away: getStat(awayStats, 'rushing', 'rushingYardsPerGame'), home: getStat(homeStats, 'rushing', 'rushingYardsPerGame'), higherBetter: true, format: 1 },
+                    { label: '3rd Down %', away: getStat(awayStats, 'miscellaneous', 'thirdDownConvPct'), home: getStat(homeStats, 'miscellaneous', 'thirdDownConvPct'), higherBetter: true, format: 1, suffix: '%' },
+                    { label: 'Red Zone %', away: getStat(awayStats, 'miscellaneous', 'redzoneScoringPct'), home: getStat(homeStats, 'miscellaneous', 'redzoneScoringPct'), higherBetter: true, format: 1, suffix: '%' },
+                    { label: 'Sacks (Def)', away: getStat(awayStats, 'defensive', 'sacks'), home: getStat(homeStats, 'defensive', 'sacks'), higherBetter: true, format: 0 },
+                    { label: 'Takeaways', away: awayTakeaways, home: homeTakeaways, higherBetter: true, format: 0 },
+                    { label: 'Turnovers', away: awayTurnovers, home: homeTurnovers, higherBetter: false, format: 0 },
+                ];
+
+                const statsHtml = stats.map(stat => {
+                    // Calculate percentage relative to max within this stat
+                    const maxVal = Math.max(stat.away, stat.home) || 1;
+                    const awayPct = (stat.away / maxVal) * 100;
+                    const homePct = (stat.home / maxVal) * 100;
+                    const awayBetter = stat.higherBetter ? stat.away > stat.home : stat.away < stat.home;
+                    const homeBetter = !awayBetter && stat.away !== stat.home;
+                    const suffix = stat.suffix || '';
+
+                    return `
+                        <div class="stat-comparison">
+                            <div class="stat-label">${stat.label}</div>
+                            <div class="stat-bars" style="--away-color: ${awayColor}; --home-color: ${homeColor};">
+                                <span class="stat-value away ${awayBetter ? 'better' : ''}">${stat.away.toFixed(stat.format)}${suffix}</span>
+                                <div class="stat-bar-container left">
+                                    <div class="stat-bar away" style="width: ${awayPct}%;"></div>
+                                </div>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar home" style="width: ${homePct}%;"></div>
+                                </div>
+                                <span class="stat-value home ${homeBetter ? 'better' : ''}">${stat.home.toFixed(stat.format)}${suffix}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                content.innerHTML = `
+                    <div class="team-comparison" style="--away-color: ${awayColor}; --home-color: ${homeColor};">
+                        <div class="comparison-header">
+                            <div class="comparison-team">
+                                <img src="${awayLogo}" alt="">
+                                <span>${awayName.split(' ').pop()}</span>
+                            </div>
+                            <span class="comparison-vs">VS</span>
+                            <div class="comparison-team">
+                                <span>${homeName.split(' ').pop()}</span>
+                                <img src="${homeLogo}" alt="">
+                            </div>
+                        </div>
+                        ${statsHtml}
+                    </div>
+                `;
+
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            } catch (e) {
+                console.error('Team comparison error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load team stats</div>';
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            }
+
+            btn.querySelector('span:first-child').textContent = '📈 Team Comparison';
+        }
+
+        // Share functionality
+        async function shareGame(awayName, homeName, awayScore, homeScore, status) {
+            const scoreText = awayScore && homeScore ? `${awayScore} - ${homeScore}` : 'vs';
+            const statusText = status || 'Upcoming';
+            const shareText = `${awayName} ${scoreText} ${homeName} | ${statusText}`;
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'NFL Score',
+                        text: shareText,
+                        url: shareUrl
+                    });
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        fallbackShare(shareText);
+                    }
+                }
+            } else {
+                fallbackShare(shareText);
+            }
+        }
+
+        function fallbackShare(text) {
+            // Try to copy to clipboard
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showShareToast('Copied to clipboard!');
+                }).catch(() => {
+                    openTwitterShare(text);
+                });
+            } else {
+                openTwitterShare(text);
+            }
+        }
+
+        function openTwitterShare(text) {
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(twitterUrl, '_blank', 'width=550,height=420');
+        }
+
+        function showShareToast(message) {
+            const toast = document.getElementById('share-toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Head to head history
+        const h2hCache = {};
+
+        async function toggleH2H(index, awayId, homeId, awayName, homeName, awayLogo, homeLogo) {
+            const content = document.getElementById(`h2h-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
+
+            try {
+                const cacheKey = `${awayId}-${homeId}`;
+                let matchups = h2hCache[cacheKey];
+
+                if (!matchups) {
+                    // Fetch recent schedule for away team and filter for matchups against home team
+                    // IDs from the API are strings, so convert to strings for comparison
+                    const awayIdStr = String(awayId);
+                    const homeIdStr = String(homeId);
+
+                    const now = new Date();
+                    // NFL season year: Sept-Dec = current year, Jan-Feb = previous year
+                    const month = now.getMonth(); // 0-indexed
+                    const nflSeason = month >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+
+                    const parseScore = (scoreVal) => {
+                        if (typeof scoreVal === 'object' && scoreVal?.value !== undefined) {
+                            return parseInt(scoreVal.value) || 0;
+                        }
+                        return parseInt(scoreVal) || 0;
+                    };
+
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}`);
+                    const data = await response.json();
+
+                    matchups = [];
+                    if (data.events) {
+                        data.events.forEach(event => {
+                            const comp = event.competitions?.[0];
+                            const eventDate = new Date(event.date);
+                            // Check if game is in the past (completed)
+                            if (!comp || eventDate > now) return;
+
+                            // Check if the opponent is the home team we're looking for
+                            const hasAwayTeam = comp.competitors?.some(c => String(c.team?.id) === awayIdStr);
+                            const hasHomeTeam = comp.competitors?.some(c => String(c.team?.id) === homeIdStr);
+
+                            if (hasAwayTeam && hasHomeTeam) {
+                                const team1 = comp.competitors.find(c => String(c.team?.id) === awayIdStr);
+                                const team2 = comp.competitors.find(c => String(c.team?.id) === homeIdStr);
+                                const score1 = parseScore(team1?.score);
+                                const score2 = parseScore(team2?.score);
+
+                                matchups.push({
+                                    date: eventDate,
+                                    awayScore: score1,
+                                    homeScore: score2,
+                                    awayWon: score1 > score2
+                                });
+                            }
+                        });
+                    }
+
+                    // Only show current season (2024) matchups
+
+                    matchups.sort((a, b) => b.date - a.date);
+                    matchups = matchups.slice(0, 5);
+                    h2hCache[cacheKey] = matchups;
+                }
+
+                const awayColor = teamColors[awayName]?.primary || '#666';
+                const homeColor = teamColors[homeName]?.primary || '#666';
+
+                // Calculate season label
+                const now = new Date();
+                const month = now.getMonth();
+                const seasonYear = month >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+                const seasonLabel = `${seasonYear}-${String(seasonYear + 1).slice(-2)} Season`;
+
+                if (matchups.length === 0) {
+                    content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No matchups this season yet</div>';
+                } else {
+                    const awayWins = matchups.filter(m => m.awayWon).length;
+                    const homeWins = matchups.length - awayWins;
+
+                    const gamesHtml = matchups.map(m => {
+                        const dateStr = m.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        const winnerColor = m.awayWon ? awayColor : homeColor;
+
+                        return `
+                            <div class="h2h-game" style="--winner-color: ${winnerColor}">
+                                <span class="h2h-date">${dateStr}</span>
+                                <span class="h2h-matchup">
+                                    <span class="${m.awayWon ? 'h2h-winner' : 'h2h-loser'}">${awayName.split(' ').pop()}</span>
+                                    <span style="color:var(--text-muted);"> @ </span>
+                                    <span class="${!m.awayWon ? 'h2h-winner' : 'h2h-loser'}">${homeName.split(' ').pop()}</span>
+                                </span>
+                                <span class="h2h-score">${m.awayScore} - ${m.homeScore}</span>
+                            </div>
+                        `;
+                    }).join('');
+
+                    content.innerHTML = `
+                        <div class="h2h-container">
+                            <div class="h2h-summary">
+                                <div class="h2h-team-record">
+                                    <img src="${awayLogo}" alt="">
+                                    <div class="h2h-wins" style="color: ${awayColor}">${awayWins}</div>
+                                    <div class="h2h-label">Wins</div>
+                                </div>
+                                <span class="h2h-vs">${seasonLabel}</span>
+                                <div class="h2h-team-record">
+                                    <img src="${homeLogo}" alt="">
+                                    <div class="h2h-wins" style="color: ${homeColor}">${homeWins}</div>
+                                    <div class="h2h-label">Wins</div>
+                                </div>
+                            </div>
+                            ${gamesHtml}
+                        </div>
+                    `;
+                }
+
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            } catch (e) {
+                console.error('H2H error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load history</div>';
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            }
+
+            btn.querySelector('span:first-child').textContent = '⚔️ Head to Head';
+        }
+
+        // Player spotlight
+        const playerCache = {};
+
+        async function showPlayerSpotlight(playerId, teamName) {
+            const modal = document.getElementById('player-modal');
+            const content = document.getElementById('player-modal-content');
+
+            modal.classList.add('show');
+            content.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-muted);">Loading player stats...</div>';
+
+            try {
+                let data = playerCache[playerId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${playerId}`);
+                    data = await response.json();
+                    playerCache[playerId] = data;
+                }
+
+                const athlete = data.athlete;
+                const teamColor = teamColors[teamName]?.primary || '#333';
+
+                // Get stats - they're directly in statsSummary.statistics array
+                const seasonStats = athlete.statsSummary?.statistics || [];
+                const getStat = (name) => seasonStats.find(s => s.name === name);
+
+                // Build stats display based on position
+                const position = athlete.position?.abbreviation || '';
+                let statsHtml = '';
+
+                if (['QB'].includes(position)) {
+                    const passYds = getStat('passingYards')?.displayValue || '0';
+                    const passTD = getStat('passingTouchdowns')?.displayValue || '0';
+                    const passInt = getStat('interceptions')?.displayValue || '0';
+                    const qbr = getStat('adjQBR')?.displayValue || getStat('QBRating')?.displayValue || '0';
+
+                    statsHtml = `
+                        <div class="player-stat-box"><div class="player-stat-value">${passYds}</div><div class="player-stat-label">Pass Yds</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${passTD}</div><div class="player-stat-label">Pass TD</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${passInt}</div><div class="player-stat-label">INT</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${qbr}</div><div class="player-stat-label">QBR</div></div>
+                    `;
+                } else if (['RB', 'FB'].includes(position)) {
+                    const rushYds = getStat('rushingYards')?.displayValue || '0';
+                    const rushTD = getStat('rushingTouchdowns')?.displayValue || '0';
+                    const ypc = getStat('yardsPerRushAttempt')?.displayValue || '0';
+                    const recYds = getStat('receivingYards')?.displayValue || '0';
+
+                    statsHtml = `
+                        <div class="player-stat-box"><div class="player-stat-value">${rushYds}</div><div class="player-stat-label">Rush Yds</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${rushTD}</div><div class="player-stat-label">Rush TD</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${ypc}</div><div class="player-stat-label">YPC</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${recYds}</div><div class="player-stat-label">Rec Yds</div></div>
+                    `;
+                } else if (['WR', 'TE'].includes(position)) {
+                    const recYds = getStat('receivingYards')?.displayValue || '0';
+                    const recTD = getStat('receivingTouchdowns')?.displayValue || '0';
+                    const receptions = getStat('receptions')?.displayValue || '0';
+                    const ypr = getStat('yardsPerReception')?.displayValue || '0';
+
+                    statsHtml = `
+                        <div class="player-stat-box"><div class="player-stat-value">${recYds}</div><div class="player-stat-label">Rec Yds</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${recTD}</div><div class="player-stat-label">Rec TD</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${receptions}</div><div class="player-stat-label">Rec</div></div>
+                        <div class="player-stat-box"><div class="player-stat-value">${ypr}</div><div class="player-stat-label">YPR</div></div>
+                    `;
+                } else {
+                    // Defensive player or show all available stats
+                    statsHtml = seasonStats.slice(0, 4).map(stat => `
+                        <div class="player-stat-box">
+                            <div class="player-stat-value">${stat.displayValue || '0'}</div>
+                            <div class="player-stat-label">${stat.shortDisplayName || stat.name}</div>
+                        </div>
+                    `).join('');
+
+                    if (statsHtml === '') {
+                        statsHtml = '<div class="player-stat-box" style="grid-column: span 3;"><div class="player-stat-label">No stats available</div></div>';
+                    }
+                }
+
+                const headshot = athlete.headshot?.href || '';
+                const teamLogo = athlete.team?.logos?.[0]?.href || '';
+
+                content.innerHTML = `
+                    <div class="player-header" style="--team-color: ${teamColor}">
+                        <img src="${headshot}" class="player-headshot" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23333%22/></svg>'">
+                        <div class="player-info">
+                            <h3>${athlete.displayName}</h3>
+                            <div class="player-meta">#${athlete.jersey || '?'} • ${position} • ${athlete.displayHeight || ''} ${athlete.displayWeight || ''}</div>
+                            <div class="player-team-badge">
+                                <img src="${teamLogo}" alt="">
+                                <span>${athlete.team?.displayName || teamName}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="player-stats-grid">
+                        ${statsHtml}
+                    </div>
+                `;
+            } catch (e) {
+                console.error('Player spotlight error:', e);
+                content.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--accent-danger);">Failed to load player stats</div>';
+            }
+        }
+
+        function closePlayerModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('player-modal').classList.remove('show');
+        }
+
+        // Game highlights with YouTube fallback
+        async function toggleHighlights(index, eventId, awayTeam, homeTeam) {
+            const content = document.getElementById(`highlights-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
+
+            try {
+                let data = scoringPlaysCache[eventId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                    data = await response.json();
+                    scoringPlaysCache[eventId] = data;
+                }
+
+                const videos = data.videos || [];
+
+                if (videos.length === 0) {
+                    // No ESPN videos - try YouTube if API key is set
+                    if (YOUTUBE_API_KEY) {
+                        await loadYouTubeHighlights(content, awayTeam, homeTeam);
+                    } else {
+                        content.innerHTML = `
+                            <div style="text-align:center;color:var(--text-muted);padding:15px;">
+                                No ESPN highlights available.<br>
+                                <small style="opacity:0.7;">Add YouTube API key to enable video search.</small>
+                            </div>`;
+                    }
+                } else {
+                    const formatDuration = (seconds) => {
+                        const mins = Math.floor(seconds / 60);
+                        const secs = seconds % 60;
+                        return `${mins}:${secs.toString().padStart(2, '0')}`;
+                    };
+
+                    const highlightsHtml = videos.slice(0, 6).map(video => {
+                        const thumbnail = video.thumbnail || video.posterImages?.default?.href || '';
+                        const title = video.headline || video.title || 'Highlight';
+                        const duration = video.duration || 0;
+                        const link = video.links?.web?.href || video.links?.mobile?.href || '#';
+
+                        return `
+                            <a href="${link}" target="_blank" class="highlight-card">
+                                <img src="${thumbnail}" class="highlight-thumbnail" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 160 90%22><rect fill=%22%23333%22 width=%22160%22 height=%2290%22/><text x=%2280%22 y=%2250%22 fill=%22%23666%22 text-anchor=%22middle%22>No Preview</text></svg>'">
+                                <div class="highlight-play-btn">▶</div>
+                                ${duration ? `<span class="highlight-duration">${formatDuration(duration)}</span>` : ''}
+                                <div class="highlight-title">${title}</div>
+                            </a>
+                        `;
+                    }).join('');
+
+                    content.innerHTML = `<div class="highlights-grid">${highlightsHtml}</div>`;
+                }
+
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            } catch (e) {
+                console.error('Highlights error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load highlights</div>';
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            }
+
+            btn.querySelector('span:first-child').textContent = '🎬 Highlights';
+        }
+
+        // YouTube search via secure backend server
+        async function loadYouTubeHighlights(container, awayTeam, homeTeam) {
+            try {
+                // Call our backend server (API key is hidden on server)
+                const url = `/api/youtube/search?awayTeam=${encodeURIComponent(awayTeam)}&homeTeam=${encodeURIComponent(homeTeam)}`;
+
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('YouTube API error');
+                }
+
+                const data = await response.json();
+                const videos = data.items || [];
+
+                if (videos.length === 0) {
+                    container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No highlights found</div>';
+                    return;
+                }
+
+                // Show single official NFL game highlights video
+                const video = videos[0];
+                container.innerHTML = `
+                    <a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank" class="yt-single-video">
+                        <div class="yt-single-thumb">
+                            <img src="${video.snippet.thumbnails.high.url}" alt="">
+                            <div class="yt-play-icon-lg">▶</div>
+                        </div>
+                        <div class="yt-single-info">
+                            <div class="yt-single-title">${video.snippet.title}</div>
+                            <div class="yt-single-channel">NFL · Watch on YouTube</div>
+                        </div>
+                    </a>
+                `;
+            } catch (e) {
+                console.error('YouTube error:', e);
+                container.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load YouTube highlights</div>';
+            }
         }
 
         // Injuries
@@ -2054,13 +4119,18 @@
                 const diff = getStat('pointDifferential')?.value || 0;
                 const clincher = getStat('clincher')?.displayValue || '';
                 const streak = getStat('streak')?.displayValue || '-';
+                const playoffSeed = getStat('playoffSeed')?.value || 0;
 
                 const record = ties > 0 ? `${wins}-${losses}-${ties}` : `${wins}-${losses}`;
 
                 let dotClass = '';
-                if (['x', 'y', 'z'].includes(clincher)) dotClass = 'clinched';
-                else if (clincher === 'e') dotClass = 'eliminated';
-                else if (i === 0) dotClass = 'wildcard';
+                let playoffLabel = '';
+                // Only #1 seed gets a first-round bye in current NFL format
+                if (clincher === 'z' && playoffSeed === 1) { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-div">DIV + BYE</span>'; }
+                else if (clincher === 'z' || clincher === 'y') { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-div">DIV</span>'; }
+                else if (clincher === 'x') { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-playoff">PLAYOFF</span>'; }
+                else if (clincher === 'e') { dotClass = 'eliminated'; playoffLabel = '<span class="playoff-indicator eliminated">OUT</span>'; }
+                else if (i === 0) { dotClass = 'wildcard'; playoffLabel = '<span class="playoff-indicator in-hunt">LEADER</span>'; }
 
                 const diffClass = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : '';
 
@@ -2071,6 +4141,7 @@
                                 ${dotClass ? `<span class="playoff-dot ${dotClass}"></span>` : ''}
                                 <img src="${team.logos?.[0]?.href || ''}" class="standings-logo">
                                 <span class="standings-name">${team.abbreviation}</span>
+                                ${playoffLabel}
                             </div>
                         </td>
                         <td>${record}</td>
@@ -2107,15 +4178,11 @@
 
         // Navigation
         document.getElementById('prev-day').addEventListener('click', () => {
-            currentDate.setDate(currentDate.getDate() - 1);
-            updateDateDisplay();
-            fetchScores();
+            navigateToGameDay(-1);
         });
 
         document.getElementById('next-day').addEventListener('click', () => {
-            currentDate.setDate(currentDate.getDate() + 1);
-            updateDateDisplay();
-            fetchScores();
+            navigateToGameDay(1);
         });
 
         // Swipe gestures
@@ -2134,13 +4201,7 @@
         function handleSwipe() {
             const diff = touchStartX - touchEndX;
             if (Math.abs(diff) > 80) {
-                if (diff > 0) {
-                    currentDate.setDate(currentDate.getDate() + 1);
-                } else {
-                    currentDate.setDate(currentDate.getDate() - 1);
-                }
-                updateDateDisplay();
-                fetchScores();
+                navigateToGameDay(diff > 0 ? 1 : -1);
             }
         }
 

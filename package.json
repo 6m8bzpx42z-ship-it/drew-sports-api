@@ -4,6 +4,7 @@
   "description": "this is a readme",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,9 @@
   },
   "homepage": "https://github.com/6m8bzpx42z-ship-it/drew-sports-api#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "playwright": "^1.57.0",
     "serve": "^14.2.5"
   }
