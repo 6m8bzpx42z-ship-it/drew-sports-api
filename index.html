@@ -3748,16 +3748,8 @@
                 const videos = data.videos || [];
 
                 if (videos.length === 0) {
-                    // No ESPN videos - try YouTube if API key is set
-                    if (YOUTUBE_API_KEY) {
-                        await loadYouTubeHighlights(content, awayTeam, homeTeam);
-                    } else {
-                        content.innerHTML = `
-                            <div style="text-align:center;color:var(--text-muted);padding:15px;">
-                                No ESPN highlights available.<br>
-                                <small style="opacity:0.7;">Add YouTube API key to enable video search.</small>
-                            </div>`;
-                    }
+                    // No ESPN videos - use YouTube via backend API
+                    await loadYouTubeHighlights(content, awayTeam, homeTeam);
                 } else {
                     const formatDuration = (seconds) => {
                         const mins = Math.floor(seconds / 60);
