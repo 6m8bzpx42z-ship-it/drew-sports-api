@@ -3963,10 +3963,10 @@
 
                 let dotClass = '';
                 let playoffLabel = '';
-                // Only #1 seed gets a first-round bye in current NFL format
+                // Clincher codes: z = division winner, y = playoff berth, x = playoff berth, e = eliminated
                 if (clincher === 'z' && playoffSeed === 1) { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-div">DIV + BYE</span>'; }
-                else if (clincher === 'z' || clincher === 'y') { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-div">DIV</span>'; }
-                else if (clincher === 'x') { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-playoff">PLAYOFF</span>'; }
+                else if (clincher === 'z') { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-div">DIV</span>'; }
+                else if (clincher === 'y' || clincher === 'x') { dotClass = 'clinched'; playoffLabel = '<span class="playoff-indicator clinched-playoff">PLAYOFF</span>'; }
                 else if (clincher === 'e') { dotClass = 'eliminated'; playoffLabel = '<span class="playoff-indicator eliminated">OUT</span>'; }
                 else if (i === 0) { dotClass = 'wildcard'; playoffLabel = '<span class="playoff-indicator in-hunt">LEADER</span>'; }
 
