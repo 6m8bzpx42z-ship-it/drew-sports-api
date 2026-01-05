@@ -664,6 +664,264 @@
             color: var(--accent-success);
         }
 
+        /* Box Score Styles */
+        .boxscore-container {
+            margin-top: 15px;
+        }
+
+        .boxscore-team-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .boxscore-team-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        [data-theme="light"] .boxscore-team-tab {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .boxscore-team-tab.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--team-color, var(--accent-secondary));
+            color: var(--text-primary);
+        }
+
+        [data-theme="light"] .boxscore-team-tab.active {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .boxscore-team-tab img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .boxscore-team-content {
+            display: none;
+        }
+
+        .boxscore-team-content.active {
+            display: block;
+        }
+
+        .boxscore-category {
+            margin-bottom: 12px;
+        }
+
+        .boxscore-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        [data-theme="light"] .boxscore-category-header {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .boxscore-category-header:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        [data-theme="light"] .boxscore-category-header:hover {
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .boxscore-category-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .boxscore-category-arrow {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+
+        .boxscore-category.expanded .boxscore-category-arrow {
+            transform: rotate(180deg);
+        }
+
+        .boxscore-players {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 0 0 8px 8px;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .boxscore-players {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .boxscore-player-row {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        [data-theme="light"] .boxscore-player-row {
+            border-bottom-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .boxscore-player-row:last-child {
+            border-bottom: none;
+        }
+
+        .boxscore-player-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] .boxscore-player-row:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .boxscore-player-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .boxscore-player-headshot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg-primary);
+            flex-shrink: 0;
+        }
+
+        .boxscore-player-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .boxscore-player-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .boxscore-player-position {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        .boxscore-player-compact-stats {
+            display: flex;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .boxscore-compact-stat {
+            text-align: center;
+        }
+
+        .boxscore-compact-stat-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-success);
+        }
+
+        .boxscore-compact-stat-label {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .boxscore-player-expand-icon {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+            margin-left: 8px;
+        }
+
+        .boxscore-player-row.expanded .boxscore-player-expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .boxscore-player-details {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] .boxscore-player-details {
+            border-top-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .boxscore-player-row.expanded .boxscore-player-details {
+            display: block;
+        }
+
+        .boxscore-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .boxscore-detail-stat {
+            text-align: center;
+            padding: 6px 4px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+
+        [data-theme="light"] .boxscore-detail-stat {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .boxscore-detail-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .boxscore-detail-label {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .boxscore-loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+        }
+
+        .boxscore-no-stats {
+            text-align: center;
+            padding: 15px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
         /* Live game situation */
         .live-situation {
             background: rgba(252, 129, 129, 0.1);
@@ -2107,6 +2365,28 @@
             .stat-player {
                 flex-direction: row;
             }
+
+            .boxscore-detail-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .boxscore-player-compact-stats {
+                gap: 8px;
+            }
+
+            .boxscore-compact-stat-value {
+                font-size: 0.75rem;
+            }
+
+            .boxscore-team-tab {
+                font-size: 0.75rem;
+                padding: 8px 10px;
+            }
+
+            .boxscore-team-tab img {
+                width: 20px;
+                height: 20px;
+            }
         }
 
         /* Refresh indicator */
@@ -2970,31 +3250,10 @@
                             `;
                         }
 
-                        // Player leaders
-                        if (leaders.length > 0) {
-                            html += '<div class="stats-grid">';
-                            ['passingYards', 'rushingYards', 'receivingYards'].forEach(statType => {
-                                const leader = leaders.find(l => l.name === statType);
-                                if (leader?.leaders?.[0]) {
-                                    const l = leader.leaders[0];
-                                    const type = statType.replace('Yards', '');
-                                    const teamForPlayer = l.team?.displayName || home.team.displayName;
-                                    html += `
-                                        <div class="stat-card" onclick="showPlayerSpotlight('${l.athlete.id}', '${teamForPlayer.replace(/'/g, "\\'")}')" style="cursor: pointer;">
-                                            <div class="stat-type">${type}</div>
-                                            <div class="stat-player">
-                                                <img src="${l.athlete.headshot || ''}" class="stat-headshot" onerror="this.style.display='none'">
-                                                <div>
-                                                    <div class="stat-name clickable-player">${l.athlete.shortName}</div>
-                                                    <div class="stat-value">${l.displayValue}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
-                                }
-                            });
-                            html += '</div>';
-                        }
+                        // Full box score container (loaded async)
+                        html += `<div id="boxscore-${index}" class="boxscore-container">
+                            <div class="boxscore-loading">Loading full box score...</div>
+                        </div>`;
 
                         html += '</div>';
                     }
@@ -3067,6 +3326,19 @@
                         weatherEl.innerHTML = `<span class="icon">${weather.icon}</span><span class="value">${weather.temp}°F • ${weather.desc}</span>`;
                     } else {
                         weatherEl.innerHTML = '<span class="icon">🌡️</span><span class="value">N/A</span>';
+                    }
+                });
+
+                // Fetch box scores for completed/live games
+                events.forEach((event, index) => {
+                    const status = event.status.type;
+                    const isLive = status.state === 'in';
+                    const isCompleted = status.completed;
+                    if (isLive || isCompleted) {
+                        const comp = event.competitions[0];
+                        const away = comp.competitors.find(c => c.homeAway === 'away');
+                        const home = comp.competitors.find(c => c.homeAway === 'home');
+                        fetchBoxScore(event.id, index, away, home);
                     }
                 });
 
@@ -3825,6 +4097,369 @@
                 console.error('YouTube error:', e);
                 container.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load YouTube highlights</div>';
             }
+        }
+
+        // Box Score - Full player stats
+        const boxScoreCache = {};
+
+        // Stat category configurations with compact and detailed stats
+        const statCategories = {
+            passing: {
+                name: 'Passing',
+                compactStats: ['C/ATT', 'YDS', 'TD'],
+                detailStats: ['C/ATT', 'YDS', 'TD', 'INT', 'QBR', 'SACKS', 'RTG'],
+                parseCompact: (stats, keys) => {
+                    const cmp = stats[keys.indexOf('completions')] || '0';
+                    const att = stats[keys.indexOf('passingAttempts')] || '0';
+                    return [
+                        { value: `${cmp}/${att}`, label: 'C/ATT' },
+                        { value: stats[keys.indexOf('passingYards')] || '0', label: 'YDS' },
+                        { value: stats[keys.indexOf('passingTouchdowns')] || '0', label: 'TD' }
+                    ];
+                },
+                parseDetail: (stats, keys) => [
+                    { value: `${stats[keys.indexOf('completions')] || '0'}/${stats[keys.indexOf('passingAttempts')] || '0'}`, label: 'C/ATT' },
+                    { value: stats[keys.indexOf('passingYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('passingTouchdowns')] || '0', label: 'TD' },
+                    { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
+                    { value: stats[keys.indexOf('adjQBR')] || stats[keys.indexOf('QBRating')] || '-', label: 'QBR' },
+                    { value: stats[keys.indexOf('sacks')] || '0', label: 'SACKS' },
+                    { value: stats[keys.indexOf('ESPNQBRating')] || stats[keys.indexOf('passerRating')] || '-', label: 'RTG' }
+                ]
+            },
+            rushing: {
+                name: 'Rushing',
+                compactStats: ['CAR', 'YDS', 'TD'],
+                detailStats: ['CAR', 'YDS', 'TD', 'AVG', 'LONG', 'FUM'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('rushingAttempts')] || '0', label: 'CAR' },
+                    { value: stats[keys.indexOf('rushingYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('rushingTouchdowns')] || '0', label: 'TD' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('rushingAttempts')] || '0', label: 'CAR' },
+                    { value: stats[keys.indexOf('rushingYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('rushingTouchdowns')] || '0', label: 'TD' },
+                    { value: stats[keys.indexOf('yardsPerRushAttempt')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('longRushing')] || '-', label: 'LONG' },
+                    { value: stats[keys.indexOf('fumbles')] || '0', label: 'FUM' }
+                ]
+            },
+            receiving: {
+                name: 'Receiving',
+                compactStats: ['REC', 'YDS', 'TD'],
+                detailStats: ['REC', 'TGT', 'YDS', 'TD', 'AVG', 'LONG'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('receptions')] || '0', label: 'REC' },
+                    { value: stats[keys.indexOf('receivingYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('receivingTouchdowns')] || '0', label: 'TD' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('receptions')] || '0', label: 'REC' },
+                    { value: stats[keys.indexOf('receivingTargets')] || '-', label: 'TGT' },
+                    { value: stats[keys.indexOf('receivingYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('receivingTouchdowns')] || '0', label: 'TD' },
+                    { value: stats[keys.indexOf('yardsPerReception')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('longReception')] || '-', label: 'LONG' }
+                ]
+            },
+            defensive: {
+                name: 'Defense',
+                compactStats: ['TCKL', 'SACK', 'INT'],
+                detailStats: ['SOLO', 'AST', 'TOT', 'SACK', 'TFL', 'INT', 'PD', 'FF'],
+                parseCompact: (stats, keys) => {
+                    const solo = parseInt(stats[keys.indexOf('soloTackles')] || '0');
+                    const ast = parseInt(stats[keys.indexOf('assistedTackles')] || '0');
+                    return [
+                        { value: String(solo + ast), label: 'TCKL' },
+                        { value: stats[keys.indexOf('sacks')] || '0', label: 'SACK' },
+                        { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' }
+                    ];
+                },
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('soloTackles')] || '0', label: 'SOLO' },
+                    { value: stats[keys.indexOf('assistedTackles')] || '0', label: 'AST' },
+                    { value: stats[keys.indexOf('totalTackles')] || '0', label: 'TOT' },
+                    { value: stats[keys.indexOf('sacks')] || '0', label: 'SACK' },
+                    { value: stats[keys.indexOf('tacklesForLoss')] || '0', label: 'TFL' },
+                    { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
+                    { value: stats[keys.indexOf('passesDefended')] || '0', label: 'PD' },
+                    { value: stats[keys.indexOf('forcedFumbles')] || '0', label: 'FF' }
+                ]
+            },
+            kicking: {
+                name: 'Kicking',
+                compactStats: ['FG', 'XP', 'PTS'],
+                detailStats: ['FGM', 'FGA', 'FG%', 'XPM', 'XPA', 'LONG', 'PTS'],
+                parseCompact: (stats, keys) => {
+                    const fgm = stats[keys.indexOf('fieldGoalsMade')] || '0';
+                    const fga = stats[keys.indexOf('fieldGoalAttempts')] || '0';
+                    const xpm = stats[keys.indexOf('extraPointsMade')] || '0';
+                    const xpa = stats[keys.indexOf('extraPointAttempts')] || '0';
+                    const pts = parseInt(fgm) * 3 + parseInt(xpm);
+                    return [
+                        { value: `${fgm}/${fga}`, label: 'FG' },
+                        { value: `${xpm}/${xpa}`, label: 'XP' },
+                        { value: String(pts), label: 'PTS' }
+                    ];
+                },
+                parseDetail: (stats, keys) => {
+                    const fgm = stats[keys.indexOf('fieldGoalsMade')] || '0';
+                    const fga = stats[keys.indexOf('fieldGoalAttempts')] || '0';
+                    const xpm = stats[keys.indexOf('extraPointsMade')] || '0';
+                    const xpa = stats[keys.indexOf('extraPointAttempts')] || '0';
+                    const pct = parseInt(fga) > 0 ? Math.round((parseInt(fgm) / parseInt(fga)) * 100) : 0;
+                    const pts = parseInt(fgm) * 3 + parseInt(xpm);
+                    return [
+                        { value: fgm, label: 'FGM' },
+                        { value: fga, label: 'FGA' },
+                        { value: `${pct}%`, label: 'FG%' },
+                        { value: xpm, label: 'XPM' },
+                        { value: xpa, label: 'XPA' },
+                        { value: stats[keys.indexOf('longFieldGoalMade')] || '-', label: 'LONG' },
+                        { value: String(pts), label: 'PTS' }
+                    ];
+                }
+            },
+            punting: {
+                name: 'Punting',
+                compactStats: ['PUNTS', 'AVG', 'IN20'],
+                detailStats: ['PUNTS', 'YDS', 'AVG', 'LONG', 'IN20', 'TB'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('punts')] || '0', label: 'PUNTS' },
+                    { value: stats[keys.indexOf('yardsPerPunt')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('puntsInside20')] || '0', label: 'IN20' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('punts')] || '0', label: 'PUNTS' },
+                    { value: stats[keys.indexOf('puntYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('yardsPerPunt')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('longPunt')] || '-', label: 'LONG' },
+                    { value: stats[keys.indexOf('puntsInside20')] || '0', label: 'IN20' },
+                    { value: stats[keys.indexOf('touchbacks')] || '0', label: 'TB' }
+                ]
+            },
+            kickReturns: {
+                name: 'Kick Returns',
+                compactStats: ['RET', 'YDS', 'AVG'],
+                detailStats: ['RET', 'YDS', 'AVG', 'LONG', 'TD'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('kickReturns')] || '0', label: 'RET' },
+                    { value: stats[keys.indexOf('kickReturnYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('yardsPerKickReturn')] || '-', label: 'AVG' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('kickReturns')] || '0', label: 'RET' },
+                    { value: stats[keys.indexOf('kickReturnYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('yardsPerKickReturn')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('longKickReturn')] || '-', label: 'LONG' },
+                    { value: stats[keys.indexOf('kickReturnTouchdowns')] || '0', label: 'TD' }
+                ]
+            },
+            puntReturns: {
+                name: 'Punt Returns',
+                compactStats: ['RET', 'YDS', 'AVG'],
+                detailStats: ['RET', 'YDS', 'AVG', 'LONG', 'TD', 'FC'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('puntReturns')] || '0', label: 'RET' },
+                    { value: stats[keys.indexOf('puntReturnYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('yardsPerPuntReturn')] || '-', label: 'AVG' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('puntReturns')] || '0', label: 'RET' },
+                    { value: stats[keys.indexOf('puntReturnYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('yardsPerPuntReturn')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('longPuntReturn')] || '-', label: 'LONG' },
+                    { value: stats[keys.indexOf('puntReturnTouchdowns')] || '0', label: 'TD' },
+                    { value: stats[keys.indexOf('fairCatches')] || '0', label: 'FC' }
+                ]
+            }
+        };
+
+        async function fetchBoxScore(eventId, index, awayTeam, homeTeam) {
+            const container = document.getElementById(`boxscore-${index}`);
+            if (!container) return;
+
+            try {
+                let data = boxScoreCache[eventId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                    data = await response.json();
+                    boxScoreCache[eventId] = data;
+                }
+
+                const boxscore = data.boxscore;
+                if (!boxscore?.players || boxscore.players.length === 0) {
+                    container.innerHTML = '<div class="boxscore-no-stats">No player stats available</div>';
+                    return;
+                }
+
+                // Get team colors
+                const awayColor = teamColors[awayTeam.team.displayName]?.primary || '#666';
+                const homeColor = teamColors[homeTeam.team.displayName]?.primary || '#666';
+
+                // Build HTML for team tabs
+                let html = `
+                    <div class="boxscore-team-tabs">
+                        <button class="boxscore-team-tab active" style="--team-color: ${awayColor}" onclick="switchBoxScoreTeam(${index}, 'away')">
+                            <img src="${awayTeam.team.logo}" alt="">
+                            <span>${awayTeam.team.abbreviation}</span>
+                        </button>
+                        <button class="boxscore-team-tab" style="--team-color: ${homeColor}" onclick="switchBoxScoreTeam(${index}, 'home')">
+                            <img src="${homeTeam.team.logo}" alt="">
+                            <span>${homeTeam.team.abbreviation}</span>
+                        </button>
+                    </div>
+                `;
+
+                // Render box score for each team
+                boxscore.players.forEach((teamData, teamIdx) => {
+                    const isAway = teamIdx === 0;
+                    const team = isAway ? awayTeam : homeTeam;
+                    const teamName = team.team.displayName;
+
+                    html += `<div class="boxscore-team-content ${isAway ? 'active' : ''}" id="boxscore-${index}-${isAway ? 'away' : 'home'}">`;
+
+                    // Map category names to our config keys
+                    const categoryMapping = {
+                        'passing': 'passing',
+                        'rushing': 'rushing',
+                        'receiving': 'receiving',
+                        'defensive': 'defensive',
+                        'kicking': 'kicking',
+                        'punting': 'punting',
+                        'kickReturns': 'kickReturns',
+                        'puntReturns': 'puntReturns'
+                    };
+
+                    // Process each stat category
+                    teamData.statistics.forEach(statGroup => {
+                        const categoryKey = categoryMapping[statGroup.name];
+                        const categoryConfig = statCategories[categoryKey];
+                        if (!categoryConfig) return;
+
+                        // Filter out players with no meaningful stats
+                        const players = (statGroup.athletes || []).filter(athlete => {
+                            if (!athlete.stats || athlete.stats.length === 0) return false;
+                            // Check if there are any non-zero stats
+                            return athlete.stats.some(s => s !== '0' && s !== '-' && s !== '0.0');
+                        });
+
+                        if (players.length === 0) return;
+
+                        const keys = statGroup.keys || [];
+
+                        html += `
+                            <div class="boxscore-category expanded" data-category="${categoryKey}">
+                                <div class="boxscore-category-header" onclick="toggleBoxScoreCategory(this)">
+                                    <span class="boxscore-category-title">${categoryConfig.name}</span>
+                                    <span class="boxscore-category-arrow">▼</span>
+                                </div>
+                                <div class="boxscore-players">
+                        `;
+
+                        players.forEach((athlete, playerIdx) => {
+                            const playerId = athlete.athlete?.id || '';
+                            const playerName = athlete.athlete?.shortName || athlete.athlete?.displayName || 'Unknown';
+                            const position = athlete.athlete?.position?.abbreviation || '';
+                            const headshot = athlete.athlete?.headshot || '';
+                            const stats = athlete.stats || [];
+
+                            const compactStats = categoryConfig.parseCompact(stats, keys);
+                            const detailStats = categoryConfig.parseDetail(stats, keys);
+
+                            const compactHtml = compactStats.map(s => `
+                                <div class="boxscore-compact-stat">
+                                    <div class="boxscore-compact-stat-value">${s.value}</div>
+                                    <div class="boxscore-compact-stat-label">${s.label}</div>
+                                </div>
+                            `).join('');
+
+                            const detailHtml = detailStats.map(s => `
+                                <div class="boxscore-detail-stat">
+                                    <div class="boxscore-detail-value">${s.value}</div>
+                                    <div class="boxscore-detail-label">${s.label}</div>
+                                </div>
+                            `).join('');
+
+                            html += `
+                                <div class="boxscore-player-row" onclick="toggleBoxScorePlayer(this, event, '${playerId}', '${teamName.replace(/'/g, "\\'")}')">
+                                    <div class="boxscore-player-main">
+                                        <img src="${headshot}" class="boxscore-player-headshot" alt="" onerror="this.style.display='none'">
+                                        <div class="boxscore-player-info">
+                                            <div class="boxscore-player-name">${playerName}</div>
+                                            <div class="boxscore-player-position">${position}</div>
+                                        </div>
+                                        <div class="boxscore-player-compact-stats">
+                                            ${compactHtml}
+                                        </div>
+                                        <span class="boxscore-player-expand-icon">▼</span>
+                                    </div>
+                                    <div class="boxscore-player-details">
+                                        <div class="boxscore-detail-grid">
+                                            ${detailHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        html += '</div></div>';
+                    });
+
+                    html += '</div>';
+                });
+
+                container.innerHTML = html;
+
+            } catch (e) {
+                console.error('Box score error:', e);
+                container.innerHTML = '<div class="boxscore-no-stats">Failed to load player stats</div>';
+            }
+        }
+
+        function switchBoxScoreTeam(index, team) {
+            const container = document.getElementById(`boxscore-${index}`);
+            if (!container) return;
+
+            // Update tab buttons
+            container.querySelectorAll('.boxscore-team-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // Update content
+            container.querySelectorAll('.boxscore-team-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            const targetContent = document.getElementById(`boxscore-${index}-${team}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+
+        function toggleBoxScoreCategory(header) {
+            const category = header.closest('.boxscore-category');
+            category.classList.toggle('expanded');
+            const players = category.querySelector('.boxscore-players');
+            if (category.classList.contains('expanded')) {
+                players.style.display = 'block';
+            } else {
+                players.style.display = 'none';
+            }
+        }
+
+        function toggleBoxScorePlayer(row, event, playerId, teamName) {
+            // Prevent toggling when clicking on expandable details
+            if (event.target.closest('.boxscore-player-details')) return;
+
+            row.classList.toggle('expanded');
+
+            // Double-tap to open player spotlight
+            if (row.dataset.lastTap && Date.now() - row.dataset.lastTap < 300 && playerId) {
+                showPlayerSpotlight(playerId, teamName);
+            }
+            row.dataset.lastTap = Date.now();
         }
 
         // Injuries
