@@ -3273,12 +3273,26 @@
                     if (status.completed) {
                         const awayShort = (away.team.shortDisplayName || away.team.displayName).replace(/'/g, "\\'");
                         const homeShort = (home.team.shortDisplayName || home.team.displayName).replace(/'/g, "\\'");
+                        const gameDate = event.date ? event.date.split('T')[0] : '';
                         html += `
-                            <button class="expand-btn" onclick="toggleHighlights(${index}, '${event.id}', '${awayShort}', '${homeShort}')">
+                            <button class="expand-btn" onclick="toggleHighlights(${index}, '${event.id}', '${awayShort}', '${homeShort}', '${gameDate}')">
                                 <span>🎬 Highlights</span>
                                 <span class="arrow">▼</span>
                             </button>
                             <div class="expandable-content" id="highlights-${index}"></div>
+                        `;
+                    }
+
+                    // Preview for upcoming games
+                    if (!status.completed && !isLive) {
+                        const awayShort = (away.team.shortDisplayName || away.team.displayName).replace(/'/g, "\\'");
+                        const homeShort = (home.team.shortDisplayName || home.team.displayName).replace(/'/g, "\\'");
+                        html += `
+                            <button class="expand-btn" onclick="togglePreview(${index}, '${awayShort}', '${homeShort}')">
+                                <span>🎥 Game Preview</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="preview-${index}"></div>
                         `;
                     }
 
@@ -3997,7 +4011,7 @@
         }
 
         // Game highlights - YouTube first, ESPN fallback for recently ended games
-        async function toggleHighlights(index, eventId, awayTeam, homeTeam) {
+        async function toggleHighlights(index, eventId, awayTeam, homeTeam, gameDate) {
             const content = document.getElementById(`highlights-${index}`);
             const btn = content.previousElementSibling;
 
@@ -4011,7 +4025,7 @@
 
             try {
                 // Try YouTube first (official NFL highlights)
-                const hasYouTube = await loadYouTubeHighlights(content, awayTeam, homeTeam);
+                const hasYouTube = await loadYouTubeHighlights(content, awayTeam, homeTeam, gameDate, 'highlights');
 
                 // If no YouTube video yet (game just ended), fall back to ESPN
                 if (!hasYouTube) {
@@ -4027,25 +4041,54 @@
             btn.querySelector('span:first-child').textContent = '🎬 Highlights';
         }
 
-        // YouTube search via secure backend server - returns true if video found
-        async function loadYouTubeHighlights(container, awayTeam, homeTeam) {
+        // Game preview for upcoming games
+        async function togglePreview(index, awayTeam, homeTeam) {
+            const content = document.getElementById(`preview-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = '⏳ Loading...';
+
             try {
-                const url = `/api/youtube/search?awayTeam=${encodeURIComponent(awayTeam)}&homeTeam=${encodeURIComponent(homeTeam)}`;
+                const hasPreview = await loadYouTubeHighlights(content, awayTeam, homeTeam, '', 'preview');
+                if (!hasPreview) {
+                    content.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No preview available</div>';
+                }
+            } catch (e) {
+                console.error('Preview error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load preview</div>';
+            }
+
+            content.classList.add('show');
+            btn.classList.add('expanded');
+            btn.querySelector('span:first-child').textContent = '🎥 Game Preview';
+        }
+
+        // YouTube search via secure backend server - returns true if video found
+        async function loadYouTubeHighlights(container, awayTeam, homeTeam, gameDate, type) {
+            try {
+                const url = `/api/youtube/search?awayTeam=${encodeURIComponent(awayTeam)}&homeTeam=${encodeURIComponent(homeTeam)}&gameDate=${encodeURIComponent(gameDate || '')}&type=${encodeURIComponent(type || 'highlights')}`;
                 const response = await fetch(url);
 
                 if (!response.ok) {
-                    return false; // Fall back to ESPN
+                    return false;
                 }
 
                 const data = await response.json();
                 const videos = data.items || [];
 
                 if (videos.length === 0) {
-                    return false; // No YouTube video yet, fall back to ESPN
+                    return false;
                 }
 
-                // Show single official NFL game highlights video
+                // Show single video
                 const video = videos[0];
+                const label = type === 'preview' ? 'NFL · Game Preview' : 'NFL · Watch on YouTube';
                 container.innerHTML = `
                     <a href="https://www.youtube.com/watch?v=${video.id.videoId}" target="_blank" class="yt-single-video">
                         <div class="yt-single-thumb">
@@ -4054,14 +4097,14 @@
                         </div>
                         <div class="yt-single-info">
                             <div class="yt-single-title">${video.snippet.title}</div>
-                            <div class="yt-single-channel">NFL · Watch on YouTube</div>
+                            <div class="yt-single-channel">${label}</div>
                         </div>
                     </a>
                 `;
                 return true;
             } catch (e) {
                 console.error('YouTube error:', e);
-                return false; // Fall back to ESPN
+                return false;
             }
         }
 
