@@ -33,17 +33,20 @@ export default async function handler(req, res) {
         const response = await fetch(url);
         const data = await response.json();
 
-        // Filter results to only include videos that mention BOTH teams in the title
+        // Filter results to only include HIGHLIGHT videos that mention BOTH teams
         const awayLower = awayTeam.toLowerCase();
         const homeLower = homeTeam.toLowerCase();
 
         if (data.items && data.items.length > 0) {
             const matchingVideos = data.items.filter(item => {
                 const title = item.snippet.title.toLowerCase();
-                return title.includes(awayLower) && title.includes(homeLower);
+                // Must have both team names AND be a highlights video (not preview)
+                const hasBothTeams = title.includes(awayLower) && title.includes(homeLower);
+                const isHighlights = title.includes('highlight');
+                return hasBothTeams && isHighlights;
             });
 
-            // Return only matching videos, or empty if none match
+            // Return only matching highlight videos, or empty if none match
             data.items = matchingVideos.length > 0 ? [matchingVideos[0]] : [];
         }
 
