@@ -24,13 +24,28 @@ export default async function handler(req, res) {
     }
 
     try {
-        const searchQuery = `${awayTeam} vs ${homeTeam} "Game Highlights"`;
+        // Use exact team names in quotes for more precise matching
+        const searchQuery = `"${awayTeam}" "${homeTeam}" "Game Highlights"`;
         const nflChannelId = 'UCDVYQ4Zhbm3S2dlz7P1GBDg';
 
-        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=1&order=date&channelId=${nflChannelId}&key=${apiKey}`;
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=5&order=date&channelId=${nflChannelId}&key=${apiKey}`;
 
         const response = await fetch(url);
         const data = await response.json();
+
+        // Filter results to only include videos that mention BOTH teams in the title
+        const awayLower = awayTeam.toLowerCase();
+        const homeLower = homeTeam.toLowerCase();
+
+        if (data.items && data.items.length > 0) {
+            const matchingVideos = data.items.filter(item => {
+                const title = item.snippet.title.toLowerCase();
+                return title.includes(awayLower) && title.includes(homeLower);
+            });
+
+            // Return only matching videos, or empty if none match
+            data.items = matchingVideos.length > 0 ? [matchingVideos[0]] : [];
+        }
 
         res.status(200).json(data);
     } catch (error) {
