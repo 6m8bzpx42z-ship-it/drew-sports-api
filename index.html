@@ -3996,7 +3996,7 @@
             document.getElementById('player-modal').classList.remove('show');
         }
 
-        // Game highlights with YouTube fallback
+        // Game highlights via YouTube API
         async function toggleHighlights(index, eventId, awayTeam, homeTeam) {
             const content = document.getElementById(`highlights-${index}`);
             const btn = content.previousElementSibling;
@@ -4009,54 +4009,11 @@
 
             btn.querySelector('span:first-child').textContent = '⏳ Loading...';
 
-            try {
-                let data = scoringPlaysCache[eventId];
-                if (!data) {
-                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
-                    data = await response.json();
-                    scoringPlaysCache[eventId] = data;
-                }
+            // Always use YouTube via backend API for highlights
+            await loadYouTubeHighlights(content, awayTeam, homeTeam);
 
-                const videos = data.videos || [];
-
-                if (videos.length === 0) {
-                    // No ESPN videos - use YouTube via backend API
-                    await loadYouTubeHighlights(content, awayTeam, homeTeam);
-                } else {
-                    const formatDuration = (seconds) => {
-                        const mins = Math.floor(seconds / 60);
-                        const secs = seconds % 60;
-                        return `${mins}:${secs.toString().padStart(2, '0')}`;
-                    };
-
-                    const highlightsHtml = videos.slice(0, 6).map(video => {
-                        const thumbnail = video.thumbnail || video.posterImages?.default?.href || '';
-                        const title = video.headline || video.title || 'Highlight';
-                        const duration = video.duration || 0;
-                        const link = video.links?.web?.href || video.links?.mobile?.href || '#';
-
-                        return `
-                            <a href="${link}" target="_blank" class="highlight-card">
-                                <img src="${thumbnail}" class="highlight-thumbnail" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 160 90%22><rect fill=%22%23333%22 width=%22160%22 height=%2290%22/><text x=%2280%22 y=%2250%22 fill=%22%23666%22 text-anchor=%22middle%22>No Preview</text></svg>'">
-                                <div class="highlight-play-btn">▶</div>
-                                ${duration ? `<span class="highlight-duration">${formatDuration(duration)}</span>` : ''}
-                                <div class="highlight-title">${title}</div>
-                            </a>
-                        `;
-                    }).join('');
-
-                    content.innerHTML = `<div class="highlights-grid">${highlightsHtml}</div>`;
-                }
-
-                content.classList.add('show');
-                btn.classList.add('expanded');
-            } catch (e) {
-                console.error('Highlights error:', e);
-                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load highlights</div>';
-                content.classList.add('show');
-                btn.classList.add('expanded');
-            }
-
+            content.classList.add('show');
+            btn.classList.add('expanded');
             btn.querySelector('span:first-child').textContent = '🎬 Highlights';
         }
 
