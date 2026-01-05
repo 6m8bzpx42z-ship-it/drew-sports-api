@@ -3996,7 +3996,7 @@
             document.getElementById('player-modal').classList.remove('show');
         }
 
-        // Game highlights via YouTube API
+        // Game highlights - YouTube first, ESPN fallback for recently ended games
         async function toggleHighlights(index, eventId, awayTeam, homeTeam) {
             const content = document.getElementById(`highlights-${index}`);
             const btn = content.previousElementSibling;
@@ -4009,31 +4009,39 @@
 
             btn.querySelector('span:first-child').textContent = '⏳ Loading...';
 
-            // Always use YouTube via backend API for highlights
-            await loadYouTubeHighlights(content, awayTeam, homeTeam);
+            try {
+                // Try YouTube first (official NFL highlights)
+                const hasYouTube = await loadYouTubeHighlights(content, awayTeam, homeTeam);
+
+                // If no YouTube video yet (game just ended), fall back to ESPN
+                if (!hasYouTube) {
+                    await loadESPNHighlights(content, eventId);
+                }
+            } catch (e) {
+                console.error('Highlights error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load highlights</div>';
+            }
 
             content.classList.add('show');
             btn.classList.add('expanded');
             btn.querySelector('span:first-child').textContent = '🎬 Highlights';
         }
 
-        // YouTube search via secure backend server
+        // YouTube search via secure backend server - returns true if video found
         async function loadYouTubeHighlights(container, awayTeam, homeTeam) {
             try {
-                // Call our backend server (API key is hidden on server)
                 const url = `/api/youtube/search?awayTeam=${encodeURIComponent(awayTeam)}&homeTeam=${encodeURIComponent(homeTeam)}`;
-
                 const response = await fetch(url);
+
                 if (!response.ok) {
-                    throw new Error('YouTube API error');
+                    return false; // Fall back to ESPN
                 }
 
                 const data = await response.json();
                 const videos = data.items || [];
 
                 if (videos.length === 0) {
-                    container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">No highlights found</div>';
-                    return;
+                    return false; // No YouTube video yet, fall back to ESPN
                 }
 
                 // Show single official NFL game highlights video
@@ -4050,9 +4058,56 @@
                         </div>
                     </a>
                 `;
+                return true;
             } catch (e) {
                 console.error('YouTube error:', e);
-                container.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load YouTube highlights</div>';
+                return false; // Fall back to ESPN
+            }
+        }
+
+        // ESPN highlights fallback for recently ended games
+        async function loadESPNHighlights(container, eventId) {
+            try {
+                let data = scoringPlaysCache[eventId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                    data = await response.json();
+                    scoringPlaysCache[eventId] = data;
+                }
+
+                const videos = data.videos || [];
+
+                if (videos.length === 0) {
+                    container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">Highlights not yet available</div>';
+                    return;
+                }
+
+                const formatDuration = (seconds) => {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    return `${mins}:${secs.toString().padStart(2, '0')}`;
+                };
+
+                const highlightsHtml = videos.slice(0, 6).map(video => {
+                    const thumbnail = video.thumbnail || video.posterImages?.default?.href || '';
+                    const title = video.headline || video.title || 'Highlight';
+                    const duration = video.duration || 0;
+                    const link = video.links?.web?.href || video.links?.mobile?.href || '#';
+
+                    return `
+                        <a href="${link}" target="_blank" class="highlight-card">
+                            <img src="${thumbnail}" class="highlight-thumbnail" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 160 90%22><rect fill=%22%23333%22 width=%22160%22 height=%2290%22/><text x=%2280%22 y=%2250%22 fill=%22%23666%22 text-anchor=%22middle%22>No Preview</text></svg>'">
+                            <div class="highlight-play-btn">▶</div>
+                            ${duration ? `<span class="highlight-duration">${formatDuration(duration)}</span>` : ''}
+                            <div class="highlight-title">${title}</div>
+                        </a>
+                    `;
+                }).join('');
+
+                container.innerHTML = `<div class="highlights-grid">${highlightsHtml}</div>`;
+            } catch (e) {
+                console.error('ESPN highlights error:', e);
+                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:15px;">Highlights not yet available</div>';
             }
         }
 
