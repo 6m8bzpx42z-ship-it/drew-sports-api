@@ -4109,28 +4109,33 @@
                 compactStats: ['C/ATT', 'YDS', 'TD'],
                 detailStats: ['C/ATT', 'YDS', 'TD', 'INT', 'QBR', 'SACKS', 'RTG'],
                 parseCompact: (stats, keys) => {
-                    const cmp = stats[keys.indexOf('completions')] || '0';
-                    const att = stats[keys.indexOf('passingAttempts')] || '0';
+                    // ESPN uses combined key 'completions/passingAttempts'
+                    const cmpAtt = stats[keys.indexOf('completions/passingAttempts')] || '0/0';
                     return [
-                        { value: `${cmp}/${att}`, label: 'C/ATT' },
+                        { value: cmpAtt, label: 'C/ATT' },
                         { value: stats[keys.indexOf('passingYards')] || '0', label: 'YDS' },
                         { value: stats[keys.indexOf('passingTouchdowns')] || '0', label: 'TD' }
                     ];
                 },
-                parseDetail: (stats, keys) => [
-                    { value: `${stats[keys.indexOf('completions')] || '0'}/${stats[keys.indexOf('passingAttempts')] || '0'}`, label: 'C/ATT' },
-                    { value: stats[keys.indexOf('passingYards')] || '0', label: 'YDS' },
-                    { value: stats[keys.indexOf('passingTouchdowns')] || '0', label: 'TD' },
-                    { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
-                    { value: stats[keys.indexOf('adjQBR')] || stats[keys.indexOf('QBRating')] || '-', label: 'QBR' },
-                    { value: stats[keys.indexOf('sacks')] || '0', label: 'SACKS' },
-                    { value: stats[keys.indexOf('ESPNQBRating')] || stats[keys.indexOf('passerRating')] || '-', label: 'RTG' }
-                ]
+                parseDetail: (stats, keys) => {
+                    const cmpAtt = stats[keys.indexOf('completions/passingAttempts')] || '0/0';
+                    const sacks = stats[keys.indexOf('sacks-sackYardsLost')] || '0';
+                    const sacksNum = sacks.split('-')[0] || '0';
+                    return [
+                        { value: cmpAtt, label: 'C/ATT' },
+                        { value: stats[keys.indexOf('passingYards')] || '0', label: 'YDS' },
+                        { value: stats[keys.indexOf('passingTouchdowns')] || '0', label: 'TD' },
+                        { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
+                        { value: stats[keys.indexOf('adjQBR')] || stats[keys.indexOf('QBRating')] || '-', label: 'QBR' },
+                        { value: sacksNum, label: 'SACKS' },
+                        { value: stats[keys.indexOf('QBRating')] || '-', label: 'RTG' }
+                    ];
+                }
             },
             rushing: {
                 name: 'Rushing',
                 compactStats: ['CAR', 'YDS', 'TD'],
-                detailStats: ['CAR', 'YDS', 'TD', 'AVG', 'LONG', 'FUM'],
+                detailStats: ['CAR', 'YDS', 'TD', 'AVG', 'LONG'],
                 parseCompact: (stats, keys) => [
                     { value: stats[keys.indexOf('rushingAttempts')] || '0', label: 'CAR' },
                     { value: stats[keys.indexOf('rushingYards')] || '0', label: 'YDS' },
@@ -4141,8 +4146,22 @@
                     { value: stats[keys.indexOf('rushingYards')] || '0', label: 'YDS' },
                     { value: stats[keys.indexOf('rushingTouchdowns')] || '0', label: 'TD' },
                     { value: stats[keys.indexOf('yardsPerRushAttempt')] || '-', label: 'AVG' },
-                    { value: stats[keys.indexOf('longRushing')] || '-', label: 'LONG' },
-                    { value: stats[keys.indexOf('fumbles')] || '0', label: 'FUM' }
+                    { value: stats[keys.indexOf('longRushing')] || '-', label: 'LONG' }
+                ]
+            },
+            fumbles: {
+                name: 'Fumbles',
+                compactStats: ['FUM', 'LOST', 'REC'],
+                detailStats: ['FUM', 'LOST', 'REC'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('fumbles')] || '0', label: 'FUM' },
+                    { value: stats[keys.indexOf('fumblesLost')] || '0', label: 'LOST' },
+                    { value: stats[keys.indexOf('fumblesRecovered')] || '0', label: 'REC' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('fumbles')] || '0', label: 'FUM' },
+                    { value: stats[keys.indexOf('fumblesLost')] || '0', label: 'LOST' },
+                    { value: stats[keys.indexOf('fumblesRecovered')] || '0', label: 'REC' }
                 ]
             },
             receiving: {
@@ -4165,59 +4184,64 @@
             },
             defensive: {
                 name: 'Defense',
-                compactStats: ['TCKL', 'SACK', 'INT'],
-                detailStats: ['SOLO', 'AST', 'TOT', 'SACK', 'TFL', 'INT', 'PD', 'FF'],
-                parseCompact: (stats, keys) => {
-                    const solo = parseInt(stats[keys.indexOf('soloTackles')] || '0');
-                    const ast = parseInt(stats[keys.indexOf('assistedTackles')] || '0');
-                    return [
-                        { value: String(solo + ast), label: 'TCKL' },
-                        { value: stats[keys.indexOf('sacks')] || '0', label: 'SACK' },
-                        { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' }
-                    ];
-                },
+                compactStats: ['TCKL', 'SACK', 'TFL'],
+                detailStats: ['TOT', 'SOLO', 'SACK', 'TFL', 'QBH', 'PD', 'TD'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('totalTackles')] || '0', label: 'TCKL' },
+                    { value: stats[keys.indexOf('sacks')] || '0', label: 'SACK' },
+                    { value: stats[keys.indexOf('tacklesForLoss')] || '0', label: 'TFL' }
+                ],
                 parseDetail: (stats, keys) => [
-                    { value: stats[keys.indexOf('soloTackles')] || '0', label: 'SOLO' },
-                    { value: stats[keys.indexOf('assistedTackles')] || '0', label: 'AST' },
                     { value: stats[keys.indexOf('totalTackles')] || '0', label: 'TOT' },
+                    { value: stats[keys.indexOf('soloTackles')] || '0', label: 'SOLO' },
                     { value: stats[keys.indexOf('sacks')] || '0', label: 'SACK' },
                     { value: stats[keys.indexOf('tacklesForLoss')] || '0', label: 'TFL' },
-                    { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
+                    { value: stats[keys.indexOf('QBHits')] || '0', label: 'QBH' },
                     { value: stats[keys.indexOf('passesDefended')] || '0', label: 'PD' },
-                    { value: stats[keys.indexOf('forcedFumbles')] || '0', label: 'FF' }
+                    { value: stats[keys.indexOf('defensiveTouchdowns')] || '0', label: 'TD' }
+                ]
+            },
+            interceptions: {
+                name: 'Interceptions',
+                compactStats: ['INT', 'YDS', 'TD'],
+                detailStats: ['INT', 'YDS', 'TD'],
+                parseCompact: (stats, keys) => [
+                    { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
+                    { value: stats[keys.indexOf('interceptionYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('interceptionTouchdowns')] || '0', label: 'TD' }
+                ],
+                parseDetail: (stats, keys) => [
+                    { value: stats[keys.indexOf('interceptions')] || '0', label: 'INT' },
+                    { value: stats[keys.indexOf('interceptionYards')] || '0', label: 'YDS' },
+                    { value: stats[keys.indexOf('interceptionTouchdowns')] || '0', label: 'TD' }
                 ]
             },
             kicking: {
                 name: 'Kicking',
                 compactStats: ['FG', 'XP', 'PTS'],
-                detailStats: ['FGM', 'FGA', 'FG%', 'XPM', 'XPA', 'LONG', 'PTS'],
+                detailStats: ['FG', 'FG%', 'XP', 'LONG', 'PTS'],
                 parseCompact: (stats, keys) => {
-                    const fgm = stats[keys.indexOf('fieldGoalsMade')] || '0';
-                    const fga = stats[keys.indexOf('fieldGoalAttempts')] || '0';
-                    const xpm = stats[keys.indexOf('extraPointsMade')] || '0';
-                    const xpa = stats[keys.indexOf('extraPointAttempts')] || '0';
-                    const pts = parseInt(fgm) * 3 + parseInt(xpm);
+                    // ESPN uses combined keys like 'fieldGoalsMade/fieldGoalAttempts'
+                    const fg = stats[keys.indexOf('fieldGoalsMade/fieldGoalAttempts')] || '0/0';
+                    const xp = stats[keys.indexOf('extraPointsMade/extraPointAttempts')] || '0/0';
+                    const pts = stats[keys.indexOf('totalKickingPoints')] || '0';
                     return [
-                        { value: `${fgm}/${fga}`, label: 'FG' },
-                        { value: `${xpm}/${xpa}`, label: 'XP' },
-                        { value: String(pts), label: 'PTS' }
+                        { value: fg, label: 'FG' },
+                        { value: xp, label: 'XP' },
+                        { value: pts, label: 'PTS' }
                     ];
                 },
                 parseDetail: (stats, keys) => {
-                    const fgm = stats[keys.indexOf('fieldGoalsMade')] || '0';
-                    const fga = stats[keys.indexOf('fieldGoalAttempts')] || '0';
-                    const xpm = stats[keys.indexOf('extraPointsMade')] || '0';
-                    const xpa = stats[keys.indexOf('extraPointAttempts')] || '0';
-                    const pct = parseInt(fga) > 0 ? Math.round((parseInt(fgm) / parseInt(fga)) * 100) : 0;
-                    const pts = parseInt(fgm) * 3 + parseInt(xpm);
+                    const fg = stats[keys.indexOf('fieldGoalsMade/fieldGoalAttempts')] || '0/0';
+                    const xp = stats[keys.indexOf('extraPointsMade/extraPointAttempts')] || '0/0';
+                    const pct = stats[keys.indexOf('fieldGoalPct')] || '-';
+                    const pts = stats[keys.indexOf('totalKickingPoints')] || '0';
                     return [
-                        { value: fgm, label: 'FGM' },
-                        { value: fga, label: 'FGA' },
-                        { value: `${pct}%`, label: 'FG%' },
-                        { value: xpm, label: 'XPM' },
-                        { value: xpa, label: 'XPA' },
+                        { value: fg, label: 'FG' },
+                        { value: pct + '%', label: 'FG%' },
+                        { value: xp, label: 'XP' },
                         { value: stats[keys.indexOf('longFieldGoalMade')] || '-', label: 'LONG' },
-                        { value: String(pts), label: 'PTS' }
+                        { value: pts, label: 'PTS' }
                     ];
                 }
             },
@@ -4227,13 +4251,13 @@
                 detailStats: ['PUNTS', 'YDS', 'AVG', 'LONG', 'IN20', 'TB'],
                 parseCompact: (stats, keys) => [
                     { value: stats[keys.indexOf('punts')] || '0', label: 'PUNTS' },
-                    { value: stats[keys.indexOf('yardsPerPunt')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('grossAvgPuntYards')] || '-', label: 'AVG' },
                     { value: stats[keys.indexOf('puntsInside20')] || '0', label: 'IN20' }
                 ],
                 parseDetail: (stats, keys) => [
                     { value: stats[keys.indexOf('punts')] || '0', label: 'PUNTS' },
                     { value: stats[keys.indexOf('puntYards')] || '0', label: 'YDS' },
-                    { value: stats[keys.indexOf('yardsPerPunt')] || '-', label: 'AVG' },
+                    { value: stats[keys.indexOf('grossAvgPuntYards')] || '-', label: 'AVG' },
                     { value: stats[keys.indexOf('longPunt')] || '-', label: 'LONG' },
                     { value: stats[keys.indexOf('puntsInside20')] || '0', label: 'IN20' },
                     { value: stats[keys.indexOf('touchbacks')] || '0', label: 'TB' }
@@ -4324,8 +4348,10 @@
                     const categoryMapping = {
                         'passing': 'passing',
                         'rushing': 'rushing',
+                        'fumbles': 'fumbles',
                         'receiving': 'receiving',
                         'defensive': 'defensive',
+                        'interceptions': 'interceptions',
                         'kicking': 'kicking',
                         'punting': 'punting',
                         'kickReturns': 'kickReturns',
