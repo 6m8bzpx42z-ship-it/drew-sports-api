@@ -2405,11 +2405,825 @@
         .haptic:active {
             transform: scale(0.97);
         }
+
+        /* ============================================
+           FEATURE 1: PLAYOFF BRACKET VISUALIZATION
+           ============================================ */
+        .playoff-bracket-container {
+            padding: 15px 0;
+        }
+
+        .bracket-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bracket-header h2 {
+            font-size: 1.3rem;
+            color: var(--accent-secondary);
+            margin-bottom: 5px;
+        }
+
+        .bracket-header .bracket-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .brackets-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .brackets-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .conference-bracket {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .conference-bracket-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .conference-bracket-title.afc {
+            background: linear-gradient(135deg, #D50A0A22, #D50A0A44);
+            color: #FF6B6B;
+        }
+
+        .conference-bracket-title.nfc {
+            background: linear-gradient(135deg, #003594, #00359444);
+            color: #60A5FA;
+        }
+
+        .bracket-round {
+            margin-bottom: 20px;
+        }
+
+        .bracket-round-title {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .bracket-matchup {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .bracket-matchup.completed {
+            opacity: 0.9;
+        }
+
+        .bracket-team {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+        }
+
+        .bracket-team.winner {
+            color: var(--accent-success);
+        }
+
+        .bracket-team.loser {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .bracket-seed {
+            width: 20px;
+            height: 20px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .bracket-team-logo {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .bracket-team-name {
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .bracket-score {
+            font-size: 0.9rem;
+            font-weight: 700;
+            min-width: 25px;
+            text-align: right;
+        }
+
+        .bracket-vs {
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            padding: 2px 0;
+        }
+
+        .bracket-matchup-status {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--accent-secondary);
+            margin-top: 5px;
+        }
+
+        .bracket-bye {
+            background: linear-gradient(135deg, rgba(104, 211, 145, 0.1), rgba(104, 211, 145, 0.05));
+            border: 1px dashed var(--accent-success);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .bracket-bye-label {
+            font-size: 0.7rem;
+            color: var(--accent-success);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .bracket-bye-team {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ============================================
+           FEATURE 2: ELIMINATION TRACKER
+           ============================================ */
+        .elimination-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            background: rgba(252, 129, 129, 0.9);
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 5;
+            box-shadow: 0 2px 8px rgba(252, 129, 129, 0.4);
+        }
+
+        .team-eliminated {
+            position: relative;
+        }
+
+        .team-eliminated::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+
+        .team-eliminated .team-name,
+        .team-eliminated .team-record {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .playoff-alive-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        .playoff-alive-indicator.alive {
+            background: rgba(104, 211, 145, 0.2);
+            color: var(--accent-success);
+        }
+
+        .playoff-alive-indicator.eliminated {
+            background: rgba(252, 129, 129, 0.2);
+            color: var(--accent-danger);
+        }
+
+        /* ============================================
+           FEATURE 3: WIN PROBABILITY DISPLAY (Enhanced)
+           ============================================ */
+        .win-prob-container {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        [data-theme="light"] .win-prob-container {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .win-prob-title {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .win-prob-bar-enhanced {
+            height: 24px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        .win-prob-away-fill {
+            background: linear-gradient(90deg, var(--away-color, #f56565), var(--away-color, #f56565));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 8px;
+        }
+
+        .win-prob-home-fill {
+            background: linear-gradient(90deg, var(--home-color, #48bb78), var(--home-color, #48bb78));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .win-prob-percent {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .win-prob-team-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.7rem;
+        }
+
+        .win-prob-team-labels span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .win-prob-team-labels img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ============================================
+           FEATURE 4: DRIVE TRACKER (Enhanced)
+           ============================================ */
+        .drive-tracker {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        [data-theme="light"] .drive-tracker {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .drive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .drive-title {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .drive-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 0.75rem;
+        }
+
+        .drive-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .drive-stat-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .drive-stat-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+        }
+
+        .drive-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .drive-team-logo {
+            width: 24px;
+            height: 24px;
+        }
+
+        .drive-summary {
+            display: flex;
+            gap: 15px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .drive-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .drive-summary-item strong {
+            color: var(--accent-secondary);
+        }
+
+        /* ============================================
+           FEATURE 5: RED ZONE ALERT (Enhanced)
+           ============================================ */
+        .game-card.red-zone-active {
+            animation: redZonePulse 1.5s ease-in-out infinite;
+            border: 2px solid rgba(252, 129, 129, 0.6) !important;
+        }
+
+        @keyframes redZonePulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(252, 129, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 20px 5px rgba(252, 129, 129, 0.3);
+            }
+        }
+
+        .red-zone-banner {
+            background: linear-gradient(90deg, #fc8181, #f56565);
+            color: #fff;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            animation: redZoneBannerPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes redZoneBannerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .red-zone-banner-icon {
+            font-size: 1.2rem;
+        }
+
+        .red-zone-field-marker {
+            position: absolute;
+            right: 9%;
+            width: 16.4%;
+            height: 100%;
+            background: rgba(252, 129, 129, 0.3);
+            top: 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .red-zone-field-marker.away-side {
+            right: auto;
+            left: 9%;
+            border-radius: 6px 0 0 6px;
+        }
+
+        /* ============================================
+           FEATURE 7: SHAREABLE SCORE CARDS
+           ============================================ */
+        .share-btn-enhanced {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .share-btn-enhanced:hover {
+            background: var(--accent-success);
+            color: var(--bg-primary);
+            border-color: var(--accent-success);
+        }
+
+        .share-menu {
+            position: absolute;
+            top: 50px;
+            right: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 0;
+            z-index: 100;
+            min-width: 150px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .share-menu.show {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        .share-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .share-menu-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .share-menu-item .icon {
+            font-size: 1rem;
+        }
+
+        #share-canvas-container {
+            position: fixed;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        /* ============================================
+           FEATURE 8: PLAYER COMPARISON TOOL
+           ============================================ */
+        .player-comparison-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .player-comparison-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .comparison-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .player-comparison-modal.show .comparison-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-header h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .comparison-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .comparison-players {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .comparison-player-card {
+            text-align: center;
+        }
+
+        .comparison-player-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 3px solid var(--team-color, #666);
+        }
+
+        .comparison-player-card h4 {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .comparison-player-card .position {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .comparison-stats {
+            padding: 0 20px 20px;
+        }
+
+        .comparison-stat-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .comparison-stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .comparison-stat-value.left {
+            text-align: right;
+        }
+
+        .comparison-stat-value.right {
+            text-align: left;
+        }
+
+        .comparison-stat-value.better {
+            color: var(--accent-success);
+        }
+
+        .comparison-stat-label {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .compare-players-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin: 10px 15px;
+            transition: all 0.2s;
+        }
+
+        .compare-players-btn:hover {
+            background: var(--accent-secondary);
+            color: var(--bg-primary);
+        }
+
+        .player-select-mode .boxscore-player-row {
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .player-select-mode .boxscore-player-row:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        .player-select-mode .boxscore-player-row.selected {
+            border-color: var(--accent-success);
+            background: rgba(104, 211, 145, 0.1);
+        }
+
+        /* ============================================
+           FEATURE 9: BETTING ODDS/SPREADS DISPLAY (Enhanced)
+           ============================================ */
+        .odds-display {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        [data-theme="light"] .odds-display {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .odds-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .odds-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .odds-card {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .odds-card-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .odds-card-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-success);
+        }
+
+        .odds-card-team {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .moneyline-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .moneyline-team {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+
+        .moneyline-team-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .moneyline-team-info img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .moneyline-team-info span {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .moneyline-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .moneyline-value.favorite {
+            color: var(--accent-danger);
+        }
+
+        .moneyline-value.underdog {
+            color: var(--accent-success);
+        }
     </style>
 </head>
 <body>
     <canvas id="confetti-canvas"></canvas>
     <div class="share-toast" id="share-toast">Copied to clipboard!</div>
+
+    <!-- Hidden canvas for share image generation -->
+    <div id="share-canvas-container">
+        <canvas id="share-canvas" width="600" height="400"></canvas>
+    </div>
+
+    <!-- Player Comparison Modal -->
+    <div class="player-comparison-modal" id="player-comparison-modal" onclick="closeComparisonModal(event)">
+        <div class="comparison-content" onclick="event.stopPropagation()">
+            <div class="comparison-header">
+                <h3>Player Comparison</h3>
+                <button class="comparison-close" onclick="closeComparisonModal()">&times;</button>
+            </div>
+            <div id="comparison-modal-content">
+                <div style="padding: 40px; text-align: center; color: var(--text-muted);">Select two players to compare</div>
+            </div>
+        </div>
+    </div>
+
     <div class="player-modal-overlay" id="player-modal" onclick="closePlayerModal(event)">
         <div class="player-modal" onclick="event.stopPropagation()">
             <button class="player-close" onclick="closePlayerModal()">&times;</button>
@@ -2539,6 +3353,16 @@
                 <div class="legend-item"><span class="playoff-dot eliminated"></span> Eliminated</div>
             </div>
         </div>
+
+        <!-- Playoff Bracket View -->
+        <div class="page-view" id="bracket-view">
+            <div id="bracket-container">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Loading playoff bracket...
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -2550,6 +3374,10 @@
         <button class="nav-item" data-view="standings">
             <span class="icon">📊</span>
             <span>Standings</span>
+        </button>
+        <button class="nav-item" data-view="bracket">
+            <span class="icon">🏆</span>
+            <span>Bracket</span>
         </button>
         <button class="nav-item" id="nav-refresh">
             <span class="icon">🔄</span>
@@ -2585,7 +3413,7 @@
         window.addEventListener('resize', resizeConfettiCanvas);
 
         class ConfettiParticle {
-            constructor() {
+            constructor(teamColorsList = null) {
                 this.x = Math.random() * confettiCanvas.width;
                 this.y = -20;
                 this.size = Math.random() * 10 + 5;
@@ -2593,7 +3421,10 @@
                 this.speedX = Math.random() * 4 - 2;
                 this.rotation = Math.random() * 360;
                 this.rotationSpeed = Math.random() * 10 - 5;
-                this.color = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'][Math.floor(Math.random() * 8)];
+                // FEATURE 6: Team-colored confetti - use team colors if provided
+                const defaultColors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+                const colors = teamColorsList && teamColorsList.length > 0 ? teamColorsList : defaultColors;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
                 this.opacity = 1;
             }
 
@@ -2617,10 +3448,17 @@
             }
         }
 
-        function launchConfetti(count = 100) {
+        // FEATURE 6: Enhanced confetti launcher with team colors
+        function launchConfetti(count = 100, teamName = null) {
+            let teamColorsList = null;
+            if (teamName && teamColors[teamName]) {
+                const tc = teamColors[teamName];
+                teamColorsList = [tc.primary, tc.secondary, tc.primary, tc.secondary, '#FFD700', '#FFFFFF'];
+            }
+
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
-                    confettiParticles.push(new ConfettiParticle());
+                    confettiParticles.push(new ConfettiParticle(teamColorsList));
                 }, i * 10);
             }
 
@@ -2645,7 +3483,7 @@
             }
         }
 
-        // Score change detection
+        // Score change detection with team-colored confetti (FEATURE 6)
         function checkScoreChanges(events) {
             events.forEach((event, index) => {
                 const eventId = event.id;
@@ -2654,6 +3492,8 @@
                 const away = comp.competitors.find(c => c.homeAway === 'away');
                 const homeScore = parseInt(home.score) || 0;
                 const awayScore = parseInt(away.score) || 0;
+                const homeTeamName = home.team.displayName;
+                const awayTeamName = away.team.displayName;
 
                 const prevScores = previousScores[eventId];
                 if (prevScores) {
@@ -2668,9 +3508,9 @@
                             void scoreEl.offsetWidth; // Force reflow
                             scoreEl.classList.add(homeDiff >= 6 ? 'touchdown-score' : 'score-updated');
 
-                            // Launch confetti for touchdowns
+                            // FEATURE 6: Launch team-colored confetti for touchdowns
                             if (homeDiff >= 6) {
-                                launchConfetti(150);
+                                launchConfetti(150, homeTeamName);
                             }
                         }
                     }
@@ -2682,9 +3522,9 @@
                             void scoreEl.offsetWidth; // Force reflow
                             scoreEl.classList.add(awayDiff >= 6 ? 'touchdown-score' : 'score-updated');
 
-                            // Launch confetti for touchdowns
+                            // FEATURE 6: Launch team-colored confetti for touchdowns
                             if (awayDiff >= 6) {
-                                launchConfetti(150);
+                                launchConfetti(150, awayTeamName);
                             }
                         }
                     }
@@ -3173,12 +4013,63 @@
                                     </div>
                     `;
 
-                    // Odds
+                    // FEATURE 9: Enhanced Odds/Spreads Display
                     if (odds && !status.completed) {
+                        // Parse spread to get favorite team
+                        let favoriteTeam = '';
+                        let spreadValue = '';
+                        if (odds.details) {
+                            const spreadMatch = odds.details.match(/([A-Z]+)\s*([-+]?[\d.]+)/);
+                            if (spreadMatch) {
+                                favoriteTeam = spreadMatch[1];
+                                spreadValue = spreadMatch[2];
+                            }
+                        }
+
+                        // Get moneyline values
+                        const awayML = odds.awayTeamOdds?.moneyLine || '';
+                        const homeML = odds.homeTeamOdds?.moneyLine || '';
+
                         html += `
-                            <div class="odds-row">
-                                ${odds.details ? `<div class="odds-item"><div class="odds-label">Spread</div><div class="odds-value">${odds.details}</div></div>` : ''}
-                                ${odds.overUnder ? `<div class="odds-item"><div class="odds-label">O/U</div><div class="odds-value">${odds.overUnder}</div></div>` : ''}
+                            <div class="odds-display">
+                                <div class="odds-header">
+                                    <span>📊</span> Betting Lines
+                                </div>
+                                <div class="odds-grid">
+                                    ${odds.details ? `
+                                    <div class="odds-card">
+                                        <div class="odds-card-label">Spread</div>
+                                        <div class="odds-card-value">${odds.details}</div>
+                                    </div>` : ''}
+                                    ${odds.overUnder ? `
+                                    <div class="odds-card">
+                                        <div class="odds-card-label">Over/Under</div>
+                                        <div class="odds-card-value">${odds.overUnder}</div>
+                                    </div>` : ''}
+                                    ${odds.provider?.name ? `
+                                    <div class="odds-card">
+                                        <div class="odds-card-label">Provider</div>
+                                        <div class="odds-card-value" style="font-size: 0.75rem; color: var(--text-secondary);">${odds.provider.name}</div>
+                                    </div>` : ''}
+                                </div>
+                                ${(awayML || homeML) ? `
+                                <div class="moneyline-display">
+                                    <div class="moneyline-team">
+                                        <div class="moneyline-team-info">
+                                            <img src="${away.team.logo}" alt="">
+                                            <span>${away.team.abbreviation}</span>
+                                        </div>
+                                        <span class="moneyline-value ${parseInt(awayML) < 0 ? 'favorite' : 'underdog'}">${awayML > 0 ? '+' : ''}${awayML}</span>
+                                    </div>
+                                    <div class="moneyline-team">
+                                        <div class="moneyline-team-info">
+                                            <img src="${home.team.logo}" alt="">
+                                            <span>${home.team.abbreviation}</span>
+                                        </div>
+                                        <span class="moneyline-value ${parseInt(homeML) < 0 ? 'favorite' : 'underdog'}">${homeML > 0 ? '+' : ''}${homeML}</span>
+                                    </div>
+                                </div>
+                                ` : ''}
                             </div>
                         `;
                     }
@@ -3251,7 +4142,12 @@
                         }
 
                         // Full box score container (loaded async)
-                        html += `<div id="boxscore-${index}" class="boxscore-container">
+                        // FEATURE 8: Add compare players button
+                        html += `
+                        <button class="compare-players-btn" onclick="startPlayerComparison(${index})">
+                            <span>⚖️</span> Compare Players
+                        </button>
+                        <div id="boxscore-${index}" class="boxscore-container">
                             <div class="boxscore-loading">Loading full box score...</div>
                         </div>`;
 
@@ -3273,7 +4169,25 @@
                     if (status.completed) {
                         const awayShort = (away.team.shortDisplayName || away.team.displayName).replace(/'/g, "\\'");
                         const homeShort = (home.team.shortDisplayName || home.team.displayName).replace(/'/g, "\\'");
+                        const awayFull = away.team.displayName.replace(/'/g, "\\'");
+                        const homeFull = home.team.displayName.replace(/'/g, "\\'");
                         const gameDate = event.date ? event.date.split('T')[0] : '';
+
+                        // FEATURE 7: Share button for completed games
+                        html += `
+                            <button class="share-btn-enhanced" onclick="toggleShareMenu(${index})">
+                                <span>📤</span> Share
+                            </button>
+                            <div class="share-menu" id="share-menu-${index}">
+                                <button class="share-menu-item" onclick="shareScoreCard(${index}, '${awayFull}', '${homeFull}', '${awayScore}', '${homeScore}', '${away.team.logo}', '${home.team.logo}', '${status.shortDetail.replace(/'/g, "\\'")}')">
+                                    <span class="icon">📱</span> Share Score
+                                </button>
+                                <button class="share-menu-item" onclick="downloadScoreCard(${index}, '${awayFull}', '${homeFull}', '${awayScore}', '${homeScore}', '${away.team.logo}', '${home.team.logo}', '${status.shortDetail.replace(/'/g, "\\'")}')">
+                                    <span class="icon">💾</span> Download Image
+                                </button>
+                            </div>
+                        `;
+
                         html += `
                             <button class="expand-btn" onclick="toggleHighlights(${index}, '${event.id}', '${awayShort}', '${homeShort}', '${gameDate}')">
                                 <span>🎬 Highlights</span>
@@ -3366,7 +4280,7 @@
             }
         }
 
-        // Live game details
+        // Live game details - Enhanced with Features 3, 4, 5
         async function fetchLiveGameDetails(eventId, index) {
             try {
                 const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
@@ -3376,21 +4290,24 @@
 
                 const situation = data.situation;
                 const header = data.header;
+                const drives = data.drives;
 
                 if (!situation) {
                     el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:0.8rem;">Waiting for play data...</div>';
                     return;
                 }
 
-                let possTeam = '', possTeamName = '';
+                let possTeam = '', possTeamName = '', possTeamLogo = '';
                 let awayAbbr = 'AWAY', homeAbbr = 'HOME';
                 let awayTeamName = '', homeTeamName = '';
+                let awayLogo = '', homeLogo = '';
                 if (header?.competitions?.[0]) {
                     const comp = header.competitions[0];
                     const team = comp.competitors.find(c => c.id === situation.possession);
                     if (team) {
                         possTeam = team.team.abbreviation;
                         possTeamName = team.team.displayName;
+                        possTeamLogo = team.team.logos?.[0]?.href || '';
                     }
                     const awayTeam = comp.competitors.find(c => c.homeAway === 'away');
                     const homeTeam = comp.competitors.find(c => c.homeAway === 'home');
@@ -3398,13 +4315,37 @@
                     homeAbbr = homeTeam?.team.abbreviation || 'HOME';
                     awayTeamName = awayTeam?.team.displayName || '';
                     homeTeamName = homeTeam?.team.displayName || '';
+                    awayLogo = awayTeam?.team.logos?.[0]?.href || '';
+                    homeLogo = homeTeam?.team.logos?.[0]?.href || '';
                 }
 
                 // Get team colors for field graphic
                 const homeColors = teamColors[homeTeamName] || { primary: '#333' };
                 const awayColors = teamColors[awayTeamName] || { primary: '#333' };
 
-                let html = `
+                // FEATURE 5: Enhanced Red Zone Alert - Add class to game card
+                const gameCard = document.querySelector(`[data-event-id="${eventId}"]`);
+                if (gameCard) {
+                    if (situation.isRedZone) {
+                        gameCard.classList.add('red-zone-active');
+                    } else {
+                        gameCard.classList.remove('red-zone-active');
+                    }
+                }
+
+                let html = '';
+
+                // FEATURE 5: Red Zone Banner (if in red zone)
+                if (situation.isRedZone) {
+                    html += `
+                        <div class="red-zone-banner">
+                            <span class="red-zone-banner-icon">🔴</span>
+                            RED ZONE - ${possTeam} inside the 20!
+                        </div>
+                    `;
+                }
+
+                html += `
                     <div class="situation-row">
                         <div class="possession-info">🏈 ${possTeam}</div>
                         ${situation.isRedZone ? '<span class="red-zone-badge">Red Zone</span>' : ''}
@@ -3480,21 +4421,64 @@
                     `;
                 }
 
-                // Win probability
+                // FEATURE 4: Enhanced Drive Tracker
+                if (drives?.current) {
+                    const currentDrive = drives.current;
+                    const driveTeamLogo = possTeamLogo;
+                    const plays = currentDrive.plays?.length || 0;
+                    const yards = currentDrive.yards || 0;
+                    const startText = currentDrive.start?.text || '';
+                    const timeOfPoss = currentDrive.timeOfPossession || '';
+
+                    html += `
+                        <div class="drive-tracker">
+                            <div class="drive-header">
+                                <span class="drive-title">Current Drive</span>
+                                <div class="drive-stats">
+                                    <div class="drive-stat">
+                                        <span class="drive-stat-value">${plays}</span>
+                                        <span class="drive-stat-label">Plays</span>
+                                    </div>
+                                    <div class="drive-stat">
+                                        <span class="drive-stat-value">${yards}</span>
+                                        <span class="drive-stat-label">Yards</span>
+                                    </div>
+                                    ${timeOfPoss ? `
+                                    <div class="drive-stat">
+                                        <span class="drive-stat-value">${timeOfPoss}</span>
+                                        <span class="drive-stat-label">Time</span>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="drive-info">
+                                <img src="${driveTeamLogo}" class="drive-team-logo" alt="">
+                                <span>Started at ${startText}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // FEATURE 3: Enhanced Win Probability Display
                 if (data.winprobability?.length > 0) {
                     const latest = data.winprobability[data.winprobability.length - 1];
                     const homeProb = Math.round(latest.homeWinPercentage * 100);
                     const awayProb = 100 - homeProb;
 
                     html += `
-                        <div class="win-prob">
-                            <div class="win-prob-bar">
-                                <div class="win-prob-away" style="width:${awayProb}%"></div>
-                                <div class="win-prob-home" style="width:${homeProb}%"></div>
+                        <div class="win-prob-container" style="--away-color: ${awayColors.primary}; --home-color: ${homeColors.primary};">
+                            <div class="win-prob-title">Win Probability</div>
+                            <div class="win-prob-bar-enhanced">
+                                <div class="win-prob-away-fill" style="width:${awayProb}%">
+                                    ${awayProb >= 15 ? `<span class="win-prob-percent">${awayProb}%</span>` : ''}
+                                </div>
+                                <div class="win-prob-home-fill" style="width:${homeProb}%">
+                                    ${homeProb >= 15 ? `<span class="win-prob-percent">${homeProb}%</span>` : ''}
+                                </div>
                             </div>
-                            <div class="win-prob-labels">
-                                <span class="prob-label away">${awayAbbr} ${awayProb}%</span>
-                                <span class="prob-label home">${homeAbbr} ${homeProb}%</span>
+                            <div class="win-prob-team-labels">
+                                <span><img src="${awayLogo}" alt="">${awayAbbr}</span>
+                                <span>${homeAbbr}<img src="${homeLogo}" alt=""></span>
                             </div>
                         </div>
                     `;
@@ -4806,7 +5790,7 @@
             setupRefreshInterval();
         });
 
-        // Bottom nav
+        // Bottom nav - updated to support bracket view
         document.querySelectorAll('.nav-item[data-view]').forEach(item => {
             item.addEventListener('click', function() {
                 const view = this.dataset.view;
@@ -4820,6 +5804,10 @@
 
                 if (view === 'standings' && !standingsData) {
                     fetchStandings();
+                }
+                // FEATURE 1: Load bracket when switching to bracket view
+                if (view === 'bracket' && !bracketData) {
+                    fetchPlayoffBracket();
                 }
             });
         });
@@ -4849,6 +5837,535 @@
                 else localStorage.removeItem('favoriteTeam');
                 fetchScores();
             });
+        }
+
+        // ============================================
+        // FEATURE 1: PLAYOFF BRACKET VISUALIZATION
+        // ============================================
+        let bracketData = null;
+        let eliminatedTeams = new Set();
+
+        async function fetchPlayoffBracket() {
+            const container = document.getElementById('bracket-container');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading playoff bracket...</div>';
+
+            try {
+                // Fetch playoff games from January through early February
+                const now = new Date();
+                const year = now.getMonth() >= 8 ? now.getFullYear() + 1 : now.getFullYear();
+                const startDate = `${year}0101`;
+                const endDate = `${year}0215`;
+
+                const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${startDate}-${endDate}&limit=100`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (!data.events || data.events.length === 0) {
+                    container.innerHTML = '<div class="no-games">No playoff games available yet</div>';
+                    return;
+                }
+
+                bracketData = data;
+                renderPlayoffBracket(data.events);
+            } catch (e) {
+                console.error('Bracket fetch error:', e);
+                container.innerHTML = '<div class="error">Error loading playoff bracket</div>';
+            }
+        }
+
+        function renderPlayoffBracket(events) {
+            const container = document.getElementById('bracket-container');
+
+            // Organize games by round and conference
+            const playoffs = {
+                AFC: { wildCard: [], divisional: [], conference: [], superBowl: null },
+                NFC: { wildCard: [], divisional: [], conference: [], superBowl: null }
+            };
+
+            // Track eliminated teams
+            eliminatedTeams.clear();
+
+            events.forEach(event => {
+                const comp = event.competitions[0];
+                const notes = comp.notes?.[0]?.headline || event.name || '';
+                const status = event.status.type;
+
+                let round = '';
+                let conference = '';
+
+                // Determine round from game name/notes
+                const lowerNotes = notes.toLowerCase();
+                if (lowerNotes.includes('super bowl')) {
+                    round = 'superBowl';
+                    conference = 'SuperBowl';
+                } else if (lowerNotes.includes('wild card') || lowerNotes.includes('wildcard')) {
+                    round = 'wildCard';
+                } else if (lowerNotes.includes('divisional')) {
+                    round = 'divisional';
+                } else if (lowerNotes.includes('conference') || lowerNotes.includes('championship')) {
+                    round = 'conference';
+                } else {
+                    // Skip regular season games
+                    return;
+                }
+
+                // Determine conference from teams
+                const home = comp.competitors.find(c => c.homeAway === 'home');
+                const away = comp.competitors.find(c => c.homeAway === 'away');
+
+                if (round !== 'superBowl') {
+                    // Check team IDs for AFC/NFC (simplified check)
+                    const afcTeams = ['Buffalo Bills', 'Miami Dolphins', 'New England Patriots', 'New York Jets',
+                                     'Baltimore Ravens', 'Cincinnati Bengals', 'Cleveland Browns', 'Pittsburgh Steelers',
+                                     'Houston Texans', 'Indianapolis Colts', 'Jacksonville Jaguars', 'Tennessee Titans',
+                                     'Denver Broncos', 'Kansas City Chiefs', 'Las Vegas Raiders', 'Los Angeles Chargers'];
+
+                    const homeTeam = home?.team?.displayName || '';
+                    conference = afcTeams.includes(homeTeam) ? 'AFC' : 'NFC';
+                }
+
+                // Track eliminated teams (losers of completed games)
+                if (status.completed) {
+                    const homeScore = parseInt(home?.score) || 0;
+                    const awayScore = parseInt(away?.score) || 0;
+                    if (homeScore > awayScore) {
+                        eliminatedTeams.add(away?.team?.displayName);
+                    } else if (awayScore > homeScore) {
+                        eliminatedTeams.add(home?.team?.displayName);
+                    }
+                }
+
+                const gameData = {
+                    id: event.id,
+                    date: new Date(event.date),
+                    status: status,
+                    home: home,
+                    away: away,
+                    notes: notes
+                };
+
+                if (round === 'superBowl') {
+                    playoffs.AFC.superBowl = gameData;
+                    playoffs.NFC.superBowl = gameData;
+                } else {
+                    playoffs[conference][round].push(gameData);
+                }
+            });
+
+            // Render bracket HTML
+            let html = `
+                <div class="playoff-bracket-container">
+                    <div class="bracket-header">
+                        <h2>NFL Playoffs</h2>
+                        <div class="bracket-subtitle">Bracket View</div>
+                    </div>
+                    <div class="brackets-wrapper">
+            `;
+
+            // Render AFC bracket
+            html += renderConferenceBracket('AFC', playoffs.AFC);
+
+            // Render NFC bracket
+            html += renderConferenceBracket('NFC', playoffs.NFC);
+
+            html += '</div>';
+
+            // Super Bowl section
+            if (playoffs.AFC.superBowl) {
+                html += renderSuperBowl(playoffs.AFC.superBowl);
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function renderConferenceBracket(conf, data) {
+            const confClass = conf.toLowerCase();
+            let html = `
+                <div class="conference-bracket">
+                    <div class="conference-bracket-title ${confClass}">${conf} Bracket</div>
+            `;
+
+            // Wild Card Round
+            if (data.wildCard.length > 0) {
+                html += `<div class="bracket-round">
+                    <div class="bracket-round-title">Wild Card</div>`;
+                data.wildCard.forEach(game => {
+                    html += renderBracketMatchup(game);
+                });
+                html += '</div>';
+            }
+
+            // Divisional Round
+            if (data.divisional.length > 0) {
+                html += `<div class="bracket-round">
+                    <div class="bracket-round-title">Divisional</div>`;
+                data.divisional.forEach(game => {
+                    html += renderBracketMatchup(game);
+                });
+                html += '</div>';
+            }
+
+            // Conference Championship
+            if (data.conference.length > 0) {
+                html += `<div class="bracket-round">
+                    <div class="bracket-round-title">${conf} Championship</div>`;
+                data.conference.forEach(game => {
+                    html += renderBracketMatchup(game);
+                });
+                html += '</div>';
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function renderBracketMatchup(game) {
+            const home = game.home;
+            const away = game.away;
+            const status = game.status;
+            const isCompleted = status.completed;
+            const isLive = status.state === 'in';
+
+            const homeScore = parseInt(home?.score) || 0;
+            const awayScore = parseInt(away?.score) || 0;
+            const homeWins = isCompleted && homeScore > awayScore;
+            const awayWins = isCompleted && awayScore > homeScore;
+
+            // Get seeds from record (playoff seed is usually in the API)
+            const homeSeed = home?.curatedRank?.current || '';
+            const awaySeed = away?.curatedRank?.current || '';
+
+            let statusText = '';
+            if (isCompleted) {
+                statusText = 'Final';
+            } else if (isLive) {
+                statusText = status.shortDetail;
+            } else {
+                statusText = game.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }
+
+            return `
+                <div class="bracket-matchup ${isCompleted ? 'completed' : ''}">
+                    <div class="bracket-team ${awayWins ? 'winner' : ''} ${homeWins ? 'loser' : ''}">
+                        ${awaySeed ? `<span class="bracket-seed">${awaySeed}</span>` : ''}
+                        <img src="${away?.team?.logo || ''}" class="bracket-team-logo" alt="">
+                        <span class="bracket-team-name">${away?.team?.abbreviation || 'TBD'}</span>
+                        <span class="bracket-score">${isCompleted || isLive ? awayScore : ''}</span>
+                    </div>
+                    <div class="bracket-vs">vs</div>
+                    <div class="bracket-team ${homeWins ? 'winner' : ''} ${awayWins ? 'loser' : ''}">
+                        ${homeSeed ? `<span class="bracket-seed">${homeSeed}</span>` : ''}
+                        <img src="${home?.team?.logo || ''}" class="bracket-team-logo" alt="">
+                        <span class="bracket-team-name">${home?.team?.abbreviation || 'TBD'}</span>
+                        <span class="bracket-score">${isCompleted || isLive ? homeScore : ''}</span>
+                    </div>
+                    <div class="bracket-matchup-status">${isLive ? '<span class="live-dot"></span>' : ''} ${statusText}</div>
+                </div>
+            `;
+        }
+
+        function renderSuperBowl(game) {
+            if (!game) return '';
+            return `
+                <div style="margin-top: 20px; text-align: center;">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-secondary); margin-bottom: 15px;">Super Bowl</div>
+                    ${renderBracketMatchup(game)}
+                </div>
+            `;
+        }
+
+        // ============================================
+        // FEATURE 7: SHAREABLE SCORE CARDS
+        // ============================================
+        function toggleShareMenu(index) {
+            const menu = document.getElementById(`share-menu-${index}`);
+            if (menu) {
+                menu.classList.toggle('show');
+                // Close menu when clicking elsewhere
+                setTimeout(() => {
+                    document.addEventListener('click', function closeMenu(e) {
+                        if (!e.target.closest('.share-btn-enhanced') && !e.target.closest('.share-menu')) {
+                            menu.classList.remove('show');
+                            document.removeEventListener('click', closeMenu);
+                        }
+                    });
+                }, 10);
+            }
+        }
+
+        async function generateShareImage(awayTeam, homeTeam, awayScore, homeScore, awayLogo, homeLogo, statusText, gameDate) {
+            const canvas = document.getElementById('share-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(1, '#16213e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw header
+            ctx.fillStyle = '#feca57';
+            ctx.font = 'bold 24px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('NFL SCORES', canvas.width / 2, 40);
+
+            // Draw team names and scores
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 36px -apple-system, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText(awayTeam, 80, 150);
+            ctx.fillText(awayScore, 80, 200);
+
+            ctx.textAlign = 'right';
+            ctx.fillText(homeTeam, canvas.width - 80, 150);
+            ctx.fillText(homeScore, canvas.width - 80, 200);
+
+            // Draw vs
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '20px -apple-system, sans-serif';
+            ctx.fillText('vs', canvas.width / 2, 175);
+
+            // Draw status
+            ctx.fillStyle = '#68d391';
+            ctx.font = 'bold 18px -apple-system, sans-serif';
+            ctx.fillText(statusText, canvas.width / 2, 280);
+
+            // Draw date
+            ctx.fillStyle = '#a0aec0';
+            ctx.font = '14px -apple-system, sans-serif';
+            ctx.fillText(gameDate, canvas.width / 2, 320);
+
+            // Draw watermark
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.font = '12px -apple-system, sans-serif';
+            ctx.fillText('NFL Scores App', canvas.width / 2, canvas.height - 20);
+
+            return canvas.toDataURL('image/png');
+        }
+
+        async function shareScoreCard(index, awayTeam, homeTeam, awayScore, homeScore, awayLogo, homeLogo, statusText) {
+            const gameDate = formatDate(currentDate);
+            const shareText = `${awayTeam} ${awayScore} - ${homeScore} ${homeTeam} | ${statusText}`;
+
+            // Close share menu
+            const menu = document.getElementById(`share-menu-${index}`);
+            if (menu) menu.classList.remove('show');
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'NFL Score',
+                        text: shareText,
+                        url: window.location.href
+                    });
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        fallbackShare(shareText);
+                    }
+                }
+            } else {
+                fallbackShare(shareText);
+            }
+        }
+
+        async function downloadScoreCard(index, awayTeam, homeTeam, awayScore, homeScore, awayLogo, homeLogo, statusText) {
+            const gameDate = formatDate(currentDate);
+
+            // Close share menu
+            const menu = document.getElementById(`share-menu-${index}`);
+            if (menu) menu.classList.remove('show');
+
+            try {
+                const imageData = await generateShareImage(awayTeam, homeTeam, awayScore, homeScore, awayLogo, homeLogo, statusText, gameDate);
+
+                // Create download link
+                const link = document.createElement('a');
+                link.download = `${awayTeam.replace(/\s+/g, '-')}-vs-${homeTeam.replace(/\s+/g, '-')}.png`;
+                link.href = imageData;
+                link.click();
+
+                showShareToast('Image downloaded!');
+            } catch (e) {
+                console.error('Download error:', e);
+                showShareToast('Failed to generate image');
+            }
+        }
+
+        // ============================================
+        // FEATURE 8: PLAYER COMPARISON TOOL
+        // ============================================
+        let comparisonPlayers = [];
+        let comparisonMode = false;
+
+        function startPlayerComparison(boxscoreIndex) {
+            comparisonPlayers = [];
+            comparisonMode = true;
+
+            const container = document.getElementById(`boxscore-${boxscoreIndex}`);
+            if (container) {
+                container.classList.add('player-select-mode');
+            }
+
+            showShareToast('Select 2 players to compare');
+        }
+
+        function selectPlayerForComparison(playerId, playerName, teamName, position, stats, headshot) {
+            if (!comparisonMode) return;
+
+            // Check if already selected
+            const existingIndex = comparisonPlayers.findIndex(p => p.id === playerId);
+            if (existingIndex >= 0) {
+                comparisonPlayers.splice(existingIndex, 1);
+                return;
+            }
+
+            comparisonPlayers.push({
+                id: playerId,
+                name: playerName,
+                team: teamName,
+                position: position,
+                stats: stats,
+                headshot: headshot
+            });
+
+            if (comparisonPlayers.length === 2) {
+                showPlayerComparison();
+            }
+        }
+
+        async function showPlayerComparison() {
+            const modal = document.getElementById('player-comparison-modal');
+            const content = document.getElementById('comparison-modal-content');
+
+            modal.classList.add('show');
+            comparisonMode = false;
+
+            // Remove selection mode from all boxscores
+            document.querySelectorAll('.player-select-mode').forEach(el => {
+                el.classList.remove('player-select-mode');
+            });
+
+            const p1 = comparisonPlayers[0];
+            const p2 = comparisonPlayers[1];
+
+            // Fetch full player data
+            try {
+                const [data1, data2] = await Promise.all([
+                    fetch(`https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${p1.id}`).then(r => r.json()),
+                    fetch(`https://site.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${p2.id}`).then(r => r.json())
+                ]);
+
+                const a1 = data1.athlete;
+                const a2 = data2.athlete;
+
+                const color1 = teamColors[p1.team]?.primary || '#666';
+                const color2 = teamColors[p2.team]?.primary || '#666';
+
+                // Build comparison stats based on position
+                const stats1 = a1.statsSummary?.statistics || [];
+                const stats2 = a2.statsSummary?.statistics || [];
+
+                const getStatValue = (stats, name) => {
+                    const stat = stats.find(s => s.name === name);
+                    return stat?.value || stat?.displayValue || '0';
+                };
+
+                // Determine which stats to compare based on position
+                let compareStats = [];
+                const pos1 = a1.position?.abbreviation || '';
+                const pos2 = a2.position?.abbreviation || '';
+
+                if (['QB'].includes(pos1) || ['QB'].includes(pos2)) {
+                    compareStats = [
+                        { name: 'passingYards', label: 'Pass Yards' },
+                        { name: 'passingTouchdowns', label: 'Pass TD' },
+                        { name: 'interceptions', label: 'INT', lowerBetter: true },
+                        { name: 'adjQBR', label: 'QBR' }
+                    ];
+                } else if (['RB', 'FB'].includes(pos1) || ['RB', 'FB'].includes(pos2)) {
+                    compareStats = [
+                        { name: 'rushingYards', label: 'Rush Yards' },
+                        { name: 'rushingTouchdowns', label: 'Rush TD' },
+                        { name: 'receivingYards', label: 'Rec Yards' },
+                        { name: 'yardsPerRushAttempt', label: 'YPC' }
+                    ];
+                } else if (['WR', 'TE'].includes(pos1) || ['WR', 'TE'].includes(pos2)) {
+                    compareStats = [
+                        { name: 'receptions', label: 'Receptions' },
+                        { name: 'receivingYards', label: 'Rec Yards' },
+                        { name: 'receivingTouchdowns', label: 'Rec TD' },
+                        { name: 'yardsPerReception', label: 'YPR' }
+                    ];
+                } else {
+                    // Defensive stats
+                    compareStats = [
+                        { name: 'totalTackles', label: 'Tackles' },
+                        { name: 'sacks', label: 'Sacks' },
+                        { name: 'interceptions', label: 'INT' },
+                        { name: 'passesDefended', label: 'PD' }
+                    ];
+                }
+
+                let statsHtml = compareStats.map(stat => {
+                    const val1 = parseFloat(getStatValue(stats1, stat.name)) || 0;
+                    const val2 = parseFloat(getStatValue(stats2, stat.name)) || 0;
+                    const better1 = stat.lowerBetter ? val1 < val2 : val1 > val2;
+                    const better2 = stat.lowerBetter ? val2 < val1 : val2 > val1;
+
+                    return `
+                        <div class="comparison-stat-row">
+                            <div class="comparison-stat-value left ${better1 && val1 !== val2 ? 'better' : ''}">${val1}</div>
+                            <div class="comparison-stat-label">${stat.label}</div>
+                            <div class="comparison-stat-value right ${better2 && val1 !== val2 ? 'better' : ''}">${val2}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                content.innerHTML = `
+                    <div class="comparison-players">
+                        <div class="comparison-player-card" style="--team-color: ${color1}">
+                            <img src="${a1.headshot?.href || ''}" alt="" onerror="this.style.display='none'">
+                            <h4>${a1.displayName}</h4>
+                            <div class="position">${pos1} - ${p1.team}</div>
+                        </div>
+                        <div class="comparison-player-card" style="--team-color: ${color2}">
+                            <img src="${a2.headshot?.href || ''}" alt="" onerror="this.style.display='none'">
+                            <h4>${a2.displayName}</h4>
+                            <div class="position">${pos2} - ${p2.team}</div>
+                        </div>
+                    </div>
+                    <div class="comparison-stats">
+                        ${statsHtml}
+                    </div>
+                `;
+            } catch (e) {
+                console.error('Comparison error:', e);
+                content.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--accent-danger);">Failed to load player data</div>';
+            }
+        }
+
+        function closeComparisonModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('player-comparison-modal').classList.remove('show');
+            comparisonPlayers = [];
+            comparisonMode = false;
+            document.querySelectorAll('.player-select-mode').forEach(el => {
+                el.classList.remove('player-select-mode');
+            });
+        }
+
+        // ============================================
+        // FEATURE 2: Check if team is eliminated (helper)
+        // ============================================
+        function isTeamEliminated(teamName) {
+            return eliminatedTeams.has(teamName);
         }
 
         // Init
