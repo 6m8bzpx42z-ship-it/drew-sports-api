@@ -34,7 +34,7 @@ export default async function handler(req, res) {
             git_commit_date: new Date().toISOString(),
             git_branch: process.env.VERCEL_GIT_COMMIT_REF || '',
             type: 'vercel-cron',
-            script_version: '1.2.0',
+            script_version: '1.3.0',
         },
     };
 
