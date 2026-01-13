@@ -54,7 +54,7 @@ curl -s -X POST "${DASHBOARD_URL}/api/heartbeats" \
             \"git_commit\": \"$GIT_COMMIT\",
             \"git_commit_date\": \"$GIT_COMMIT_DATE\",
             \"type\": \"claude-code-hook\",
-            \"script_version\": \"1.2.0\"
+            \"script_version\": \"1.3.0\"
         }
     }" > /dev/null 2>&1
 
