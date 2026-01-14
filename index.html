@@ -7618,21 +7618,18 @@
             updatePredictionStats();
 
             // Instantly update the UI without refresh
-            const btns = document.querySelectorAll(`[data-prediction-event="${eventId}"]`);
-            if (btns.length > 0) {
-                const section = btns[0].closest('.prediction-section');
-                if (section) {
-                    section.innerHTML = `
-                        <div class="prediction-locked">
-                            <div class="prediction-locked-header">Your Pick</div>
-                            <div class="prediction-locked-team">
-                                <img src="${teamLogo}" alt="">
-                                <span>${teamName}</span>
-                            </div>
-                            <div class="prediction-locked-status">Locked In</div>
+            const section = document.getElementById('prediction-' + eventId);
+            if (section) {
+                section.innerHTML = `
+                    <div class="prediction-locked">
+                        <div class="prediction-locked-header">Your Pick</div>
+                        <div class="prediction-locked-team">
+                            <img src="${teamLogo}" alt="">
+                            <span>${teamName}</span>
                         </div>
-                    `;
-                }
+                        <div class="prediction-locked-status">Locked In</div>
+                    </div>
+                `;
             }
         }
 
@@ -7721,19 +7718,15 @@
             }
 
             return `
-                <div class="prediction-section">
+                <div class="prediction-section" id="prediction-${eventId}">
                     <div class="prediction-title">Pick the Winner</div>
                     <div class="prediction-buttons">
                         <button class="prediction-btn"
-                                data-prediction-event="${eventId}"
-                                data-prediction-team="${away.team.displayName}"
                                 onclick="makePrediction('${eventId}', '${away.team.displayName.replace(/'/g, "\\'")}', '${away.team.logo}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}')">
                             <img src="${away.team.logo}" alt="">
                             <span>${away.team.abbreviation}</span>
                         </button>
                         <button class="prediction-btn"
-                                data-prediction-event="${eventId}"
-                                data-prediction-team="${home.team.displayName}"
                                 onclick="makePrediction('${eventId}', '${home.team.displayName.replace(/'/g, "\\'")}', '${home.team.logo}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}')">
                             <img src="${home.team.logo}" alt="">
                             <span>${home.team.abbreviation}</span>
@@ -7954,7 +7947,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-12-g4908bd1 (4908bd1)" data-commit-time="Commit: 2026-01-14  1:26 PM CST" data-build-time="Build: 2026-01-14  1:27 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-13-g877a59a (877a59a)" data-commit-time="Commit: 2026-01-14  1:27 PM CST" data-build-time="Build: 2026-01-14  1:28 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
