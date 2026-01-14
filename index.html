@@ -7611,13 +7611,28 @@
                 predictedWinner: teamName,
                 awayTeam: awayTeam,
                 homeTeam: homeTeam,
+                teamLogo: teamLogo,
                 timestamp: Date.now()
             };
             localStorage.setItem('gamePredictions', JSON.stringify(predictions));
             updatePredictionStats();
-            // Refresh the scores view to show locked-in state
-            if (currentTab === 'scores') {
-                fetchScores();
+
+            // Instantly update the UI without refresh
+            const btns = document.querySelectorAll(`[data-prediction-event="${eventId}"]`);
+            if (btns.length > 0) {
+                const section = btns[0].closest('.prediction-section');
+                if (section) {
+                    section.innerHTML = `
+                        <div class="prediction-locked">
+                            <div class="prediction-locked-header">Your Pick</div>
+                            <div class="prediction-locked-team">
+                                <img src="${teamLogo}" alt="">
+                                <span>${teamName}</span>
+                            </div>
+                            <div class="prediction-locked-status">Locked In</div>
+                        </div>
+                    `;
+                }
             }
         }
 
@@ -7939,7 +7954,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-11-g0b6b8a0 (0b6b8a0)" data-commit-time="Commit: 2026-01-14  1:22 PM CST" data-build-time="Build: 2026-01-14  1:26 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-12-g4908bd1 (4908bd1)" data-commit-time="Commit: 2026-01-14  1:26 PM CST" data-build-time="Build: 2026-01-14  1:27 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
