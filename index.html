@@ -294,19 +294,56 @@
 
         /* Game Card - Mobile First */
         .game-card {
-            background: var(--bg-card);
+            background: linear-gradient(
+                135deg,
+                color-mix(in srgb, var(--away-color, #666) 15%, rgba(45, 55, 72, 0.85)) 0%,
+                rgba(45, 55, 72, 0.9) 50%,
+                color-mix(in srgb, var(--home-color, #666) 15%, rgba(45, 55, 72, 0.85)) 100%
+            );
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 16px;
             padding: 15px;
             position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             touch-action: pan-y;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--border-color);
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                0 0 40px color-mix(in srgb, var(--home-color, transparent) 10%, transparent),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-left: 5px solid var(--away-color, #666);
+            border-right: 5px solid var(--home-color, #666);
+        }
+
+        [data-theme="light"] .game-card {
+            background: linear-gradient(
+                135deg,
+                color-mix(in srgb, var(--away-color, #666) 12%, rgba(255, 255, 255, 0.9)) 0%,
+                rgba(255, 255, 255, 0.95) 50%,
+                color-mix(in srgb, var(--home-color, #666) 12%, rgba(255, 255, 255, 0.9)) 100%
+            );
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.1),
+                0 0 30px color-mix(in srgb, var(--home-color, transparent) 8%, transparent);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--away-color, #666);
+            border-right: 5px solid var(--home-color, #666);
         }
 
         .game-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.4),
+                0 0 50px color-mix(in srgb, var(--home-color, transparent) 20%, transparent),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        [data-theme="light"] .game-card:hover {
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.15),
+                0 0 40px color-mix(in srgb, var(--home-color, transparent) 15%, transparent);
         }
 
         .game-card:active {
@@ -315,24 +352,23 @@
 
         .game-card.favorite-team {
             border: 2px solid var(--accent-success);
-            box-shadow: 0 0 20px rgba(104, 211, 145, 0.2);
+            border-left: 5px solid var(--away-color, #666);
+            border-right: 5px solid var(--home-color, #666);
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                0 0 25px rgba(104, 211, 145, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .game-card.team-colored {
-            border-left: 4px solid var(--away-color, #666);
-            border-right: 4px solid var(--home-color, #666);
-            background: linear-gradient(
-                135deg,
-                color-mix(in srgb, var(--away-color, #666) 8%, var(--bg-card)) 0%,
-                var(--bg-card) 50%,
-                color-mix(in srgb, var(--home-color, #666) 8%, var(--bg-card)) 100%
-            );
+            border-left: 5px solid var(--away-color, #666);
+            border-right: 5px solid var(--home-color, #666);
         }
 
         .game-card.team-colored.favorite-team {
             border: 2px solid var(--accent-success);
-            border-left: 4px solid var(--away-color, #666);
-            border-right: 4px solid var(--home-color, #666);
+            border-left: 5px solid var(--away-color, #666);
+            border-right: 5px solid var(--home-color, #666);
         }
 
         .favorite-badge {
@@ -386,18 +422,22 @@
             width: 50px;
             height: 50px;
             object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .team-name {
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 700;
             color: var(--text-primary);
             line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
 
         .team-record {
             font-size: 0.75rem;
             color: var(--text-muted);
+            font-weight: 500;
         }
 
         .score-block {
@@ -410,27 +450,31 @@
         .scores-display {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 2rem;
-            font-weight: 700;
+            gap: 10px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .score {
-            min-width: 40px;
+            min-width: 45px;
             text-align: center;
         }
 
         .score.winner {
             color: var(--accent-success);
+            text-shadow: 0 0 20px rgba(104, 211, 145, 0.5);
         }
 
         .score.loser {
             color: var(--text-muted);
+            opacity: 0.7;
         }
 
         .score-divider {
             color: var(--text-muted);
             font-weight: 400;
+            opacity: 0.6;
         }
 
         .game-status {
@@ -8462,7 +8506,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-32-g457c130 (457c130)" data-commit-time="Commit: 2026-01-14  2:17 PM CST" data-build-time="Build: 2026-01-14  2:57 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-33-g9d8f1b5 (9d8f1b5)" data-commit-time="Commit: 2026-01-14  2:57 PM CST" data-build-time="Build: 2026-01-14  3:06 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
