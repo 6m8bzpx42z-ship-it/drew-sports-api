@@ -4232,15 +4232,14 @@
             </div>
             <div class="settings-modal-body">
                 <div class="settings-group">
-                    <div class="settings-item">
+                    <div class="settings-item" id="notifications-setting-item">
                         <div class="settings-item-info">
                             <div class="settings-item-title">Score Alerts</div>
-                            <div class="settings-item-desc">Get notified when your teams score</div>
+                            <div class="settings-item-desc" id="notifications-desc">Get notified when your teams score</div>
                         </div>
-                        <label class="settings-toggle">
-                            <input type="checkbox" id="settings-notifications">
-                            <span class="settings-toggle-slider"></span>
-                        </label>
+                        <div id="notifications-control">
+                            <!-- Will be populated by JS: either toggle or button -->
+                        </div>
                     </div>
                     <div class="settings-item">
                         <div class="settings-item-info">
@@ -8209,12 +8208,76 @@
         // ============================================
         // FEATURE: SETTINGS MODAL
         // ============================================
+        // Render notification control based on permission state
+        function renderNotificationControl() {
+            const container = document.getElementById('notifications-control');
+            const desc = document.getElementById('notifications-desc');
+            const notice = document.getElementById('notification-permission-notice');
+
+            if (Notification.permission === 'granted') {
+                // Show toggle for granted permission
+                desc.textContent = 'Get notified when your teams score';
+                container.innerHTML = `
+                    <label class="settings-toggle">
+                        <input type="checkbox" id="settings-notifications" ${notificationsEnabled ? 'checked' : ''}>
+                        <span class="settings-toggle-slider"></span>
+                    </label>
+                `;
+                notice.style.display = 'none';
+
+                // Add toggle listener
+                const toggle = document.getElementById('settings-notifications');
+                toggle.addEventListener('change', function() {
+                    notificationsEnabled = this.checked;
+                    localStorage.setItem('notificationsEnabled', notificationsEnabled);
+                    updateNotificationButton();
+                    showShareToast(notificationsEnabled ? 'Score alerts enabled!' : 'Score alerts disabled');
+                });
+            } else if (Notification.permission === 'default') {
+                // Show button to request permission
+                desc.textContent = 'Allow notifications to get score alerts';
+                container.innerHTML = `
+                    <button class="settings-btn" id="enable-notifications-btn" style="width: auto; padding: 8px 16px;">
+                        Enable
+                    </button>
+                `;
+                notice.style.display = 'none';
+
+                // Add button listener - closes modal first
+                document.getElementById('enable-notifications-btn').addEventListener('click', async function() {
+                    // Close modal completely
+                    closeSettingsModal();
+
+                    // Small delay to ensure modal is gone
+                    await new Promise(r => setTimeout(r, 300));
+
+                    // Request permission
+                    const permission = await Notification.requestPermission();
+
+                    if (permission === 'granted') {
+                        notificationsEnabled = true;
+                        localStorage.setItem('notificationsEnabled', 'true');
+                        updateNotificationButton();
+                        showShareToast('Score alerts enabled!');
+                    } else {
+                        showShareToast('Notifications blocked by browser');
+                    }
+
+                    // Reopen settings modal with updated state
+                    setTimeout(() => openSettingsModal(), 300);
+                });
+            } else {
+                // Permission denied - show message
+                desc.textContent = 'Notifications are blocked by your browser';
+                container.innerHTML = `<span style="color: var(--text-muted); font-size: 0.8rem;">Blocked</span>`;
+                notice.style.display = 'flex';
+            }
+        }
+
         function openSettingsModal() {
             const modal = document.getElementById('settings-modal');
-            const notificationsToggle = document.getElementById('settings-notifications');
             const autorefreshToggle = document.getElementById('settings-autorefresh');
             const favoriteTeamSelect = document.getElementById('settings-favorite-team');
-            const noticeEl = document.getElementById('notification-permission-notice');
 
             // Populate favorite team dropdown
             const allTeams = Object.keys(teamColors).sort();
@@ -8227,16 +8290,11 @@
             });
 
             // Set current values
-            notificationsToggle.checked = notificationsEnabled;
             autorefreshToggle.checked = autoRefresh;
             favoriteTeamSelect.value = favoriteTeam;
 
-            // Show notice if notifications blocked
-            if (Notification.permission === 'denied') {
-                noticeEl.style.display = 'flex';
-            } else {
-                noticeEl.style.display = 'none';
-            }
+            // Render notification control based on current permission state
+            renderNotificationControl();
 
             modal.classList.add('show');
         }
@@ -8247,92 +8305,6 @@
         }
 
         function initSettingsListeners() {
-            // Notifications toggle - use click on parent label for better reliability
-            const notifToggle = document.getElementById('settings-notifications');
-            const notifLabel = notifToggle.parentElement;
-
-            async function handleNotificationToggle(wantToEnable) {
-                const checkbox = document.getElementById('settings-notifications');
-
-                if (wantToEnable) {
-                    // Trying to enable notifications
-                    if (Notification.permission === 'granted') {
-                        checkbox.checked = true;
-                        notificationsEnabled = true;
-                        localStorage.setItem('notificationsEnabled', 'true');
-                        updateNotificationButton();
-                        showShareToast('Score alerts enabled!');
-                    } else if (Notification.permission === 'default') {
-                        // Hide settings modal completely so browser permission popup is visible
-                        const modal = document.getElementById('settings-modal');
-                        const originalZIndex = modal.style.zIndex;
-                        modal.classList.remove('show');
-                        modal.style.display = 'none';
-                        modal.style.zIndex = '-1';
-                        modal.style.visibility = 'hidden';
-                        modal.style.opacity = '0';
-
-                        // Wait for modal to fully hide
-                        await new Promise(resolve => setTimeout(resolve, 400));
-
-                        // Request permission from browser
-                        try {
-                            const permission = await Notification.requestPermission();
-                            // Reopen settings modal
-                            modal.style.display = '';
-                            modal.style.zIndex = originalZIndex || '';
-                            modal.style.visibility = '';
-                            modal.style.opacity = '';
-                            modal.classList.add('show');
-
-                            if (permission === 'granted') {
-                                checkbox.checked = true;
-                                notificationsEnabled = true;
-                                localStorage.setItem('notificationsEnabled', 'true');
-                                updateNotificationButton();
-                                document.getElementById('notification-permission-notice').style.display = 'none';
-                                showShareToast('Score alerts enabled!');
-                            } else {
-                                checkbox.checked = false;
-                                document.getElementById('notification-permission-notice').style.display = 'flex';
-                                showShareToast('Notifications blocked by browser');
-                            }
-                        } catch (e) {
-                            // Reopen settings modal on error too
-                            modal.style.display = '';
-                            modal.style.zIndex = originalZIndex || '';
-                            modal.style.visibility = '';
-                            modal.style.opacity = '';
-                            modal.classList.add('show');
-                            checkbox.checked = false;
-                            document.getElementById('notification-permission-notice').style.display = 'flex';
-                            showShareToast('Could not request notification permission');
-                        }
-                    } else {
-                        // Already denied
-                        checkbox.checked = false;
-                        document.getElementById('notification-permission-notice').style.display = 'flex';
-                        showShareToast('Notifications blocked - check browser settings');
-                    }
-                } else {
-                    // Disabling notifications
-                    checkbox.checked = false;
-                    notificationsEnabled = false;
-                    localStorage.setItem('notificationsEnabled', 'false');
-                    updateNotificationButton();
-                    showShareToast('Score alerts disabled');
-                }
-            }
-
-            // Handle clicks on the toggle - use notificationsEnabled state directly
-            notifLabel.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // Toggle based on current notificationsEnabled state, not checkbox
-                const wantToEnable = !notificationsEnabled;
-                handleNotificationToggle(wantToEnable);
-            });
-
             // Auto-refresh toggle
             document.getElementById('settings-autorefresh').addEventListener('change', function() {
                 autoRefresh = this.checked;
@@ -8419,7 +8391,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-24-g20d5ba9 (20d5ba9)" data-commit-time="Commit: 2026-01-14  1:56 PM CST" data-build-time="Build: 2026-01-14  1:57 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-25-gd1b5584 (d1b5584)" data-commit-time="Commit: 2026-01-14  1:57 PM CST" data-build-time="Build: 2026-01-14  1:59 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
