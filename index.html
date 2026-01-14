@@ -8264,13 +8264,19 @@
                         showShareToast('Score alerts enabled!');
                     } else if (Notification.permission === 'default') {
                         // Close settings modal so browser permission popup is visible
-                        document.getElementById('settings-modal').classList.remove('show');
+                        const modal = document.getElementById('settings-modal');
+                        modal.classList.remove('show');
+                        modal.style.display = 'none';
+
+                        // Wait for modal to fully close before showing browser dialog
+                        await new Promise(resolve => setTimeout(resolve, 300));
 
                         // Request permission from browser
                         try {
                             const permission = await Notification.requestPermission();
                             // Reopen settings modal
-                            document.getElementById('settings-modal').classList.add('show');
+                            modal.style.display = '';
+                            modal.classList.add('show');
 
                             if (permission === 'granted') {
                                 checkbox.checked = true;
@@ -8286,7 +8292,8 @@
                             }
                         } catch (e) {
                             // Reopen settings modal on error too
-                            document.getElementById('settings-modal').classList.add('show');
+                            modal.style.display = '';
+                            modal.classList.add('show');
                             checkbox.checked = false;
                             document.getElementById('notification-permission-notice').style.display = 'flex';
                             showShareToast('Could not request notification permission');
@@ -8402,7 +8409,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-22-g142865b (142865b)" data-commit-time="Commit: 2026-01-14  1:53 PM CST" data-build-time="Build: 2026-01-14  1:55 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-23-g3eb94c2 (3eb94c2)" data-commit-time="Commit: 2026-01-14  1:55 PM CST" data-build-time="Build: 2026-01-14  1:56 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
