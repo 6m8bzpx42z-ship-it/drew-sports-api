@@ -8263,19 +8263,26 @@
                         updateNotificationButton();
                         showShareToast('Score alerts enabled!');
                     } else if (Notification.permission === 'default') {
-                        // Close settings modal so browser permission popup is visible
+                        // Hide settings modal completely so browser permission popup is visible
                         const modal = document.getElementById('settings-modal');
+                        const originalZIndex = modal.style.zIndex;
                         modal.classList.remove('show');
                         modal.style.display = 'none';
+                        modal.style.zIndex = '-1';
+                        modal.style.visibility = 'hidden';
+                        modal.style.opacity = '0';
 
-                        // Wait for modal to fully close before showing browser dialog
-                        await new Promise(resolve => setTimeout(resolve, 300));
+                        // Wait for modal to fully hide
+                        await new Promise(resolve => setTimeout(resolve, 400));
 
                         // Request permission from browser
                         try {
                             const permission = await Notification.requestPermission();
                             // Reopen settings modal
                             modal.style.display = '';
+                            modal.style.zIndex = originalZIndex || '';
+                            modal.style.visibility = '';
+                            modal.style.opacity = '';
                             modal.classList.add('show');
 
                             if (permission === 'granted') {
@@ -8293,6 +8300,9 @@
                         } catch (e) {
                             // Reopen settings modal on error too
                             modal.style.display = '';
+                            modal.style.zIndex = originalZIndex || '';
+                            modal.style.visibility = '';
+                            modal.style.opacity = '';
                             modal.classList.add('show');
                             checkbox.checked = false;
                             document.getElementById('notification-permission-notice').style.display = 'flex';
@@ -8409,7 +8419,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-23-g3eb94c2 (3eb94c2)" data-commit-time="Commit: 2026-01-14  1:55 PM CST" data-build-time="Build: 2026-01-14  1:56 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-24-g20d5ba9 (20d5ba9)" data-commit-time="Commit: 2026-01-14  1:56 PM CST" data-build-time="Build: 2026-01-14  1:57 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
