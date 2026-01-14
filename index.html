@@ -8272,10 +8272,30 @@
                     setTimeout(() => openSettingsModal(), 300);
                 });
             } else {
-                // Permission denied - show message
-                desc.textContent = 'Notifications are blocked by your browser';
-                container.innerHTML = `<span style="color: var(--text-muted); font-size: 0.8rem;">Blocked</span>`;
-                notice.style.display = 'flex';
+                // Permission denied - show button to see instructions
+                desc.textContent = 'Notifications are blocked';
+                container.innerHTML = `
+                    <button class="settings-btn" id="show-notif-help-btn" style="width: auto; padding: 6px 12px; font-size: 0.75rem;">
+                        How to enable
+                    </button>
+                `;
+                notice.style.display = 'none';
+
+                document.getElementById('show-notif-help-btn').addEventListener('click', function() {
+                    // Show instructions inline
+                    const item = document.getElementById('notifications-setting-item');
+                    item.innerHTML = `
+                        <div style="width: 100%;">
+                            <div class="settings-item-title" style="margin-bottom: 8px;">How to enable notifications</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                                <div style="margin-bottom: 6px;"><strong>1.</strong> Click the <strong>lock icon</strong> in your browser's address bar</div>
+                                <div style="margin-bottom: 6px;"><strong>2.</strong> Find <strong>"Notifications"</strong> in the menu</div>
+                                <div style="margin-bottom: 6px;"><strong>3.</strong> Change it to <strong>"Allow"</strong></div>
+                                <div><strong>4.</strong> Refresh this page</div>
+                            </div>
+                        </div>
+                    `;
+                });
             }
         }
 
@@ -8405,7 +8425,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-27-g6a8532b (6a8532b)" data-commit-time="Commit: 2026-01-14  2:02 PM CST" data-build-time="Build: 2026-01-14  2:03 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-28-gca75884 (ca75884)" data-commit-time="Commit: 2026-01-14  2:03 PM CST" data-build-time="Build: 2026-01-14  2:04 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
