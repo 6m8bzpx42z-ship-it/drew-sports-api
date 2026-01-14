@@ -8263,10 +8263,15 @@
                         updateNotificationButton();
                         showShareToast('Score alerts enabled!');
                     } else if (Notification.permission === 'default') {
+                        // Close settings modal so browser permission popup is visible
+                        document.getElementById('settings-modal').classList.remove('show');
+
                         // Request permission from browser
-                        showShareToast('Please allow notifications in the popup...');
                         try {
                             const permission = await Notification.requestPermission();
+                            // Reopen settings modal
+                            document.getElementById('settings-modal').classList.add('show');
+
                             if (permission === 'granted') {
                                 checkbox.checked = true;
                                 notificationsEnabled = true;
@@ -8280,6 +8285,8 @@
                                 showShareToast('Notifications blocked by browser');
                             }
                         } catch (e) {
+                            // Reopen settings modal on error too
+                            document.getElementById('settings-modal').classList.add('show');
                             checkbox.checked = false;
                             document.getElementById('notification-permission-notice').style.display = 'flex';
                             showShareToast('Could not request notification permission');
@@ -8395,7 +8402,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-21-g7564e7d (7564e7d)" data-commit-time="Commit: 2026-01-14  1:52 PM CST" data-build-time="Build: 2026-01-14  1:53 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-22-g142865b (142865b)" data-commit-time="Commit: 2026-01-14  1:53 PM CST" data-build-time="Build: 2026-01-14  1:55 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
