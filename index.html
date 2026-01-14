@@ -8300,15 +8300,12 @@
                 }
             }
 
-            // Handle clicks on the toggle label - determine intent BEFORE the click toggles checkbox
+            // Handle clicks on the toggle - use notificationsEnabled state directly
             notifLabel.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                // Since click already toggled checkbox, current state is OPPOSITE of what user wants
-                // If checkbox is now checked, user clicked to enable (was unchecked)
-                // If checkbox is now unchecked, user clicked to disable (was checked)
-                const checkbox = document.getElementById('settings-notifications');
-                const wantToEnable = checkbox.checked; // Already toggled by click
+                // Toggle based on current notificationsEnabled state, not checkbox
+                const wantToEnable = !notificationsEnabled;
                 handleNotificationToggle(wantToEnable);
             });
 
@@ -8398,7 +8395,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-20-g4ee0e13 (4ee0e13)" data-commit-time="Commit: 2026-01-14  1:50 PM CST" data-build-time="Build: 2026-01-14  1:52 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-21-g7564e7d (7564e7d)" data-commit-time="Commit: 2026-01-14  1:52 PM CST" data-build-time="Build: 2026-01-14  1:53 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
