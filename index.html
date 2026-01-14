@@ -5670,10 +5670,10 @@
                         return results;
                     };
 
-                    // Fetch both current and previous season for complete h2h history
+                    // Fetch regular season (seasontype=2) for both current and previous season
                     const [currentRes, prevRes] = await Promise.all([
-                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}`),
-                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason - 1}`)
+                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}&seasontype=2`),
+                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason - 1}&seasontype=2`)
                     ]);
 
                     const [currentData, prevData] = await Promise.all([currentRes.json(), prevRes.json()]);
@@ -7939,7 +7939,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-8-gf934303 (f934303)" data-commit-time="Commit: 2026-01-14  1:08 PM CST" data-build-time="Build: 2026-01-14  1:16 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-9-gb2effb7 (b2effb7)" data-commit-time="Commit: 2026-01-14  1:16 PM CST" data-build-time="Build: 2026-01-14  1:19 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
