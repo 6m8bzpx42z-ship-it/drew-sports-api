@@ -258,15 +258,16 @@
         .favorite-team-section {
             background: var(--bg-card);
             border-radius: 12px;
-            padding: 12px;
+            padding: 15px;
             margin-bottom: 15px;
         }
 
         .favorite-team-section label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         .favorite-team-select {
@@ -278,6 +279,81 @@
             border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
+            display: none;
+        }
+
+        .team-logo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .team-logo-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .team-logo-option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05);
+        }
+
+        [data-theme="light"] .team-logo-option {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        [data-theme="light"] .team-logo-option:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .team-logo-option.selected {
+            border-color: var(--accent-success);
+            background: rgba(104, 211, 145, 0.15);
+            box-shadow: 0 0 15px rgba(104, 211, 145, 0.3);
+        }
+
+        .team-logo-option img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .team-logo-option .team-abbr {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .team-logo-option.selected .team-abbr {
+            color: var(--accent-success);
+        }
+
+        .clear-favorite-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-favorite-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
         }
 
         .favorite-team-select:focus {
@@ -3115,16 +3191,38 @@
         }
 
         .comparison-stats {
-            padding: 0 20px 20px;
+            padding: 10px 15px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            margin: 0 10px 10px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        [data-theme="light"] .comparison-stats {
+            background: rgba(255, 255, 255, 0.7);
         }
 
         .comparison-stat-row {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             gap: 10px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             align-items: center;
+            border-radius: 6px;
+        }
+
+        .comparison-stat-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] .comparison-stat-row {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        [data-theme="light"] .comparison-stat-row:hover {
+            background: rgba(0, 0, 0, 0.03);
         }
 
         .comparison-stat-row:last-child {
@@ -3134,6 +3232,12 @@
         .comparison-stat-value {
             font-size: 1.1rem;
             font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] .comparison-stat-value {
+            text-shadow: none;
         }
 
         .comparison-stat-value.left {
@@ -3146,13 +3250,16 @@
 
         .comparison-stat-value.better {
             color: var(--accent-success);
+            text-shadow: 0 0 10px rgba(104, 211, 145, 0.4);
         }
 
         .comparison-stat-label {
             text-align: center;
             font-size: 0.7rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.03em;
         }
 
         .compare-players-btn {
@@ -4410,58 +4517,11 @@
             </div>
 
             <div class="favorite-team-section">
-                <label for="favorite-team">Your favorite team (shown first):</label>
-                <select id="favorite-team" class="favorite-team-select">
-                    <option value="">-- Select a team --</option>
-                    <optgroup label="AFC East">
-                        <option value="Buffalo Bills">Buffalo Bills</option>
-                        <option value="Miami Dolphins">Miami Dolphins</option>
-                        <option value="New England Patriots">New England Patriots</option>
-                        <option value="New York Jets">New York Jets</option>
-                    </optgroup>
-                    <optgroup label="AFC North">
-                        <option value="Baltimore Ravens">Baltimore Ravens</option>
-                        <option value="Cincinnati Bengals">Cincinnati Bengals</option>
-                        <option value="Cleveland Browns">Cleveland Browns</option>
-                        <option value="Pittsburgh Steelers">Pittsburgh Steelers</option>
-                    </optgroup>
-                    <optgroup label="AFC South">
-                        <option value="Houston Texans">Houston Texans</option>
-                        <option value="Indianapolis Colts">Indianapolis Colts</option>
-                        <option value="Jacksonville Jaguars">Jacksonville Jaguars</option>
-                        <option value="Tennessee Titans">Tennessee Titans</option>
-                    </optgroup>
-                    <optgroup label="AFC West">
-                        <option value="Denver Broncos">Denver Broncos</option>
-                        <option value="Kansas City Chiefs">Kansas City Chiefs</option>
-                        <option value="Las Vegas Raiders">Las Vegas Raiders</option>
-                        <option value="Los Angeles Chargers">Los Angeles Chargers</option>
-                    </optgroup>
-                    <optgroup label="NFC East">
-                        <option value="Dallas Cowboys">Dallas Cowboys</option>
-                        <option value="New York Giants">New York Giants</option>
-                        <option value="Philadelphia Eagles">Philadelphia Eagles</option>
-                        <option value="Washington Commanders">Washington Commanders</option>
-                    </optgroup>
-                    <optgroup label="NFC North">
-                        <option value="Chicago Bears">Chicago Bears</option>
-                        <option value="Detroit Lions">Detroit Lions</option>
-                        <option value="Green Bay Packers">Green Bay Packers</option>
-                        <option value="Minnesota Vikings">Minnesota Vikings</option>
-                    </optgroup>
-                    <optgroup label="NFC South">
-                        <option value="Atlanta Falcons">Atlanta Falcons</option>
-                        <option value="Carolina Panthers">Carolina Panthers</option>
-                        <option value="New Orleans Saints">New Orleans Saints</option>
-                        <option value="Tampa Bay Buccaneers">Tampa Bay Buccaneers</option>
-                    </optgroup>
-                    <optgroup label="NFC West">
-                        <option value="Arizona Cardinals">Arizona Cardinals</option>
-                        <option value="Los Angeles Rams">Los Angeles Rams</option>
-                        <option value="San Francisco 49ers">San Francisco 49ers</option>
-                        <option value="Seattle Seahawks">Seattle Seahawks</option>
-                    </optgroup>
-                </select>
+                <label>Select your favorite team:</label>
+                <div class="team-logo-grid" id="team-logo-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+                <button class="clear-favorite-btn" id="clear-favorite-btn" style="display: none;">Clear Selection</button>
             </div>
 
             <div class="games-container" id="games-container">
@@ -7050,16 +7110,78 @@
             });
         });
 
-        // Favorite team
+        // Favorite team - Logo Grid
+        const nflTeams = [
+            { name: 'Arizona Cardinals', abbr: 'ARI' },
+            { name: 'Atlanta Falcons', abbr: 'ATL' },
+            { name: 'Baltimore Ravens', abbr: 'BAL' },
+            { name: 'Buffalo Bills', abbr: 'BUF' },
+            { name: 'Carolina Panthers', abbr: 'CAR' },
+            { name: 'Chicago Bears', abbr: 'CHI' },
+            { name: 'Cincinnati Bengals', abbr: 'CIN' },
+            { name: 'Cleveland Browns', abbr: 'CLE' },
+            { name: 'Dallas Cowboys', abbr: 'DAL' },
+            { name: 'Denver Broncos', abbr: 'DEN' },
+            { name: 'Detroit Lions', abbr: 'DET' },
+            { name: 'Green Bay Packers', abbr: 'GB' },
+            { name: 'Houston Texans', abbr: 'HOU' },
+            { name: 'Indianapolis Colts', abbr: 'IND' },
+            { name: 'Jacksonville Jaguars', abbr: 'JAX' },
+            { name: 'Kansas City Chiefs', abbr: 'KC' },
+            { name: 'Las Vegas Raiders', abbr: 'LV' },
+            { name: 'Los Angeles Chargers', abbr: 'LAC' },
+            { name: 'Los Angeles Rams', abbr: 'LAR' },
+            { name: 'Miami Dolphins', abbr: 'MIA' },
+            { name: 'Minnesota Vikings', abbr: 'MIN' },
+            { name: 'New England Patriots', abbr: 'NE' },
+            { name: 'New Orleans Saints', abbr: 'NO' },
+            { name: 'New York Giants', abbr: 'NYG' },
+            { name: 'New York Jets', abbr: 'NYJ' },
+            { name: 'Philadelphia Eagles', abbr: 'PHI' },
+            { name: 'Pittsburgh Steelers', abbr: 'PIT' },
+            { name: 'San Francisco 49ers', abbr: 'SF' },
+            { name: 'Seattle Seahawks', abbr: 'SEA' },
+            { name: 'Tampa Bay Buccaneers', abbr: 'TB' },
+            { name: 'Tennessee Titans', abbr: 'TEN' },
+            { name: 'Washington Commanders', abbr: 'WSH' }
+        ];
+
         function initFavoriteTeam() {
-            const select = document.getElementById('favorite-team');
-            select.value = favoriteTeam;
-            select.addEventListener('change', e => {
-                favoriteTeam = e.target.value;
-                if (favoriteTeam) localStorage.setItem('favoriteTeam', favoriteTeam);
-                else localStorage.removeItem('favoriteTeam');
+            const grid = document.getElementById('team-logo-grid');
+            const clearBtn = document.getElementById('clear-favorite-btn');
+
+            // Render logo grid
+            grid.innerHTML = nflTeams.map(team => `
+                <div class="team-logo-option ${favoriteTeam === team.name ? 'selected' : ''}"
+                     data-team="${team.name}"
+                     onclick="selectFavoriteTeam('${team.name.replace(/'/g, "\\'")}')">
+                    <img src="https://a.espncdn.com/i/teamlogos/nfl/500/${team.abbr.toLowerCase()}.png" alt="${team.name}">
+                    <span class="team-abbr">${team.abbr}</span>
+                </div>
+            `).join('');
+
+            // Show clear button if team selected
+            clearBtn.style.display = favoriteTeam ? 'block' : 'none';
+            clearBtn.onclick = () => {
+                favoriteTeam = '';
+                localStorage.removeItem('favoriteTeam');
+                document.querySelectorAll('.team-logo-option').forEach(el => el.classList.remove('selected'));
+                clearBtn.style.display = 'none';
                 fetchScores();
+            };
+        }
+
+        function selectFavoriteTeam(teamName) {
+            favoriteTeam = teamName;
+            localStorage.setItem('favoriteTeam', teamName);
+
+            // Update UI
+            document.querySelectorAll('.team-logo-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.team === teamName);
             });
+            document.getElementById('clear-favorite-btn').style.display = 'block';
+
+            fetchScores();
         }
 
         // ============================================
@@ -8506,7 +8628,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-33-g9d8f1b5 (9d8f1b5)" data-commit-time="Commit: 2026-01-14  2:57 PM CST" data-build-time="Build: 2026-01-14  3:06 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-34-gcab4ff1 (cab4ff1)" data-commit-time="Commit: 2026-01-14  3:06 PM CST" data-build-time="Build: 2026-01-14  3:13 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
