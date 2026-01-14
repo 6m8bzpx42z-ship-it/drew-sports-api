@@ -5670,23 +5670,17 @@
                         return results;
                     };
 
-                    // Fetch regular season (2) and postseason (3) for current and previous season
-                    const [curReg, curPost, prevReg, prevPost] = await Promise.all([
+                    // Fetch regular season only (seasontype=2) for current and previous season
+                    const [currentRes, prevRes] = await Promise.all([
                         fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}&seasontype=2`),
-                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}&seasontype=3`),
-                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason - 1}&seasontype=2`),
-                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason - 1}&seasontype=3`)
+                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason - 1}&seasontype=2`)
                     ]);
 
-                    const [curRegData, curPostData, prevRegData, prevPostData] = await Promise.all([
-                        curReg.json(), curPost.json(), prevReg.json(), prevPost.json()
-                    ]);
+                    const [currentData, prevData] = await Promise.all([currentRes.json(), prevRes.json()]);
 
                     matchups = [
-                        ...processEvents(curRegData.events),
-                        ...processEvents(curPostData.events),
-                        ...processEvents(prevRegData.events),
-                        ...processEvents(prevPostData.events)
+                        ...processEvents(currentData.events),
+                        ...processEvents(prevData.events)
                     ];
 
                     matchups.sort((a, b) => b.date - a.date);
@@ -7945,7 +7939,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-10-g02c0a18 (02c0a18)" data-commit-time="Commit: 2026-01-14  1:19 PM CST" data-build-time="Build: 2026-01-14  1:22 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-11-g0b6b8a0 (0b6b8a0)" data-commit-time="Commit: 2026-01-14  1:22 PM CST" data-build-time="Build: 2026-01-14  1:26 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
