@@ -3200,6 +3200,674 @@
         .moneyline-value.underdog {
             color: var(--accent-success);
         }
+
+        /* ============================================
+           FEATURE: PLAY-BY-PLAY FEED
+           ============================================ */
+        .play-by-play-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .pbp-play {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            border-left: 3px solid var(--play-color, var(--text-muted));
+        }
+
+        [data-theme="light"] .pbp-play {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .pbp-play.scoring {
+            background: rgba(104, 211, 145, 0.15);
+            border-left-color: var(--accent-success);
+        }
+
+        .pbp-play.turnover {
+            background: rgba(252, 129, 129, 0.15);
+            border-left-color: var(--accent-danger);
+        }
+
+        .pbp-time {
+            min-width: 55px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .pbp-team-logo {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .pbp-text {
+            flex: 1;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .pbp-down {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-right: 5px;
+        }
+
+        .pbp-yards {
+            color: var(--accent-success);
+            font-weight: 600;
+        }
+
+        .pbp-yards.negative {
+            color: var(--accent-danger);
+        }
+
+        .pbp-quarter-header {
+            text-align: center;
+            padding: 8px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .pbp-live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.7rem;
+            color: var(--accent-danger);
+            margin-bottom: 10px;
+        }
+
+        /* ============================================
+           FEATURE: GAME CAST MINI-VIEW (Floating Widget)
+           ============================================ */
+        .game-cast-mini {
+            position: fixed;
+            bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + 10px);
+            left: 10px;
+            right: 10px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 12px 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            z-index: 900;
+            display: none;
+            border: 1px solid var(--border-color);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .game-cast-mini.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .game-cast-mini-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .game-cast-mini-teams {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .game-cast-mini-teams img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .game-cast-mini-score {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-success);
+        }
+
+        .game-cast-mini-status {
+            font-size: 0.7rem;
+            color: var(--accent-danger);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .game-cast-mini-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .game-cast-mini-play {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 10px;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        [data-theme="light"] .game-cast-mini-play {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* ============================================
+           FEATURE: SEASON STATS DASHBOARD
+           ============================================ */
+        .season-stats-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .season-stats-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .season-stats-title {
+            font-size: 1rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .season-stats-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .season-stat-tab {
+            background: var(--bg-primary);
+            border: none;
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .season-stat-tab.active {
+            background: var(--accent-success);
+            color: var(--bg-primary);
+        }
+
+        .season-stat-category {
+            display: none;
+        }
+
+        .season-stat-category.active {
+            display: block;
+        }
+
+        .season-stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .season-stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .season-stat-rank {
+            width: 24px;
+            height: 24px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .season-stat-rank.top-3 {
+            background: var(--accent-secondary);
+            color: var(--bg-primary);
+        }
+
+        .season-stat-player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .season-stat-headshot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg-primary);
+        }
+
+        .season-stat-info {
+            flex: 1;
+        }
+
+        .season-stat-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .season-stat-team {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .season-stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-success);
+        }
+
+        /* ============================================
+           FEATURE: GAME PREDICTIONS
+           ============================================ */
+        .prediction-section {
+            margin-top: 10px;
+            padding: 12px;
+            background: rgba(254, 202, 87, 0.1);
+            border: 1px solid rgba(254, 202, 87, 0.3);
+            border-radius: 10px;
+        }
+
+        .prediction-title {
+            font-size: 0.75rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .prediction-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .prediction-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 10px;
+            background: var(--bg-primary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .prediction-btn:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .prediction-btn.selected {
+            border-color: var(--accent-success);
+            background: rgba(104, 211, 145, 0.15);
+        }
+
+        .prediction-btn img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .prediction-btn span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .prediction-btn.selected span {
+            color: var(--accent-success);
+            font-weight: 600;
+        }
+
+        .prediction-result {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .prediction-result.correct {
+            background: rgba(104, 211, 145, 0.2);
+            color: var(--accent-success);
+        }
+
+        .prediction-result.incorrect {
+            background: rgba(252, 129, 129, 0.2);
+            color: var(--accent-danger);
+        }
+
+        .prediction-stats {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .prediction-stats-title {
+            font-size: 0.9rem;
+            color: var(--accent-secondary);
+            margin-bottom: 10px;
+        }
+
+        .prediction-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .prediction-stat-box {
+            text-align: center;
+            padding: 10px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+        }
+
+        .prediction-stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .prediction-stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* ============================================
+           FEATURE: FAVORITES/WATCHLIST (Multi-team)
+           ============================================ */
+        .watchlist-section {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .watchlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .watchlist-title {
+            font-size: 0.85rem;
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        .watchlist-edit-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 5px 10px;
+        }
+
+        .watchlist-teams {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .watchlist-team {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            background: var(--bg-primary);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .watchlist-team img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .watchlist-team .remove-btn {
+            background: none;
+            border: none;
+            color: var(--accent-danger);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0 0 0 5px;
+            display: none;
+        }
+
+        .watchlist-section.editing .watchlist-team .remove-btn {
+            display: inline;
+        }
+
+        .watchlist-add-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            background: rgba(104, 211, 145, 0.2);
+            border: 1px dashed var(--accent-success);
+            border-radius: 20px;
+            color: var(--accent-success);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .watchlist-add-btn:hover {
+            background: rgba(104, 211, 145, 0.3);
+        }
+
+        .watchlist-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .watchlist-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .watchlist-modal-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .watchlist-modal.show .watchlist-modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .watchlist-modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .watchlist-modal-header h3 {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .watchlist-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .watchlist-modal-teams {
+            padding: 10px 15px;
+        }
+
+        .watchlist-modal-team {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .watchlist-modal-team:hover {
+            background: var(--bg-primary);
+        }
+
+        .watchlist-modal-team img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .watchlist-modal-team span {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .watchlist-modal-team .check {
+            color: var(--accent-success);
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .watchlist-modal-team.selected .check {
+            display: block;
+        }
+
+        /* ============================================
+           FEATURE: GAME CALENDAR EXPORT
+           ============================================ */
+        .calendar-export-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60A5FA;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .calendar-export-btn:hover {
+            background: rgba(59, 130, 246, 0.25);
+        }
+
+        /* ============================================
+           FEATURE: NOTIFICATION PERMISSION BUTTON
+           ============================================ */
+        .notification-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border: none;
+            color: var(--text-secondary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .notification-btn:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .notification-btn.enabled {
+            background: rgba(104, 211, 145, 0.2);
+            color: var(--accent-success);
+        }
+
+        .notification-btn .icon {
+            font-size: 1rem;
+        }
+
+        /* Stats View */
+        .stats-view-container {
+            padding: 0;
+        }
+
+        @media (min-width: 768px) {
+            .game-cast-mini {
+                left: 50%;
+                transform: translateX(-50%);
+                right: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -3234,6 +3902,36 @@
     </div>
     <div class="pull-indicator" id="pull-indicator">Release to refresh</div>
 
+    <!-- Game Cast Mini Widget (Floating) -->
+    <div class="game-cast-mini" id="game-cast-mini">
+        <button class="game-cast-mini-close" onclick="closeGameCastMini()">&times;</button>
+        <div class="game-cast-mini-header">
+            <div class="game-cast-mini-teams" id="mini-teams">
+                <!-- Populated dynamically -->
+            </div>
+            <div class="game-cast-mini-status" id="mini-status">
+                <span class="live-dot"></span>
+                <span id="mini-quarter">Q1</span>
+            </div>
+        </div>
+        <div class="game-cast-mini-play" id="mini-play">
+            Waiting for play data...
+        </div>
+    </div>
+
+    <!-- Watchlist Modal -->
+    <div class="watchlist-modal" id="watchlist-modal" onclick="closeWatchlistModal(event)">
+        <div class="watchlist-modal-content" onclick="event.stopPropagation()">
+            <div class="watchlist-modal-header">
+                <h3>Add Teams to Watchlist</h3>
+                <button class="watchlist-modal-close" onclick="closeWatchlistModal()">&times;</button>
+            </div>
+            <div class="watchlist-modal-teams" id="watchlist-modal-teams">
+                <!-- Teams populated dynamically -->
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <div class="header-top">
@@ -3266,12 +3964,46 @@
                 <span class="icon">⚡</span>
                 <span>Auto-refresh</span>
             </button>
+            <button class="quick-btn" id="notifications-btn">
+                <span class="icon">🔔</span>
+                <span>Alerts</span>
+            </button>
         </div>
 
         <div class="refresh-status" id="refresh-status"></div>
 
         <!-- Scores View -->
         <div class="page-view active" id="scores-view">
+            <!-- Watchlist Section -->
+            <div class="watchlist-section" id="watchlist-section" style="display: none;">
+                <div class="watchlist-header">
+                    <span class="watchlist-title">My Watchlist</span>
+                    <button class="watchlist-edit-btn" onclick="toggleWatchlistEdit()">Edit</button>
+                </div>
+                <div class="watchlist-teams" id="watchlist-teams">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Prediction Stats -->
+            <div class="prediction-stats" id="prediction-stats-section" style="display: none;">
+                <div class="prediction-stats-title">Your Prediction Record</div>
+                <div class="prediction-stats-grid">
+                    <div class="prediction-stat-box">
+                        <div class="prediction-stat-value" id="pred-correct">0</div>
+                        <div class="prediction-stat-label">Correct</div>
+                    </div>
+                    <div class="prediction-stat-box">
+                        <div class="prediction-stat-value" id="pred-total">0</div>
+                        <div class="prediction-stat-label">Total</div>
+                    </div>
+                    <div class="prediction-stat-box">
+                        <div class="prediction-stat-value" id="pred-pct">0%</div>
+                        <div class="prediction-stat-label">Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="favorite-team-section">
                 <label for="favorite-team">Your favorite team (shown first):</label>
                 <select id="favorite-team" class="favorite-team-select">
@@ -3363,6 +4095,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Season Stats View -->
+        <div class="page-view" id="stats-view">
+            <div class="season-stats-section">
+                <div class="season-stats-header">
+                    <span class="season-stats-title">Season Leaders</span>
+                </div>
+                <div class="season-stats-tabs">
+                    <button class="season-stat-tab active" onclick="switchStatCategory('passing')">Passing</button>
+                    <button class="season-stat-tab" onclick="switchStatCategory('rushing')">Rushing</button>
+                    <button class="season-stat-tab" onclick="switchStatCategory('receiving')">Receiving</button>
+                    <button class="season-stat-tab" onclick="switchStatCategory('defense')">Defense</button>
+                </div>
+                <div id="season-stats-content">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        Loading stats...
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -3375,13 +4128,13 @@
             <span class="icon">📊</span>
             <span>Standings</span>
         </button>
+        <button class="nav-item" data-view="stats">
+            <span class="icon">📈</span>
+            <span>Stats</span>
+        </button>
         <button class="nav-item" data-view="bracket">
             <span class="icon">🏆</span>
             <span>Bracket</span>
-        </button>
-        <button class="nav-item" id="nav-refresh">
-            <span class="icon">🔄</span>
-            <span>Refresh</span>
         </button>
     </nav>
 
@@ -4077,10 +4830,29 @@
                     // Live situation placeholder
                     if (isLive) {
                         html += `<div class="live-situation" id="situation-${index}"><div class="loading">Loading live data...</div></div>`;
+
+                        // NEW FEATURE: Game Cast Mini button for live games
+                        html += `
+                            <button class="expand-btn" style="background: rgba(252, 129, 129, 0.15); border: 1px solid rgba(252, 129, 129, 0.3);" onclick="showGameCastMini('${event.id}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}', '${away.team.logo}', '${home.team.logo}', '${away.score || 0}', '${home.score || 0}', '${status.shortDetail.replace(/'/g, "\\'")}')">
+                                <span>📺 Pin Live Score</span>
+                            </button>
+                        `;
+
+                        // NEW FEATURE: Play-by-Play for live games
+                        html += `
+                            <button class="expand-btn" onclick="togglePlayByPlay(${index}, '${event.id}')">
+                                <span>Play-by-Play</span>
+                                <span class="arrow">▼</span>
+                            </button>
+                            <div class="expandable-content" id="pbp-${index}"></div>
+                        `;
                     }
 
                     // Upcoming game buttons
                     if (isUpcoming) {
+                        // NEW FEATURE: Game Predictions
+                        html += renderPredictionSection(event.id, away, home, isUpcoming, status.completed);
+
                         html += `
                             <button class="expand-btn" onclick="toggleTeamComparison(${index}, '${away.team.id}', '${home.team.id}', '${away.team.displayName}', '${home.team.displayName}', '${away.team.logo}', '${home.team.logo}')">
                                 <span>📈 Team Comparison</span>
@@ -4097,6 +4869,14 @@
                                 <span class="arrow">▼</span>
                             </button>
                             <div class="expandable-content" id="injuries-${index}"></div>
+                        `;
+
+                        // NEW FEATURE: Calendar Export
+                        const venueName = stadium?.name || 'Stadium';
+                        html += `
+                            <button class="calendar-export-btn" onclick="exportToCalendar('${event.id}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}', '${gameDate.toISOString()}', '${venueName.replace(/'/g, "\\'")}')">
+                                <span>📅</span> Add to Calendar
+                            </button>
                         `;
                     }
 
@@ -4163,6 +4943,22 @@
                             </button>
                             <div class="expandable-content" id="scoring-${index}"></div>
                         `;
+
+                        // NEW FEATURE: Play-by-Play for completed games
+                        if (status.completed) {
+                            html += `
+                                <button class="expand-btn" onclick="togglePlayByPlay(${index}, '${event.id}')">
+                                    <span>Play-by-Play</span>
+                                    <span class="arrow">▼</span>
+                                </button>
+                                <div class="expandable-content" id="pbp-${index}"></div>
+                            `;
+                        }
+                    }
+
+                    // NEW FEATURE: Prediction result for completed games
+                    if (status.completed) {
+                        html += renderPredictionSection(event.id, away, home, false, status.completed);
                     }
 
                     // Highlights for completed games
@@ -4218,6 +5014,9 @@
 
                 // Check for score changes and animate
                 checkScoreChanges(events);
+
+                // NEW FEATURE: Check and send score notifications
+                checkAndNotifyScores(events);
 
                 // Update live games status
                 hasLiveGames = events.some(e => e.status.type.state === 'in');
@@ -4783,12 +5582,11 @@
                         return parseInt(scoreVal) || 0;
                     };
 
-                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}`);
-                    const data = await response.json();
+                    const processEvents = (events) => {
+                        const results = [];
+                        if (!events) return results;
 
-                    matchups = [];
-                    if (data.events) {
-                        data.events.forEach(event => {
+                        events.forEach(event => {
                             const comp = event.competitions?.[0];
                             const eventDate = new Date(event.date);
                             // Check if game is in the past (completed)
@@ -4799,22 +5597,40 @@
                             const hasHomeTeam = comp.competitors?.some(c => String(c.team?.id) === homeIdStr);
 
                             if (hasAwayTeam && hasHomeTeam) {
-                                const team1 = comp.competitors.find(c => String(c.team?.id) === awayIdStr);
-                                const team2 = comp.competitors.find(c => String(c.team?.id) === homeIdStr);
-                                const score1 = parseScore(team1?.score);
-                                const score2 = parseScore(team2?.score);
+                                // Find teams by their IDs (passed to function)
+                                const teamA = comp.competitors.find(c => String(c.team?.id) === awayIdStr);
+                                const teamB = comp.competitors.find(c => String(c.team?.id) === homeIdStr);
+                                const scoreA = parseScore(teamA?.score);
+                                const scoreB = parseScore(teamB?.score);
 
-                                matchups.push({
-                                    date: eventDate,
-                                    awayScore: score1,
-                                    homeScore: score2,
-                                    awayWon: score1 > score2
-                                });
+                                // Only include if both teams have scores (game completed)
+                                if (scoreA > 0 || scoreB > 0) {
+                                    results.push({
+                                        date: eventDate,
+                                        awayScore: scoreA,
+                                        homeScore: scoreB,
+                                        awayWon: scoreA > scoreB,
+                                        teamAName: teamA?.team?.displayName || awayName,
+                                        teamBName: teamB?.team?.displayName || homeName
+                                    });
+                                }
                             }
                         });
-                    }
+                        return results;
+                    };
 
-                    // Only show current season (2024) matchups
+                    // Fetch both current and previous season for complete h2h history
+                    const [currentRes, prevRes] = await Promise.all([
+                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason}`),
+                        fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${awayId}/schedule?season=${nflSeason - 1}`)
+                    ]);
+
+                    const [currentData, prevData] = await Promise.all([currentRes.json(), prevRes.json()]);
+
+                    matchups = [
+                        ...processEvents(currentData.events),
+                        ...processEvents(prevData.events)
+                    ];
 
                     matchups.sort((a, b) => b.date - a.date);
                     matchups = matchups.slice(0, 5);
@@ -5790,7 +6606,7 @@
             setupRefreshInterval();
         });
 
-        // Bottom nav - updated to support bracket view
+        // Bottom nav - updated to support bracket, stats views
         document.querySelectorAll('.nav-item[data-view]').forEach(item => {
             item.addEventListener('click', function() {
                 const view = this.dataset.view;
@@ -5809,12 +6625,11 @@
                 if (view === 'bracket' && !bracketData) {
                     fetchPlayoffBracket();
                 }
+                // Load season stats when switching to stats view
+                if (view === 'stats' && !seasonStatsData) {
+                    fetchSeasonStats();
+                }
             });
-        });
-
-        document.getElementById('nav-refresh').addEventListener('click', () => {
-            fetchScores();
-            if (currentView === 'standings') fetchStandings();
         });
 
         // Conference tabs
@@ -6368,15 +7183,691 @@
             return eliminatedTeams.has(teamName);
         }
 
+        // ============================================
+        // NEW FEATURE: PLAY-BY-PLAY FEED
+        // ============================================
+        const playByPlayCache = {};
+
+        async function togglePlayByPlay(index, eventId) {
+            const content = document.getElementById(`pbp-${index}`);
+            const btn = content.previousElementSibling;
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                btn.classList.remove('expanded');
+                return;
+            }
+
+            btn.querySelector('span:first-child').textContent = 'Loading...';
+
+            try {
+                let data = playByPlayCache[eventId];
+                if (!data) {
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                    data = await response.json();
+                    playByPlayCache[eventId] = data;
+                }
+
+                const drives = data.drives?.previous || [];
+                const currentDrive = data.drives?.current;
+                const header = data.header;
+
+                // Get team info
+                const teams = {};
+                if (header?.competitions?.[0]) {
+                    header.competitions[0].competitors.forEach(c => {
+                        teams[c.id] = {
+                            abbr: c.team.abbreviation,
+                            name: c.team.displayName,
+                            logo: c.team.logos?.[0]?.href || '',
+                            color: teamColors[c.team.displayName]?.primary || '#666'
+                        };
+                    });
+                }
+
+                let html = '<div class="play-by-play-container">';
+
+                // Current drive plays (most recent)
+                if (currentDrive?.plays?.length > 0) {
+                    html += '<div class="pbp-live-indicator"><span class="live-dot"></span> Live Drive</div>';
+                    currentDrive.plays.slice().reverse().slice(0, 10).forEach(play => {
+                        html += renderPlay(play, teams, currentDrive.team?.id);
+                    });
+                }
+
+                // Previous drives
+                const recentDrives = drives.slice().reverse().slice(0, 3);
+                recentDrives.forEach(drive => {
+                    if (drive.plays?.length > 0) {
+                        const resultText = drive.result || drive.displayResult || '';
+                        html += `<div class="pbp-quarter-header">Drive Result: ${resultText}</div>`;
+                        drive.plays.slice().reverse().slice(0, 5).forEach(play => {
+                            html += renderPlay(play, teams, drive.team?.id);
+                        });
+                    }
+                });
+
+                if (html === '<div class="play-by-play-container">') {
+                    html += '<div style="text-align:center;color:var(--text-muted);padding:20px;">No play data available yet</div>';
+                }
+
+                html += '</div>';
+                content.innerHTML = html;
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            } catch (e) {
+                console.error('Play-by-play error:', e);
+                content.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:15px;">Failed to load plays</div>';
+                content.classList.add('show');
+                btn.classList.add('expanded');
+            }
+
+            btn.querySelector('span:first-child').textContent = 'Play-by-Play';
+        }
+
+        function renderPlay(play, teams, teamId) {
+            const team = teams[teamId] || { logo: '', color: '#666' };
+            const isScoring = play.scoringPlay || play.type?.text?.toLowerCase().includes('touchdown') || play.type?.text?.toLowerCase().includes('field goal');
+            const isTurnover = play.type?.text?.toLowerCase().includes('interception') || play.type?.text?.toLowerCase().includes('fumble');
+
+            const yardsGained = play.statYardage || 0;
+            const yardsClass = yardsGained < 0 ? 'negative' : '';
+
+            return `
+                <div class="pbp-play ${isScoring ? 'scoring' : ''} ${isTurnover ? 'turnover' : ''}" style="--play-color: ${team.color}">
+                    <div class="pbp-time">${play.clock?.displayValue || ''}<br>Q${play.period?.number || ''}</div>
+                    <img src="${team.logo}" class="pbp-team-logo" alt="" onerror="this.style.display='none'">
+                    <div class="pbp-text">
+                        ${play.start?.down ? `<span class="pbp-down">${play.start.down}${getOrdinal(play.start.down)} & ${play.start.distance}</span>` : ''}
+                        ${play.text || play.type?.text || 'Play'}
+                        ${yardsGained !== 0 ? ` <span class="pbp-yards ${yardsClass}">(${yardsGained > 0 ? '+' : ''}${yardsGained} yds)</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // NEW FEATURE: SCORING NOTIFICATIONS
+        // ============================================
+        let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+        let lastNotifiedScores = JSON.parse(localStorage.getItem('lastNotifiedScores') || '{}');
+
+        async function requestNotificationPermission() {
+            if (!('Notification' in window)) {
+                showShareToast('Notifications not supported');
+                return;
+            }
+
+            if (Notification.permission === 'granted') {
+                notificationsEnabled = !notificationsEnabled;
+                localStorage.setItem('notificationsEnabled', notificationsEnabled);
+                updateNotificationButton();
+                showShareToast(notificationsEnabled ? 'Score alerts enabled!' : 'Score alerts disabled');
+            } else if (Notification.permission !== 'denied') {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    notificationsEnabled = true;
+                    localStorage.setItem('notificationsEnabled', 'true');
+                    updateNotificationButton();
+                    showShareToast('Score alerts enabled!');
+                }
+            } else {
+                showShareToast('Please enable notifications in browser settings');
+            }
+        }
+
+        function updateNotificationButton() {
+            const btn = document.getElementById('notifications-btn');
+            if (btn) {
+                btn.classList.toggle('active', notificationsEnabled);
+                btn.querySelector('span:last-child').textContent = notificationsEnabled ? 'Alerts On' : 'Alerts';
+            }
+        }
+
+        function checkAndNotifyScores(events) {
+            if (!notificationsEnabled || Notification.permission !== 'granted') return;
+
+            const watchedTeams = getWatchlist();
+            if (watchedTeams.length === 0 && !favoriteTeam) return;
+
+            events.forEach(event => {
+                const comp = event.competitions[0];
+                const home = comp.competitors.find(c => c.homeAway === 'home');
+                const away = comp.competitors.find(c => c.homeAway === 'away');
+                const status = event.status.type;
+
+                if (status.state !== 'in') return; // Only live games
+
+                const homeScore = parseInt(home.score) || 0;
+                const awayScore = parseInt(away.score) || 0;
+                const homeTeamName = home.team.displayName;
+                const awayTeamName = away.team.displayName;
+
+                // Check if this is a watched team
+                const isWatched = watchedTeams.includes(homeTeamName) ||
+                                  watchedTeams.includes(awayTeamName) ||
+                                  homeTeamName === favoriteTeam ||
+                                  awayTeamName === favoriteTeam;
+
+                if (!isWatched) return;
+
+                const eventId = event.id;
+                const prevScores = lastNotifiedScores[eventId];
+
+                if (prevScores) {
+                    if (homeScore > prevScores.home) {
+                        sendScoreNotification(homeTeamName, homeScore, awayTeamName, awayScore, home.team.logo);
+                    }
+                    if (awayScore > prevScores.away) {
+                        sendScoreNotification(awayTeamName, awayScore, homeTeamName, homeScore, away.team.logo);
+                    }
+                }
+
+                lastNotifiedScores[eventId] = { home: homeScore, away: awayScore };
+            });
+
+            localStorage.setItem('lastNotifiedScores', JSON.stringify(lastNotifiedScores));
+        }
+
+        function sendScoreNotification(scoringTeam, scoringTeamScore, otherTeam, otherTeamScore, logo) {
+            if (Notification.permission === 'granted') {
+                const notification = new Notification(`${scoringTeam} Scores!`, {
+                    body: `${scoringTeam} ${scoringTeamScore} - ${otherTeamScore} ${otherTeam}`,
+                    icon: logo,
+                    badge: logo,
+                    tag: `score-${scoringTeam}-${Date.now()}`,
+                    requireInteraction: false
+                });
+                setTimeout(() => notification.close(), 5000);
+            }
+        }
+
+        // ============================================
+        // NEW FEATURE: GAME CAST MINI-VIEW
+        // ============================================
+        let gameCastEventId = null;
+        let gameCastInterval = null;
+
+        function showGameCastMini(eventId, awayTeam, homeTeam, awayLogo, homeLogo, awayScore, homeScore, quarter) {
+            gameCastEventId = eventId;
+            const mini = document.getElementById('game-cast-mini');
+            const teamsEl = document.getElementById('mini-teams');
+            const statusEl = document.getElementById('mini-quarter');
+
+            teamsEl.innerHTML = `
+                <img src="${awayLogo}" alt="">
+                <span class="game-cast-mini-score">${awayScore} - ${homeScore}</span>
+                <img src="${homeLogo}" alt="">
+            `;
+            statusEl.textContent = quarter;
+
+            mini.classList.add('visible');
+
+            // Start polling for updates
+            if (gameCastInterval) clearInterval(gameCastInterval);
+            gameCastInterval = setInterval(() => updateGameCastMini(eventId), 15000);
+            updateGameCastMini(eventId);
+        }
+
+        async function updateGameCastMini(eventId) {
+            try {
+                const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`);
+                const data = await response.json();
+
+                const situation = data.situation;
+                const header = data.header;
+
+                if (!header?.competitions?.[0]) return;
+
+                const comp = header.competitions[0];
+                const home = comp.competitors.find(c => c.homeAway === 'home');
+                const away = comp.competitors.find(c => c.homeAway === 'away');
+
+                const teamsEl = document.getElementById('mini-teams');
+                const statusEl = document.getElementById('mini-quarter');
+                const playEl = document.getElementById('mini-play');
+
+                teamsEl.innerHTML = `
+                    <img src="${away.team.logos?.[0]?.href || ''}" alt="">
+                    <span class="game-cast-mini-score">${away.score || 0} - ${home.score || 0}</span>
+                    <img src="${home.team.logos?.[0]?.href || ''}" alt="">
+                `;
+
+                statusEl.textContent = comp.status?.type?.shortDetail || 'Live';
+
+                if (situation?.lastPlay?.text) {
+                    playEl.textContent = situation.lastPlay.text;
+                } else {
+                    playEl.textContent = 'Waiting for next play...';
+                }
+
+                // Stop if game ended
+                if (comp.status?.type?.completed) {
+                    closeGameCastMini();
+                }
+            } catch (e) {
+                console.error('Game cast mini update error:', e);
+            }
+        }
+
+        function closeGameCastMini() {
+            document.getElementById('game-cast-mini').classList.remove('visible');
+            if (gameCastInterval) {
+                clearInterval(gameCastInterval);
+                gameCastInterval = null;
+            }
+            gameCastEventId = null;
+        }
+
+        // ============================================
+        // NEW FEATURE: SEASON STATS DASHBOARD
+        // ============================================
+        let seasonStatsData = null;
+        let currentStatCategory = 'passing';
+
+        async function fetchSeasonStats() {
+            const container = document.getElementById('season-stats-content');
+            container.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Loading stats...</div>';
+
+            try {
+                // Fetch league leaders
+                const response = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/leaders');
+                seasonStatsData = await response.json();
+                renderSeasonStats();
+            } catch (e) {
+                console.error('Season stats error:', e);
+                container.innerHTML = '<div style="text-align:center;color:var(--accent-danger);padding:20px;">Failed to load stats</div>';
+            }
+        }
+
+        function switchStatCategory(category) {
+            currentStatCategory = category;
+
+            // Update tabs
+            document.querySelectorAll('.season-stat-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent.toLowerCase() === category);
+            });
+
+            renderSeasonStats();
+        }
+
+        function renderSeasonStats() {
+            const container = document.getElementById('season-stats-content');
+            if (!seasonStatsData) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">No stats available</div>';
+                return;
+            }
+
+            const categories = seasonStatsData.leaders?.categories || [];
+            let targetCategory = null;
+
+            // Find the appropriate category
+            switch (currentStatCategory) {
+                case 'passing':
+                    targetCategory = categories.find(c => c.name === 'passingYards' || c.displayName?.toLowerCase().includes('passing'));
+                    break;
+                case 'rushing':
+                    targetCategory = categories.find(c => c.name === 'rushingYards' || c.displayName?.toLowerCase().includes('rushing'));
+                    break;
+                case 'receiving':
+                    targetCategory = categories.find(c => c.name === 'receivingYards' || c.displayName?.toLowerCase().includes('receiving'));
+                    break;
+                case 'defense':
+                    targetCategory = categories.find(c => c.name === 'totalTackles' || c.name === 'sacks' || c.displayName?.toLowerCase().includes('tackle'));
+                    break;
+            }
+
+            if (!targetCategory?.leaders?.length) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">No stats available for this category</div>';
+                return;
+            }
+
+            const leaders = targetCategory.leaders.slice(0, 10);
+            const statLabel = targetCategory.displayName || targetCategory.name;
+
+            let html = `<div class="season-stat-category active">`;
+            leaders.forEach((leader, index) => {
+                const athlete = leader.athlete;
+                const value = leader.displayValue || leader.value || '0';
+
+                html += `
+                    <div class="season-stat-item" onclick="showPlayerSpotlight('${athlete.id}', '${(athlete.team?.displayName || '').replace(/'/g, "\\'")}')">
+                        <div class="season-stat-rank ${index < 3 ? 'top-3' : ''}">${index + 1}</div>
+                        <div class="season-stat-player">
+                            <img src="${athlete.headshot?.href || ''}" class="season-stat-headshot" alt="" onerror="this.style.display='none'">
+                            <div class="season-stat-info">
+                                <div class="season-stat-name">${athlete.shortName || athlete.displayName}</div>
+                                <div class="season-stat-team">${athlete.team?.abbreviation || ''} - ${athlete.position?.abbreviation || ''}</div>
+                            </div>
+                        </div>
+                        <div class="season-stat-value">${value}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // NEW FEATURE: GAME PREDICTIONS
+        // ============================================
+        let predictions = JSON.parse(localStorage.getItem('gamePredictions') || '{}');
+
+        function makePrediction(eventId, teamName, teamLogo, awayTeam, homeTeam) {
+            predictions[eventId] = {
+                predictedWinner: teamName,
+                awayTeam: awayTeam,
+                homeTeam: homeTeam,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('gamePredictions', JSON.stringify(predictions));
+            updatePredictionUI(eventId);
+            updatePredictionStats();
+        }
+
+        function getPrediction(eventId) {
+            return predictions[eventId] || null;
+        }
+
+        function updatePredictionUI(eventId) {
+            const pred = predictions[eventId];
+            if (!pred) return;
+
+            const btns = document.querySelectorAll(`[data-prediction-event="${eventId}"]`);
+            btns.forEach(btn => {
+                const team = btn.dataset.predictionTeam;
+                btn.classList.toggle('selected', team === pred.predictedWinner);
+            });
+        }
+
+        function checkPredictionResult(eventId, winnerTeam) {
+            const pred = predictions[eventId];
+            if (!pred || pred.result !== undefined) return null;
+
+            const isCorrect = pred.predictedWinner === winnerTeam;
+            predictions[eventId].result = isCorrect;
+            predictions[eventId].actualWinner = winnerTeam;
+            localStorage.setItem('gamePredictions', JSON.stringify(predictions));
+            updatePredictionStats();
+            return isCorrect;
+        }
+
+        function updatePredictionStats() {
+            const completed = Object.values(predictions).filter(p => p.result !== undefined);
+            const correct = completed.filter(p => p.result === true).length;
+            const total = completed.length;
+            const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+            document.getElementById('pred-correct').textContent = correct;
+            document.getElementById('pred-total').textContent = total;
+            document.getElementById('pred-pct').textContent = `${pct}%`;
+
+            // Show/hide stats section
+            const section = document.getElementById('prediction-stats-section');
+            if (section) {
+                section.style.display = total > 0 ? 'block' : 'none';
+            }
+        }
+
+        function renderPredictionSection(eventId, away, home, isUpcoming, isCompleted) {
+            const pred = getPrediction(eventId);
+
+            if (isCompleted && pred) {
+                // Show result
+                const awayScore = parseInt(away.score) || 0;
+                const homeScore = parseInt(home.score) || 0;
+                const actualWinner = awayScore > homeScore ? away.team.displayName : home.team.displayName;
+                const isCorrect = checkPredictionResult(eventId, actualWinner);
+
+                if (isCorrect !== null) {
+                    return `
+                        <div class="prediction-section">
+                            <div class="prediction-result ${isCorrect ? 'correct' : 'incorrect'}">
+                                ${isCorrect ? 'You predicted correctly!' : `You predicted ${pred.predictedWinner} - ${actualWinner} won`}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            if (!isUpcoming) return '';
+
+            return `
+                <div class="prediction-section">
+                    <div class="prediction-title">Make Your Prediction</div>
+                    <div class="prediction-buttons">
+                        <button class="prediction-btn ${pred?.predictedWinner === away.team.displayName ? 'selected' : ''}"
+                                data-prediction-event="${eventId}"
+                                data-prediction-team="${away.team.displayName}"
+                                onclick="makePrediction('${eventId}', '${away.team.displayName.replace(/'/g, "\\'")}', '${away.team.logo}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}')">
+                            <img src="${away.team.logo}" alt="">
+                            <span>${away.team.abbreviation}</span>
+                        </button>
+                        <button class="prediction-btn ${pred?.predictedWinner === home.team.displayName ? 'selected' : ''}"
+                                data-prediction-event="${eventId}"
+                                data-prediction-team="${home.team.displayName}"
+                                onclick="makePrediction('${eventId}', '${home.team.displayName.replace(/'/g, "\\'")}', '${home.team.logo}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}')">
+                            <img src="${home.team.logo}" alt="">
+                            <span>${home.team.abbreviation}</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // NEW FEATURE: FAVORITES/WATCHLIST (Multi-team)
+        // ============================================
+        let watchlist = JSON.parse(localStorage.getItem('teamWatchlist') || '[]');
+
+        function getWatchlist() {
+            return watchlist;
+        }
+
+        function addToWatchlist(teamName) {
+            if (!watchlist.includes(teamName)) {
+                watchlist.push(teamName);
+                localStorage.setItem('teamWatchlist', JSON.stringify(watchlist));
+                renderWatchlist();
+            }
+        }
+
+        function removeFromWatchlist(teamName) {
+            watchlist = watchlist.filter(t => t !== teamName);
+            localStorage.setItem('teamWatchlist', JSON.stringify(watchlist));
+            renderWatchlist();
+        }
+
+        function renderWatchlist() {
+            const section = document.getElementById('watchlist-section');
+            const container = document.getElementById('watchlist-teams');
+
+            if (watchlist.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+
+            // Get team logos
+            const teamLogos = {
+                'Arizona Cardinals': 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png',
+                'Atlanta Falcons': 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png',
+                'Baltimore Ravens': 'https://a.espncdn.com/i/teamlogos/nfl/500/bal.png',
+                'Buffalo Bills': 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png',
+                'Carolina Panthers': 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png',
+                'Chicago Bears': 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png',
+                'Cincinnati Bengals': 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png',
+                'Cleveland Browns': 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png',
+                'Dallas Cowboys': 'https://a.espncdn.com/i/teamlogos/nfl/500/dal.png',
+                'Denver Broncos': 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png',
+                'Detroit Lions': 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png',
+                'Green Bay Packers': 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png',
+                'Houston Texans': 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png',
+                'Indianapolis Colts': 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png',
+                'Jacksonville Jaguars': 'https://a.espncdn.com/i/teamlogos/nfl/500/jax.png',
+                'Kansas City Chiefs': 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png',
+                'Las Vegas Raiders': 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png',
+                'Los Angeles Chargers': 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png',
+                'Los Angeles Rams': 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png',
+                'Miami Dolphins': 'https://a.espncdn.com/i/teamlogos/nfl/500/mia.png',
+                'Minnesota Vikings': 'https://a.espncdn.com/i/teamlogos/nfl/500/min.png',
+                'New England Patriots': 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png',
+                'New Orleans Saints': 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png',
+                'New York Giants': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png',
+                'New York Jets': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png',
+                'Philadelphia Eagles': 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png',
+                'Pittsburgh Steelers': 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png',
+                'San Francisco 49ers': 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png',
+                'Seattle Seahawks': 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png',
+                'Tampa Bay Buccaneers': 'https://a.espncdn.com/i/teamlogos/nfl/500/tb.png',
+                'Tennessee Titans': 'https://a.espncdn.com/i/teamlogos/nfl/500/ten.png',
+                'Washington Commanders': 'https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png'
+            };
+
+            let html = watchlist.map(team => {
+                const logo = teamLogos[team] || '';
+                const shortName = team.split(' ').pop();
+                return `
+                    <div class="watchlist-team">
+                        <img src="${logo}" alt="">
+                        <span>${shortName}</span>
+                        <button class="remove-btn" onclick="removeFromWatchlist('${team.replace(/'/g, "\\'")}')">&times;</button>
+                    </div>
+                `;
+            }).join('');
+
+            html += `<button class="watchlist-add-btn" onclick="openWatchlistModal()">+ Add Team</button>`;
+            container.innerHTML = html;
+        }
+
+        function toggleWatchlistEdit() {
+            const section = document.getElementById('watchlist-section');
+            const btn = section.querySelector('.watchlist-edit-btn');
+            section.classList.toggle('editing');
+            btn.textContent = section.classList.contains('editing') ? 'Done' : 'Edit';
+        }
+
+        function openWatchlistModal() {
+            const modal = document.getElementById('watchlist-modal');
+            const container = document.getElementById('watchlist-modal-teams');
+
+            const allTeams = Object.keys(teamColors);
+            const teamLogos = {
+                'Arizona Cardinals': 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png',
+                'Atlanta Falcons': 'https://a.espncdn.com/i/teamlogos/nfl/500/atl.png',
+                'Baltimore Ravens': 'https://a.espncdn.com/i/teamlogos/nfl/500/bal.png',
+                'Buffalo Bills': 'https://a.espncdn.com/i/teamlogos/nfl/500/buf.png',
+                'Carolina Panthers': 'https://a.espncdn.com/i/teamlogos/nfl/500/car.png',
+                'Chicago Bears': 'https://a.espncdn.com/i/teamlogos/nfl/500/chi.png',
+                'Cincinnati Bengals': 'https://a.espncdn.com/i/teamlogos/nfl/500/cin.png',
+                'Cleveland Browns': 'https://a.espncdn.com/i/teamlogos/nfl/500/cle.png',
+                'Dallas Cowboys': 'https://a.espncdn.com/i/teamlogos/nfl/500/dal.png',
+                'Denver Broncos': 'https://a.espncdn.com/i/teamlogos/nfl/500/den.png',
+                'Detroit Lions': 'https://a.espncdn.com/i/teamlogos/nfl/500/det.png',
+                'Green Bay Packers': 'https://a.espncdn.com/i/teamlogos/nfl/500/gb.png',
+                'Houston Texans': 'https://a.espncdn.com/i/teamlogos/nfl/500/hou.png',
+                'Indianapolis Colts': 'https://a.espncdn.com/i/teamlogos/nfl/500/ind.png',
+                'Jacksonville Jaguars': 'https://a.espncdn.com/i/teamlogos/nfl/500/jax.png',
+                'Kansas City Chiefs': 'https://a.espncdn.com/i/teamlogos/nfl/500/kc.png',
+                'Las Vegas Raiders': 'https://a.espncdn.com/i/teamlogos/nfl/500/lv.png',
+                'Los Angeles Chargers': 'https://a.espncdn.com/i/teamlogos/nfl/500/lac.png',
+                'Los Angeles Rams': 'https://a.espncdn.com/i/teamlogos/nfl/500/lar.png',
+                'Miami Dolphins': 'https://a.espncdn.com/i/teamlogos/nfl/500/mia.png',
+                'Minnesota Vikings': 'https://a.espncdn.com/i/teamlogos/nfl/500/min.png',
+                'New England Patriots': 'https://a.espncdn.com/i/teamlogos/nfl/500/ne.png',
+                'New Orleans Saints': 'https://a.espncdn.com/i/teamlogos/nfl/500/no.png',
+                'New York Giants': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png',
+                'New York Jets': 'https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png',
+                'Philadelphia Eagles': 'https://a.espncdn.com/i/teamlogos/nfl/500/phi.png',
+                'Pittsburgh Steelers': 'https://a.espncdn.com/i/teamlogos/nfl/500/pit.png',
+                'San Francisco 49ers': 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png',
+                'Seattle Seahawks': 'https://a.espncdn.com/i/teamlogos/nfl/500/sea.png',
+                'Tampa Bay Buccaneers': 'https://a.espncdn.com/i/teamlogos/nfl/500/tb.png',
+                'Tennessee Titans': 'https://a.espncdn.com/i/teamlogos/nfl/500/ten.png',
+                'Washington Commanders': 'https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png'
+            };
+
+            container.innerHTML = allTeams.sort().map(team => {
+                const isSelected = watchlist.includes(team);
+                const logo = teamLogos[team] || '';
+                return `
+                    <div class="watchlist-modal-team ${isSelected ? 'selected' : ''}" onclick="toggleWatchlistTeam('${team.replace(/'/g, "\\'")}', this)">
+                        <img src="${logo}" alt="">
+                        <span>${team}</span>
+                        <span class="check">&#10003;</span>
+                    </div>
+                `;
+            }).join('');
+
+            modal.classList.add('show');
+        }
+
+        function toggleWatchlistTeam(teamName, el) {
+            if (watchlist.includes(teamName)) {
+                removeFromWatchlist(teamName);
+                el.classList.remove('selected');
+            } else {
+                addToWatchlist(teamName);
+                el.classList.add('selected');
+            }
+        }
+
+        function closeWatchlistModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('watchlist-modal').classList.remove('show');
+        }
+
+        // ============================================
+        // NEW FEATURE: GAME CALENDAR EXPORT
+        // ============================================
+        function exportToCalendar(eventId, awayTeam, homeTeam, gameDate, venue) {
+            const startDate = new Date(gameDate);
+            const endDate = new Date(startDate.getTime() + 3.5 * 60 * 60 * 1000); // 3.5 hours later
+
+            const formatICSDate = (date) => {
+                return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+            };
+
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//NFL Scores App//EN
+BEGIN:VEVENT
+UID:${eventId}@nfl-scores-app
+DTSTART:${formatICSDate(startDate)}
+DTEND:${formatICSDate(endDate)}
+SUMMARY:${awayTeam} @ ${homeTeam}
+DESCRIPTION:NFL Game - ${awayTeam} vs ${homeTeam}
+LOCATION:${venue || 'TBD'}
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${awayTeam.replace(/\s+/g, '-')}-vs-${homeTeam.replace(/\s+/g, '-')}.ics`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+
+            showShareToast('Calendar event downloaded!');
+        }
+
+        // Initialize notifications button
+        document.getElementById('notifications-btn').addEventListener('click', requestNotificationPermission);
+
         // Init
         initFavoriteTeam();
         updateDateDisplay();
         fetchScores();
         setupRefreshInterval();
+        renderWatchlist();
+        updatePredictionStats();
+        updateNotificationButton();
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-6-g1488e0a (1488e0a)" data-commit-time="Commit: 2026-01-12  9:16 PM CST" data-build-time="Build: 2026-01-12  9:16 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-7-g34d16b4 (34d16b4)" data-commit-time="Commit: 2026-01-12  9:16 PM CST" data-build-time="Build: 2026-01-14  1:08 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
