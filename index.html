@@ -8282,16 +8282,49 @@
                 notice.style.display = 'none';
 
                 document.getElementById('show-notif-help-btn').addEventListener('click', function() {
-                    // Show instructions inline
+                    // Detect browser for specific instructions
+                    const ua = navigator.userAgent;
+                    let instructions = '';
+
+                    if (ua.includes('Chrome') && !ua.includes('Edg')) {
+                        instructions = `
+                            <div style="margin-bottom: 6px;"><strong>Chrome:</strong></div>
+                            <div style="margin-bottom: 6px;">1. Click the <strong>icon left of the URL</strong> (sliders or info icon)</div>
+                            <div style="margin-bottom: 6px;">2. Click <strong>"Site settings"</strong></div>
+                            <div style="margin-bottom: 6px;">3. Find <strong>Notifications</strong> → set to <strong>Allow</strong></div>
+                            <div>4. Come back and refresh</div>
+                        `;
+                    } else if (ua.includes('Safari') && !ua.includes('Chrome')) {
+                        instructions = `
+                            <div style="margin-bottom: 6px;"><strong>Safari:</strong></div>
+                            <div style="margin-bottom: 6px;">1. Click <strong>Safari</strong> in the menu bar</div>
+                            <div style="margin-bottom: 6px;">2. Click <strong>"Settings for This Website"</strong></div>
+                            <div style="margin-bottom: 6px;">3. Set Notifications to <strong>Allow</strong></div>
+                            <div>4. Refresh this page</div>
+                        `;
+                    } else if (ua.includes('Firefox')) {
+                        instructions = `
+                            <div style="margin-bottom: 6px;"><strong>Firefox:</strong></div>
+                            <div style="margin-bottom: 6px;">1. Click the <strong>icon left of the URL</strong></div>
+                            <div style="margin-bottom: 6px;">2. Click <strong>"Connection secure"</strong> or settings</div>
+                            <div style="margin-bottom: 6px;">3. Find Notifications → <strong>Allow</strong></div>
+                            <div>4. Refresh this page</div>
+                        `;
+                    } else {
+                        instructions = `
+                            <div style="margin-bottom: 6px;">1. Click the <strong>icon left of the URL</strong> in your address bar</div>
+                            <div style="margin-bottom: 6px;">2. Look for <strong>Site settings</strong> or <strong>Permissions</strong></div>
+                            <div style="margin-bottom: 6px;">3. Find Notifications → set to <strong>Allow</strong></div>
+                            <div>4. Refresh this page</div>
+                        `;
+                    }
+
                     const item = document.getElementById('notifications-setting-item');
                     item.innerHTML = `
                         <div style="width: 100%;">
                             <div class="settings-item-title" style="margin-bottom: 8px;">How to enable notifications</div>
                             <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
-                                <div style="margin-bottom: 6px;"><strong>1.</strong> Click the <strong>lock icon</strong> in your browser's address bar</div>
-                                <div style="margin-bottom: 6px;"><strong>2.</strong> Find <strong>"Notifications"</strong> in the menu</div>
-                                <div style="margin-bottom: 6px;"><strong>3.</strong> Change it to <strong>"Allow"</strong></div>
-                                <div><strong>4.</strong> Refresh this page</div>
+                                ${instructions}
                             </div>
                         </div>
                     `;
@@ -8425,7 +8458,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-28-gca75884 (ca75884)" data-commit-time="Commit: 2026-01-14  2:03 PM CST" data-build-time="Build: 2026-01-14  2:04 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-29-g6fe457f (6fe457f)" data-commit-time="Commit: 2026-01-14  2:04 PM CST" data-build-time="Build: 2026-01-14  2:06 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
