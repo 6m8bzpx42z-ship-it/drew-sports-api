@@ -8251,11 +8251,10 @@
             const notifToggle = document.getElementById('settings-notifications');
             const notifLabel = notifToggle.parentElement;
 
-            async function handleNotificationToggle() {
+            async function handleNotificationToggle(wantToEnable) {
                 const checkbox = document.getElementById('settings-notifications');
-                const willBeChecked = !checkbox.checked;
 
-                if (willBeChecked) {
+                if (wantToEnable) {
                     // Trying to enable notifications
                     if (Notification.permission === 'granted') {
                         checkbox.checked = true;
@@ -8301,10 +8300,16 @@
                 }
             }
 
-            // Handle clicks on the toggle label
+            // Handle clicks on the toggle label - determine intent BEFORE the click toggles checkbox
             notifLabel.addEventListener('click', function(e) {
                 e.preventDefault();
-                handleNotificationToggle();
+                e.stopPropagation();
+                // Since click already toggled checkbox, current state is OPPOSITE of what user wants
+                // If checkbox is now checked, user clicked to enable (was unchecked)
+                // If checkbox is now unchecked, user clicked to disable (was checked)
+                const checkbox = document.getElementById('settings-notifications');
+                const wantToEnable = checkbox.checked; // Already toggled by click
+                handleNotificationToggle(wantToEnable);
             });
 
             // Auto-refresh toggle
@@ -8393,7 +8398,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-19-g940f0bb (940f0bb)" data-commit-time="Commit: 2026-01-14  1:47 PM CST" data-build-time="Build: 2026-01-14  1:50 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-20-g4ee0e13 (4ee0e13)" data-commit-time="Commit: 2026-01-14  1:50 PM CST" data-build-time="Build: 2026-01-14  1:52 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
