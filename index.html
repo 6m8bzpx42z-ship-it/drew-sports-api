@@ -3998,18 +3998,22 @@
 
         .settings-toggle {
             position: relative;
+            display: inline-block;
             width: 48px;
             height: 28px;
             flex-shrink: 0;
+            cursor: pointer;
         }
 
         .settings-toggle input {
             position: absolute;
+            top: 0;
+            left: 0;
             opacity: 0;
             width: 100%;
             height: 100%;
             cursor: pointer;
-            z-index: 1;
+            z-index: 2;
             margin: 0;
         }
 
@@ -8243,32 +8247,57 @@
         }
 
         function initSettingsListeners() {
-            // Notifications toggle
-            document.getElementById('settings-notifications').addEventListener('change', async function() {
-                if (this.checked) {
+            // Notifications toggle - use click on parent label for better reliability
+            const notifToggle = document.getElementById('settings-notifications');
+            const notifLabel = notifToggle.parentElement;
+
+            async function handleNotificationToggle() {
+                const checkbox = document.getElementById('settings-notifications');
+                const willBeChecked = !checkbox.checked;
+
+                if (willBeChecked) {
+                    // Trying to enable notifications
                     if (Notification.permission === 'granted') {
+                        checkbox.checked = true;
                         notificationsEnabled = true;
                         localStorage.setItem('notificationsEnabled', 'true');
                         updateNotificationButton();
                     } else if (Notification.permission !== 'denied') {
-                        const permission = await Notification.requestPermission();
-                        if (permission === 'granted') {
-                            notificationsEnabled = true;
-                            localStorage.setItem('notificationsEnabled', 'true');
-                            updateNotificationButton();
-                        } else {
-                            this.checked = false;
+                        // Request permission from browser
+                        try {
+                            const permission = await Notification.requestPermission();
+                            if (permission === 'granted') {
+                                checkbox.checked = true;
+                                notificationsEnabled = true;
+                                localStorage.setItem('notificationsEnabled', 'true');
+                                updateNotificationButton();
+                                document.getElementById('notification-permission-notice').style.display = 'none';
+                            } else {
+                                checkbox.checked = false;
+                                document.getElementById('notification-permission-notice').style.display = 'flex';
+                            }
+                        } catch (e) {
+                            checkbox.checked = false;
                             document.getElementById('notification-permission-notice').style.display = 'flex';
                         }
                     } else {
-                        this.checked = false;
+                        // Already denied
+                        checkbox.checked = false;
                         document.getElementById('notification-permission-notice').style.display = 'flex';
                     }
                 } else {
+                    // Disabling notifications
+                    checkbox.checked = false;
                     notificationsEnabled = false;
                     localStorage.setItem('notificationsEnabled', 'false');
                     updateNotificationButton();
                 }
+            }
+
+            // Handle clicks on the toggle label
+            notifLabel.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleNotificationToggle();
             });
 
             // Auto-refresh toggle
@@ -8357,7 +8386,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-17-g1550e57 (1550e57)" data-commit-time="Commit: 2026-01-14  1:43 PM CST" data-build-time="Build: 2026-01-14  1:45 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-18-g778c880 (778c880)" data-commit-time="Commit: 2026-01-14  1:45 PM CST" data-build-time="Build: 2026-01-14  1:47 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
