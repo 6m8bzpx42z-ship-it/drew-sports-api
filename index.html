@@ -8262,8 +8262,10 @@
                         notificationsEnabled = true;
                         localStorage.setItem('notificationsEnabled', 'true');
                         updateNotificationButton();
-                    } else if (Notification.permission !== 'denied') {
+                        showShareToast('Score alerts enabled!');
+                    } else if (Notification.permission === 'default') {
                         // Request permission from browser
+                        showShareToast('Please allow notifications in the popup...');
                         try {
                             const permission = await Notification.requestPermission();
                             if (permission === 'granted') {
@@ -8272,18 +8274,22 @@
                                 localStorage.setItem('notificationsEnabled', 'true');
                                 updateNotificationButton();
                                 document.getElementById('notification-permission-notice').style.display = 'none';
+                                showShareToast('Score alerts enabled!');
                             } else {
                                 checkbox.checked = false;
                                 document.getElementById('notification-permission-notice').style.display = 'flex';
+                                showShareToast('Notifications blocked by browser');
                             }
                         } catch (e) {
                             checkbox.checked = false;
                             document.getElementById('notification-permission-notice').style.display = 'flex';
+                            showShareToast('Could not request notification permission');
                         }
                     } else {
                         // Already denied
                         checkbox.checked = false;
                         document.getElementById('notification-permission-notice').style.display = 'flex';
+                        showShareToast('Notifications blocked - check browser settings');
                     }
                 } else {
                     // Disabling notifications
@@ -8291,6 +8297,7 @@
                     notificationsEnabled = false;
                     localStorage.setItem('notificationsEnabled', 'false');
                     updateNotificationButton();
+                    showShareToast('Score alerts disabled');
                 }
             }
 
@@ -8386,7 +8393,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-18-g778c880 (778c880)" data-commit-time="Commit: 2026-01-14  1:45 PM CST" data-build-time="Build: 2026-01-14  1:47 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-19-g940f0bb (940f0bb)" data-commit-time="Commit: 2026-01-14  1:47 PM CST" data-build-time="Build: 2026-01-14  1:50 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
