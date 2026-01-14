@@ -8329,16 +8329,25 @@
             document.getElementById('settings-btn').addEventListener('click', openSettingsModal);
         }
 
-        function requestNotificationPermissionFromSettings() {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    document.getElementById('notification-permission-notice').style.display = 'none';
-                    document.getElementById('settings-notifications').checked = true;
-                    notificationsEnabled = true;
-                    localStorage.setItem('notificationsEnabled', 'true');
-                    updateNotificationButton();
-                }
-            });
+        async function requestNotificationPermissionFromSettings() {
+            // Close modal so browser permission popup is visible
+            closeSettingsModal();
+
+            await new Promise(r => setTimeout(r, 300));
+
+            const permission = await Notification.requestPermission();
+
+            if (permission === 'granted') {
+                notificationsEnabled = true;
+                localStorage.setItem('notificationsEnabled', 'true');
+                updateNotificationButton();
+                showShareToast('Score alerts enabled!');
+            } else {
+                showShareToast('Notifications still blocked - check browser settings');
+            }
+
+            // Reopen modal with updated state
+            setTimeout(() => openSettingsModal(), 300);
             return false;
         }
 
@@ -8391,7 +8400,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-25-gd1b5584 (d1b5584)" data-commit-time="Commit: 2026-01-14  1:57 PM CST" data-build-time="Build: 2026-01-14  1:59 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-26-g7449be4 (7449be4)" data-commit-time="Commit: 2026-01-14  1:59 PM CST" data-build-time="Build: 2026-01-14  2:02 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
