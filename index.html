@@ -258,8 +258,44 @@
         .favorite-team-section {
             background: var(--bg-card);
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px 15px;
             margin-bottom: 15px;
+        }
+
+        .favorite-team-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+
+        .favorite-team-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .favorite-team-display img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .favorite-team-display span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .favorite-team-arrow {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+
+        .favorite-team-arrow.open {
+            transform: rotate(180deg);
         }
 
         .favorite-team-section label {
@@ -286,6 +322,9 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
         }
 
         .team-logo-option {
@@ -4516,9 +4555,15 @@
                 </div>
             </div>
 
-            <div class="favorite-team-section">
-                <label>Select your favorite team:</label>
-                <div class="team-logo-grid" id="team-logo-grid">
+            <div class="favorite-team-section" id="favorite-team-section">
+                <div class="favorite-team-header" id="favorite-team-header" onclick="toggleFavoriteTeamPicker()">
+                    <div class="favorite-team-display">
+                        <img id="favorite-team-logo" src="" alt="" style="display: none;">
+                        <span id="favorite-team-name">Select your favorite team</span>
+                    </div>
+                    <span class="favorite-team-arrow" id="favorite-team-arrow">▼</span>
+                </div>
+                <div class="team-logo-grid" id="team-logo-grid" style="display: none;">
                     <!-- Populated by JavaScript -->
                 </div>
                 <button class="clear-favorite-btn" id="clear-favorite-btn" style="display: none;">Clear Selection</button>
@@ -7154,11 +7199,15 @@
             grid.innerHTML = nflTeams.map(team => `
                 <div class="team-logo-option ${favoriteTeam === team.name ? 'selected' : ''}"
                      data-team="${team.name}"
-                     onclick="selectFavoriteTeam('${team.name.replace(/'/g, "\\'")}')">
+                     data-abbr="${team.abbr}"
+                     onclick="selectFavoriteTeam('${team.name.replace(/'/g, "\\'")}', '${team.abbr}')">
                     <img src="https://a.espncdn.com/i/teamlogos/nfl/500/${team.abbr.toLowerCase()}.png" alt="${team.name}">
                     <span class="team-abbr">${team.abbr}</span>
                 </div>
             `).join('');
+
+            // Update header display
+            updateFavoriteTeamHeader();
 
             // Show clear button if team selected
             clearBtn.style.display = favoriteTeam ? 'block' : 'none';
@@ -7167,11 +7216,47 @@
                 localStorage.removeItem('favoriteTeam');
                 document.querySelectorAll('.team-logo-option').forEach(el => el.classList.remove('selected'));
                 clearBtn.style.display = 'none';
+                updateFavoriteTeamHeader();
+                toggleFavoriteTeamPicker(true); // Keep open after clearing
                 fetchScores();
             };
         }
 
-        function selectFavoriteTeam(teamName) {
+        function updateFavoriteTeamHeader() {
+            const nameEl = document.getElementById('favorite-team-name');
+            const logoEl = document.getElementById('favorite-team-logo');
+
+            if (favoriteTeam) {
+                const team = nflTeams.find(t => t.name === favoriteTeam);
+                if (team) {
+                    nameEl.textContent = favoriteTeam;
+                    logoEl.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${team.abbr.toLowerCase()}.png`;
+                    logoEl.style.display = 'block';
+                }
+            } else {
+                nameEl.textContent = 'Select your favorite team';
+                logoEl.style.display = 'none';
+            }
+        }
+
+        function toggleFavoriteTeamPicker(forceOpen = false) {
+            const grid = document.getElementById('team-logo-grid');
+            const arrow = document.getElementById('favorite-team-arrow');
+            const clearBtn = document.getElementById('clear-favorite-btn');
+            const isOpen = grid.style.display !== 'none';
+
+            if (forceOpen || !isOpen) {
+                grid.style.display = 'grid';
+                arrow.classList.add('open');
+                if (favoriteTeam) clearBtn.style.display = 'block';
+            } else {
+                grid.style.display = 'none';
+                arrow.classList.remove('open');
+                clearBtn.style.display = 'none';
+            }
+        }
+
+        function selectFavoriteTeam(teamName, abbr) {
             favoriteTeam = teamName;
             localStorage.setItem('favoriteTeam', teamName);
 
@@ -7179,7 +7264,10 @@
             document.querySelectorAll('.team-logo-option').forEach(el => {
                 el.classList.toggle('selected', el.dataset.team === teamName);
             });
-            document.getElementById('clear-favorite-btn').style.display = 'block';
+
+            // Update header and collapse
+            updateFavoriteTeamHeader();
+            toggleFavoriteTeamPicker(); // Close after selection
 
             fetchScores();
         }
@@ -8628,7 +8716,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-34-gcab4ff1 (cab4ff1)" data-commit-time="Commit: 2026-01-14  3:06 PM CST" data-build-time="Build: 2026-01-14  3:13 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-35-g6bc3faa (6bc3faa)" data-commit-time="Commit: 2026-01-14  3:13 PM CST" data-build-time="Build: 2026-01-14  3:15 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;
