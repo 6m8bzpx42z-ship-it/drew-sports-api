@@ -1,5 +1,7 @@
 node_modules/
 *.png
+!icon-*.png
+!apple-touch-icon.png
 test-*.js
 .env
 .vercel
