@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a1a2e">
-    <title>NFL Scores</title>
+    <title>Pigskin</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -2636,75 +2636,123 @@
         }
 
         /* NFL-Style Tournament Bracket */
-        .nfl-bracket {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 10px;
+        .playoff-bracket-container {
             overflow-x: auto;
-            padding: 10px 0;
-            min-height: 400px;
+            padding-bottom: 15px;
+            -webkit-overflow-scrolling: touch;
         }
 
+        .nfl-bracket {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            min-width: 900px;
+            padding: 20px 10px;
+        }
+
+        /* Conference wrapper */
         .bracket-conference {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            align-items: start;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0;
         }
 
         .bracket-conference.afc {
-            direction: ltr;
+            flex-direction: row;
         }
 
         .bracket-conference.nfc {
-            direction: rtl;
+            flex-direction: row-reverse;
         }
 
-        .bracket-conference.nfc .bracket-round {
-            direction: ltr;
+        /* Conference label - vertical text on the outside */
+        .conference-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            padding: 15px 8px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin: 0 8px;
         }
 
+        .conference-label.afc {
+            color: #FF6B6B;
+            transform: rotate(180deg);
+        }
+
+        .conference-label.nfc {
+            color: #60A5FA;
+        }
+
+        /* Rounds container */
+        .bracket-rounds {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0;
+        }
+
+        .bracket-conference.nfc .bracket-rounds {
+            flex-direction: row-reverse;
+        }
+
+        /* Each round column */
         .bracket-round {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            align-items: center;
+            position: relative;
         }
 
         .bracket-round-label {
             text-align: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 5px;
+            padding: 4px 8px;
             background: var(--bg-card);
-            border-radius: 6px;
+            border-radius: 4px;
             font-weight: 600;
+            margin-bottom: 10px;
+            white-space: nowrap;
         }
 
         .bracket-games {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            align-items: center;
+            gap: 10px;
         }
 
-        .bracket-round.wild-card {
-            padding-top: 0;
+        /* Wild Card - 3 games stacked */
+        .bracket-round.wild-card .bracket-games {
+            gap: 12px;
         }
 
-        .bracket-round.divisional {
-            padding-top: 30px;
+        /* Divisional - 2 games with more spacing */
+        .bracket-round.divisional .bracket-games {
+            gap: 60px;
         }
 
-        .bracket-round.conference {
-            padding-top: 80px;
+        /* Conference Championship - 1 game centered */
+        .bracket-round.conference .bracket-games {
+            gap: 0;
         }
 
+        /* Game matchup box */
         .bracket-matchup {
             background: var(--bg-card);
-            border-radius: 8px;
-            padding: 6px 8px;
-            min-width: 100px;
+            border-radius: 6px;
+            padding: 5px 8px;
+            min-width: 95px;
             position: relative;
             border: 1px solid var(--border-color);
         }
@@ -2713,32 +2761,85 @@
             opacity: 0.95;
         }
 
-        .bracket-matchup::after {
+        .bracket-matchup.live {
+            border-color: var(--accent-warning);
+            box-shadow: 0 0 10px rgba(254, 202, 87, 0.3);
+        }
+
+        /* Connector lines - AFC side (right) */
+        .bracket-conference.afc .bracket-round.wild-card .bracket-matchup::after,
+        .bracket-conference.afc .bracket-round.divisional .bracket-matchup::after {
             content: '';
             position: absolute;
-            right: -10px;
+            right: -20px;
             top: 50%;
-            width: 10px;
+            width: 20px;
             height: 2px;
             background: var(--border-color);
         }
 
-        .bracket-conference.nfc .bracket-matchup::after {
-            right: auto;
-            left: -10px;
+        /* Connector lines - NFC side (left) */
+        .bracket-conference.nfc .bracket-round.wild-card .bracket-matchup::after,
+        .bracket-conference.nfc .bracket-round.divisional .bracket-matchup::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            width: 20px;
+            height: 2px;
+            background: var(--border-color);
         }
 
-        .bracket-round.conference .bracket-matchup::after,
-        .bracket-round.super-bowl .bracket-matchup::after {
-            display: none;
+        /* Vertical connector for divisional */
+        .bracket-conference.afc .bracket-round.divisional .bracket-games::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 80px;
+            background: var(--border-color);
+        }
+
+        .bracket-conference.nfc .bracket-round.divisional .bracket-games::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2px;
+            height: 80px;
+            background: var(--border-color);
+        }
+
+        /* Conference championship connectors to Super Bowl */
+        .bracket-conference.afc .bracket-round.conference .bracket-matchup::after {
+            content: '';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            width: 25px;
+            height: 2px;
+            background: var(--accent-secondary);
+        }
+
+        .bracket-conference.nfc .bracket-round.conference .bracket-matchup::after {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            width: 25px;
+            height: 2px;
+            background: var(--accent-secondary);
         }
 
         .bracket-team {
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 4px 0;
-            font-size: 0.75rem;
+            gap: 4px;
+            padding: 3px 0;
+            font-size: 0.7rem;
         }
 
         .bracket-team.winner {
@@ -2751,22 +2852,22 @@
         }
 
         .bracket-seed {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background: var(--bg-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-weight: 700;
             color: var(--text-muted);
             flex-shrink: 0;
         }
 
         .bracket-team-logo {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             object-fit: contain;
             flex-shrink: 0;
         }
@@ -2779,22 +2880,22 @@
 
         .bracket-score {
             font-weight: 700;
-            min-width: 18px;
+            min-width: 16px;
             text-align: right;
         }
 
         .bracket-matchup-status {
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-muted);
-            margin-top: 3px;
+            margin-top: 2px;
             border-top: 1px solid var(--border-color);
-            padding-top: 3px;
+            padding-top: 2px;
         }
 
         .bracket-matchup-status .live-dot {
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
         }
 
         /* Super Bowl Center */
@@ -2802,47 +2903,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 15px;
+            padding: 0 20px;
+            position: relative;
         }
 
         .super-bowl-label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--accent-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-align: center;
+            white-space: nowrap;
         }
 
         .bracket-super-bowl .bracket-matchup {
-            min-width: 130px;
-            background: linear-gradient(135deg, rgba(254, 202, 87, 0.15), rgba(254, 202, 87, 0.05));
+            min-width: 110px;
+            background: linear-gradient(135deg, rgba(254, 202, 87, 0.2), rgba(254, 202, 87, 0.05));
             border: 2px solid var(--accent-secondary);
         }
 
         .bracket-super-bowl .bracket-matchup::after {
             display: none;
-        }
-
-        /* Conference Labels */
-        .conference-label {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 10px 5px;
-        }
-
-        .conference-label.afc {
-            color: #FF6B6B;
-            transform: rotate(180deg);
-        }
-
-        .conference-label.nfc {
-            color: #60A5FA;
         }
 
         /* TBD styling */
@@ -2851,55 +2934,18 @@
             font-style: italic;
         }
 
-        /* Mobile adjustments */
-        @media (max-width: 900px) {
-            .nfl-bracket {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                min-height: auto;
-            }
-
-            .bracket-conference {
-                grid-template-columns: 1fr;
-                direction: ltr !important;
-            }
-
-            .bracket-round {
-                padding-top: 0 !important;
-            }
-
-            .bracket-matchup::after {
-                display: none;
-            }
-
-            .conference-label {
-                writing-mode: horizontal-tb;
-                transform: none !important;
-                text-align: center;
-                padding: 10px;
-                background: var(--bg-card);
-                border-radius: 8px;
-                margin-bottom: 5px;
-                font-size: 0.9rem;
-            }
-
-            .bracket-super-bowl {
-                order: -1;
-                width: 100%;
-            }
-        }
-
+        /* Bye indicator */
         .bracket-bye {
             background: linear-gradient(135deg, rgba(104, 211, 145, 0.1), rgba(104, 211, 145, 0.05));
             border: 1px dashed var(--accent-success);
-            padding: 8px;
-            border-radius: 8px;
+            padding: 6px;
+            border-radius: 6px;
             text-align: center;
-            min-width: 100px;
+            min-width: 95px;
         }
 
         .bracket-bye-label {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--accent-success);
             text-transform: uppercase;
         }
@@ -2908,9 +2954,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            font-size: 0.75rem;
-            margin-top: 4px;
+            gap: 4px;
+            font-size: 0.7rem;
+            margin-top: 3px;
+        }
+
+        /* Mobile: Keep horizontal, enable scrolling */
+        @media (max-width: 900px) {
+            .playoff-bracket-container {
+                overflow-x: scroll;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .nfl-bracket {
+                min-width: 800px;
+                justify-content: flex-start;
+                padding: 15px;
+            }
+
+            .bracket-matchup {
+                min-width: 85px;
+                padding: 4px 6px;
+            }
+
+            .bracket-team {
+                font-size: 0.65rem;
+            }
+
+            .bracket-team-logo {
+                width: 16px;
+                height: 16px;
+            }
+
+            .bracket-seed {
+                width: 12px;
+                height: 12px;
+                font-size: 0.5rem;
+            }
+
+            .bracket-round-label {
+                font-size: 0.55rem;
+                padding: 3px 6px;
+            }
+
+            .conference-label {
+                font-size: 0.7rem;
+                padding: 10px 5px;
+            }
+
+            .super-bowl-label {
+                font-size: 0.65rem;
+            }
         }
 
         /* ============================================
@@ -3878,13 +3972,23 @@
         }
 
         .prediction-title {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--accent-secondary);
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .prediction-title::before {
+            content: '— ';
+            color: var(--text-muted);
+        }
+
+        .prediction-title::after {
+            content: ' —';
+            color: var(--text-muted);
         }
 
         .prediction-buttons {
@@ -3897,37 +4001,69 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
-            padding: 10px;
-            background: var(--bg-primary);
-            border: 2px solid transparent;
-            border-radius: 10px;
+            gap: 6px;
+            padding: 12px 8px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s ease;
         }
 
         .prediction-btn:hover {
-            background: var(--bg-card-hover);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .prediction-btn.selected {
-            border-color: var(--accent-success);
-            background: rgba(104, 211, 145, 0.15);
+            border-color: #68d391;
+            background: linear-gradient(135deg, rgba(104, 211, 145, 0.25) 0%, rgba(104, 211, 145, 0.1) 100%);
+            box-shadow: 0 0 20px rgba(104, 211, 145, 0.3);
         }
 
         .prediction-btn img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
 
         .prediction-btn span {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
             color: var(--text-secondary);
         }
 
         .prediction-btn.selected span {
-            color: var(--accent-success);
-            font-weight: 600;
+            color: #68d391;
+            font-weight: 700;
+        }
+
+        .prediction-confirm-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(104, 211, 145, 0.4);
+        }
+
+        .prediction-confirm-btn:hover {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(104, 211, 145, 0.5);
+        }
+
+        .prediction-confirm-btn:active {
+            transform: translateY(0);
         }
 
         .prediction-result {
@@ -3992,40 +4128,124 @@
 
         .prediction-stats {
             margin-top: 15px;
-            padding: 15px;
-            background: var(--bg-card);
-            border-radius: 12px;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f2744 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .prediction-stats-header {
+            background: linear-gradient(90deg, #feca57 0%, #ff9f43 100%);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .prediction-stats-title {
-            font-size: 0.9rem;
-            color: var(--accent-secondary);
-            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: #1a1a2e;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prediction-stats-title::before {
+            content: '🏈';
+            font-size: 1rem;
+        }
+
+        .prediction-stats-streak {
+            font-size: 0.7rem;
+            color: #1a1a2e;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .prediction-stats-body {
+            padding: 16px;
         }
 
         .prediction-stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 12px;
+            align-items: center;
         }
 
         .prediction-stat-box {
             text-align: center;
-            padding: 10px;
-            background: var(--bg-primary);
-            border-radius: 8px;
+            padding: 12px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .prediction-stat-box.record {
+            background: linear-gradient(135deg, rgba(254, 202, 87, 0.2) 0%, rgba(254, 202, 87, 0.05) 100%);
+            border: 1px solid rgba(254, 202, 87, 0.3);
+        }
+
+        .prediction-stat-box.correct {
+            background: linear-gradient(135deg, rgba(104, 211, 145, 0.2) 0%, rgba(104, 211, 145, 0.05) 100%);
+            border: 1px solid rgba(104, 211, 145, 0.3);
+        }
+
+        .prediction-stat-box.correct .prediction-stat-value {
+            color: #68d391;
+        }
+
+        .prediction-stat-box.incorrect {
+            background: linear-gradient(135deg, rgba(252, 129, 129, 0.2) 0%, rgba(252, 129, 129, 0.05) 100%);
+            border: 1px solid rgba(252, 129, 129, 0.3);
+        }
+
+        .prediction-stat-box.incorrect .prediction-stat-value {
+            color: #fc8181;
+        }
+
+        .prediction-stat-box.accuracy {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(96, 165, 250, 0.05) 100%);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .prediction-stat-box.accuracy .prediction-stat-value {
+            color: #60a5fa;
         }
 
         .prediction-stat-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+        }
+
+        .prediction-stat-box.record .prediction-stat-value {
+            font-size: 1.1rem;
+            color: #feca57;
         }
 
         .prediction-stat-label {
-            font-size: 0.65rem;
-            color: var(--text-muted);
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.6);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        .prediction-stat-icon {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
         }
 
         /* ============================================
@@ -4612,7 +4832,7 @@
     <div class="container">
         <header>
             <div class="header-top">
-                <h1>NFL Scores</h1>
+                <h1>Pigskin</h1>
                 <div class="header-controls">
                     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
                         <span class="icon">🌙</span>
@@ -4668,19 +4888,30 @@
 
             <!-- Prediction Stats -->
             <div class="prediction-stats" id="prediction-stats-section" style="display: none;">
-                <div class="prediction-stats-title">Your Prediction Record</div>
-                <div class="prediction-stats-grid">
-                    <div class="prediction-stat-box">
-                        <div class="prediction-stat-value" id="pred-correct">0</div>
-                        <div class="prediction-stat-label">Correct</div>
-                    </div>
-                    <div class="prediction-stat-box">
-                        <div class="prediction-stat-value" id="pred-total">0</div>
-                        <div class="prediction-stat-label">Total</div>
-                    </div>
-                    <div class="prediction-stat-box">
-                        <div class="prediction-stat-value" id="pred-pct">0%</div>
-                        <div class="prediction-stat-label">Accuracy</div>
+                <div class="prediction-stats-header">
+                    <div class="prediction-stats-title">My Picks</div>
+                    <div class="prediction-stats-streak" id="pred-streak"></div>
+                </div>
+                <div class="prediction-stats-body">
+                    <div class="prediction-stats-grid">
+                        <div class="prediction-stat-box record">
+                            <div class="prediction-stat-value" id="pred-record">0-0</div>
+                            <div class="prediction-stat-label">Record</div>
+                        </div>
+                        <div class="prediction-stat-box correct">
+                            <div class="prediction-stat-icon">W</div>
+                            <div class="prediction-stat-value" id="pred-correct">0</div>
+                            <div class="prediction-stat-label">Wins</div>
+                        </div>
+                        <div class="prediction-stat-box incorrect">
+                            <div class="prediction-stat-icon">L</div>
+                            <div class="prediction-stat-value" id="pred-wrong">0</div>
+                            <div class="prediction-stat-label">Losses</div>
+                        </div>
+                        <div class="prediction-stat-box accuracy">
+                            <div class="prediction-stat-value" id="pred-pct">-</div>
+                            <div class="prediction-stat-label">Win Rate</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -7445,10 +7676,17 @@
                 NFC: { wildCard: [], divisional: [], conference: [], superBowl: null }
             };
 
+            // Track seen game IDs to prevent duplicates
+            const seenGameIds = new Set();
+
             // Track eliminated teams
             eliminatedTeams.clear();
 
             events.forEach(event => {
+                // Skip if we've already processed this game
+                if (seenGameIds.has(event.id)) return;
+                seenGameIds.add(event.id);
+
                 const comp = event.competitions[0];
                 const notes = comp.notes?.[0]?.headline || event.name || '';
                 const status = event.status.type;
@@ -7465,7 +7703,9 @@
                     round = 'wildCard';
                 } else if (lowerNotes.includes('divisional')) {
                     round = 'divisional';
-                } else if (lowerNotes.includes('conference') || lowerNotes.includes('championship')) {
+                } else if (lowerNotes.includes('afc championship') || lowerNotes.includes('nfc championship') ||
+                           lowerNotes.includes('conference championship') ||
+                           (lowerNotes.includes('conference') && !lowerNotes.includes('divisional'))) {
                     round = 'conference';
                 } else {
                     // Skip regular season games
@@ -7511,7 +7751,11 @@
                     playoffs.AFC.superBowl = gameData;
                     playoffs.NFC.superBowl = gameData;
                 } else {
-                    playoffs[conference][round].push(gameData);
+                    // Only add if not already at max for the round
+                    const maxGames = { wildCard: 3, divisional: 2, conference: 1 };
+                    if (playoffs[conference][round].length < maxGames[round]) {
+                        playoffs[conference][round].push(gameData);
+                    }
                 }
             });
 
@@ -7550,6 +7794,7 @@
             let html = `
                 <div class="bracket-conference ${confClass}">
                     <div class="conference-label ${confClass}">${conf}</div>
+                    <div class="bracket-rounds">
             `;
 
             // Wild Card Round
@@ -7590,7 +7835,7 @@
             // Conference Championship
             html += `
                 <div class="bracket-round conference">
-                    <div class="bracket-round-label">${conf} Championship</div>
+                    <div class="bracket-round-label">${conf} Champ</div>
                     <div class="bracket-games">
             `;
             if (data.conference.length > 0) {
@@ -7602,7 +7847,7 @@
             }
             html += '</div></div>';
 
-            html += '</div>';
+            html += '</div></div>';
             return html;
         }
 
@@ -7724,7 +7969,7 @@
             // Draw watermark
             ctx.fillStyle = 'rgba(255,255,255,0.3)';
             ctx.font = '12px -apple-system, sans-serif';
-            ctx.fillText('NFL Scores App', canvas.width / 2, canvas.height - 20);
+            ctx.fillText('Pigskin App', canvas.width / 2, canvas.height - 20);
 
             return canvas.toDataURL('image/png');
         }
@@ -8374,19 +8619,57 @@
         }
 
         function updatePredictionStats() {
-            const completed = Object.values(predictions).filter(p => p.result !== undefined);
+            const allPredictions = Object.values(predictions);
+            const totalPicks = allPredictions.length;
+            const completed = allPredictions.filter(p => p.result !== undefined);
             const correct = completed.filter(p => p.result === true).length;
-            const total = completed.length;
-            const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+            const wrong = completed.filter(p => p.result === false).length;
+            const completedCount = completed.length;
+            const pct = completedCount > 0 ? Math.round((correct / completedCount) * 100) : null;
 
-            document.getElementById('pred-correct').textContent = correct;
-            document.getElementById('pred-total').textContent = total;
-            document.getElementById('pred-pct').textContent = `${pct}%`;
+            // Calculate streak
+            const sortedCompleted = completed.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            let streak = 0;
+            let streakType = null;
+            for (const p of sortedCompleted) {
+                if (streakType === null) {
+                    streakType = p.result;
+                    streak = 1;
+                } else if (p.result === streakType) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
 
-            // Show/hide stats section
+            const recordEl = document.getElementById('pred-record');
+            const correctEl = document.getElementById('pred-correct');
+            const wrongEl = document.getElementById('pred-wrong');
+            const pctEl = document.getElementById('pred-pct');
+            const streakEl = document.getElementById('pred-streak');
+
+            if (recordEl) recordEl.textContent = `${correct}-${wrong}`;
+            if (correctEl) correctEl.textContent = correct;
+            if (wrongEl) wrongEl.textContent = wrong;
+            if (pctEl) pctEl.textContent = pct !== null ? `${pct}%` : '-';
+
+            // Show streak badge
+            if (streakEl) {
+                if (streak >= 2 && streakType !== null) {
+                    streakEl.textContent = streakType ? `${streak}W Streak 🔥` : `${streak}L Streak`;
+                    streakEl.style.display = 'block';
+                } else if (totalPicks > 0 && completedCount === 0) {
+                    streakEl.textContent = `${totalPicks} Pending`;
+                    streakEl.style.display = 'block';
+                } else {
+                    streakEl.style.display = 'none';
+                }
+            }
+
+            // Show stats section if any predictions made
             const section = document.getElementById('prediction-stats-section');
             if (section) {
-                section.style.display = total > 0 ? 'block' : 'none';
+                section.style.display = totalPicks > 0 ? 'block' : 'none';
             }
         }
 
@@ -8443,18 +8726,73 @@
                     <div class="prediction-title">Pick the Winner</div>
                     <div class="prediction-buttons">
                         <button class="prediction-btn"
-                                onclick="makePrediction('${eventId}', '${away.team.displayName.replace(/'/g, "\\'")}', '${away.team.logo}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}')">
+                                data-event="${eventId}"
+                                data-team="${away.team.displayName.replace(/'/g, "&#39;")}"
+                                data-logo="${away.team.logo}"
+                                data-away="${away.team.displayName.replace(/'/g, "&#39;")}"
+                                data-home="${home.team.displayName.replace(/'/g, "&#39;")}"
+                                onclick="selectPrediction(this)">
                             <img src="${away.team.logo}" alt="">
                             <span>${away.team.abbreviation}</span>
                         </button>
                         <button class="prediction-btn"
-                                onclick="makePrediction('${eventId}', '${home.team.displayName.replace(/'/g, "\\'")}', '${home.team.logo}', '${away.team.displayName.replace(/'/g, "\\'")}', '${home.team.displayName.replace(/'/g, "\\'")}')">
+                                data-event="${eventId}"
+                                data-team="${home.team.displayName.replace(/'/g, "&#39;")}"
+                                data-logo="${home.team.logo}"
+                                data-away="${away.team.displayName.replace(/'/g, "&#39;")}"
+                                data-home="${home.team.displayName.replace(/'/g, "&#39;")}"
+                                onclick="selectPrediction(this)">
                             <img src="${home.team.logo}" alt="">
                             <span>${home.team.abbreviation}</span>
                         </button>
                     </div>
+                    <button class="prediction-confirm-btn" id="confirm-${eventId}" style="display: none;" onclick="confirmPrediction('${eventId}')">
+                        Confirm Pick
+                    </button>
                 </div>
             `;
+        }
+
+        // Track pending selection
+        let pendingPrediction = null;
+
+        function selectPrediction(btn) {
+            const eventId = btn.dataset.event;
+            const team = btn.dataset.team;
+            const logo = btn.dataset.logo;
+            const away = btn.dataset.away;
+            const home = btn.dataset.home;
+
+            // Clear previous selections for this event
+            const section = document.getElementById('prediction-' + eventId);
+            section.querySelectorAll('.prediction-btn').forEach(b => b.classList.remove('selected'));
+
+            // Select this button
+            btn.classList.add('selected');
+
+            // Store pending prediction
+            pendingPrediction = { eventId, team, logo, away, home };
+
+            // Show confirm button
+            const confirmBtn = document.getElementById('confirm-' + eventId);
+            if (confirmBtn) {
+                confirmBtn.style.display = 'block';
+                confirmBtn.textContent = `Confirm ${team.split(' ').pop()}`;
+            }
+        }
+
+        function confirmPrediction(eventId) {
+            if (!pendingPrediction || pendingPrediction.eventId !== eventId) return;
+
+            makePrediction(
+                pendingPrediction.eventId,
+                pendingPrediction.team,
+                pendingPrediction.logo,
+                pendingPrediction.away,
+                pendingPrediction.home
+            );
+
+            pendingPrediction = null;
         }
 
         // ============================================
@@ -8834,7 +9172,7 @@
 
             const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//NFL Scores App//EN
+PRODID:-//Pigskin App//EN
 BEGIN:VEVENT
 UID:${eventId}@nfl-scores-app
 DTSTART:${formatICSDate(startDate)}
@@ -8858,19 +9196,79 @@ END:VCALENDAR`;
         // Initialize notifications button
         document.getElementById('notifications-btn').addEventListener('click', requestNotificationPermission);
 
+        // Smart date initialization - find nearest day with games
+        async function initializeSmartDate() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Check today first
+            const todayStr = formatApiDate(today);
+            try {
+                const todayResponse = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${todayStr}`);
+                const todayData = await todayResponse.json();
+
+                if (todayData.events && todayData.events.length > 0) {
+                    currentDate = today;
+                    return;
+                }
+
+                // No games today - check next 7 days first (prefer upcoming games)
+                for (let i = 1; i <= 7; i++) {
+                    const futureDate = new Date(today);
+                    futureDate.setDate(futureDate.getDate() + i);
+                    const dateStr = formatApiDate(futureDate);
+
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${dateStr}`);
+                    const data = await response.json();
+
+                    if (data.events && data.events.length > 0) {
+                        currentDate = futureDate;
+                        return;
+                    }
+                }
+
+                // No upcoming games - check past 7 days
+                for (let i = 1; i <= 7; i++) {
+                    const pastDate = new Date(today);
+                    pastDate.setDate(pastDate.getDate() - i);
+                    const dateStr = formatApiDate(pastDate);
+
+                    const response = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=${dateStr}`);
+                    const data = await response.json();
+
+                    if (data.events && data.events.length > 0) {
+                        currentDate = pastDate;
+                        return;
+                    }
+                }
+
+                // Fallback to today if nothing found
+                currentDate = today;
+            } catch (e) {
+                console.error('Error finding games:', e);
+                currentDate = today;
+            }
+        }
+
         // Init
         initFavoriteTeam();
         initSettingsListeners();
-        updateDateDisplay();
-        fetchScores();
-        setupRefreshInterval();
+
+        // Smart init - find day with games, then load
+        (async () => {
+            await initializeSmartDate();
+            updateDateDisplay();
+            await fetchScores();
+            setupRefreshInterval();
+        })();
+
         renderWatchlist();
         updatePredictionStats();
         updateNotificationButton();
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-37-gafe4f0e (afe4f0e)" data-commit-time="Commit: 2026-01-14  3:20 PM CST" data-build-time="Build: 2026-01-14  3:22 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-38-gaf4f177 (af4f177)" data-commit-time="Commit: 2026-01-14  3:22 PM CST" data-build-time="Build: 2026-01-14  3:51 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;

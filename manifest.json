@@ -1,6 +1,6 @@
 {
-  "name": "NFL Scores",
-  "short_name": "NFL",
+  "name": "Pigskin",
+  "short_name": "Pigskin",
   "description": "Live NFL scores, stats, and highlights",
   "start_url": "/",
   "display": "standalone",
