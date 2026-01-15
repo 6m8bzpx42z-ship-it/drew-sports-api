@@ -3751,6 +3751,68 @@
             margin-bottom: 10px;
         }
 
+        /* Compact play-by-play for showing more plays */
+        .pbp-compact {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 0.75rem;
+        }
+
+        .pbp-compact.scoring {
+            background: rgba(104, 211, 145, 0.15);
+        }
+
+        .pbp-compact.turnover {
+            background: rgba(252, 129, 129, 0.15);
+        }
+
+        .pbp-compact-time {
+            min-width: 38px;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .pbp-compact-icon {
+            font-size: 0.7rem;
+        }
+
+        .pbp-compact-team {
+            min-width: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 0.65rem;
+        }
+
+        .pbp-compact-text {
+            flex: 1;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .pbp-compact-yards {
+            font-weight: 700;
+            font-size: 0.7rem;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .pbp-compact-yards.pos {
+            color: var(--accent-success);
+        }
+
+        .pbp-compact-yards.neg {
+            color: var(--accent-danger);
+        }
+
         /* ============================================
            FEATURE: GAME CAST MINI-VIEW (Floating Widget)
            ============================================ */
@@ -3894,34 +3956,79 @@
             display: block;
         }
 
+        /* Stats header row */
+        .season-stat-header-row {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            background: linear-gradient(135deg, rgba(254, 202, 87, 0.15), rgba(254, 202, 87, 0.05));
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-secondary);
+        }
+
+        .stat-col-rank {
+            width: 40px;
+            text-align: center;
+        }
+
+        .stat-col-player {
+            flex: 1;
+        }
+
+        .stat-col-value {
+            width: 80px;
+            text-align: right;
+        }
+
         .season-stat-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
+            gap: 8px;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            background: var(--bg-card);
+            transition: all 0.2s ease;
+            cursor: pointer;
         }
 
-        .season-stat-item:last-child {
-            border-bottom: none;
+        .season-stat-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(4px);
+        }
+
+        .season-stat-item.top-three {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .season-stat-rank {
-            width: 24px;
-            height: 24px;
-            background: var(--bg-primary);
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--text-muted);
+            flex-shrink: 0;
         }
 
-        .season-stat-rank.top-3 {
-            background: var(--accent-secondary);
-            color: var(--bg-primary);
+        .season-stat-rank.gold {
+            font-size: 1.2rem;
+        }
+
+        .season-stat-rank.silver {
+            font-size: 1.2rem;
+        }
+
+        .season-stat-rank.bronze {
+            font-size: 1.2rem;
         }
 
         .season-stat-player {
@@ -3929,35 +4036,96 @@
             align-items: center;
             gap: 10px;
             flex: 1;
+            min-width: 0;
         }
 
         .season-stat-headshot {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
             background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .season-stat-team-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            flex-shrink: 0;
         }
 
         .season-stat-info {
             flex: 1;
+            min-width: 0;
         }
 
         .season-stat-name {
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
             color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .season-stat-team {
             font-size: 0.7rem;
             color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+
+        .season-stat-team-icon {
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
         }
 
         .season-stat-value {
-            font-size: 1rem;
-            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            min-width: 70px;
+        }
+
+        .season-stat-value .stat-number {
+            font-size: 1.1rem;
+            font-weight: 800;
             color: var(--accent-success);
+            line-height: 1;
+        }
+
+        .season-stat-value .stat-unit {
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .season-stat-category {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Scrollbar styling for stats */
+        .season-stat-category::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .season-stat-category::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .season-stat-category::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
         /* ============================================
@@ -5814,17 +5982,6 @@
                             </button>
                             <div class="expandable-content" id="scoring-${index}"></div>
                         `;
-
-                        // NEW FEATURE: Play-by-Play for completed games
-                        if (status.completed) {
-                            html += `
-                                <button class="expand-btn" onclick="togglePlayByPlay(${index}, '${event.id}')">
-                                    <span>Play-by-Play</span>
-                                    <span class="arrow">▼</span>
-                                </button>
-                                <div class="expandable-content" id="pbp-${index}"></div>
-                            `;
-                        }
                     }
 
                     // NEW FEATURE: Prediction result for completed games
@@ -8236,25 +8393,42 @@
 
                 let html = '<div class="play-by-play-container">';
 
+                // Collect all plays from all drives into one list
+                let allPlays = [];
+
                 // Current drive plays (most recent)
                 if (currentDrive?.plays?.length > 0) {
-                    html += '<div class="pbp-live-indicator"><span class="live-dot"></span> Live Drive</div>';
-                    currentDrive.plays.slice().reverse().slice(0, 10).forEach(play => {
-                        html += renderPlay(play, teams, currentDrive.team?.id);
+                    currentDrive.plays.forEach(play => {
+                        allPlays.push({ ...play, teamId: currentDrive.team?.id, isCurrent: true });
                     });
                 }
 
-                // Previous drives
-                const recentDrives = drives.slice().reverse().slice(0, 3);
-                recentDrives.forEach(drive => {
+                // Previous drives - get ALL of them
+                drives.slice().reverse().forEach(drive => {
                     if (drive.plays?.length > 0) {
-                        const resultText = drive.result || drive.displayResult || '';
-                        html += `<div class="pbp-quarter-header">Drive Result: ${resultText}</div>`;
-                        drive.plays.slice().reverse().slice(0, 5).forEach(play => {
-                            html += renderPlay(play, teams, drive.team?.id);
+                        drive.plays.forEach(play => {
+                            allPlays.push({ ...play, teamId: drive.team?.id, driveResult: drive.result || drive.displayResult });
                         });
                     }
                 });
+
+                // Sort by period and time (most recent first)
+                allPlays.reverse();
+
+                // Show up to 50 plays with simplified view
+                const playsToShow = allPlays.slice(0, 50);
+
+                if (playsToShow.length > 0) {
+                    let currentQuarter = null;
+                    playsToShow.forEach(play => {
+                        const quarter = play.period?.number;
+                        if (quarter && quarter !== currentQuarter) {
+                            currentQuarter = quarter;
+                            html += `<div class="pbp-quarter-header">Quarter ${quarter}</div>`;
+                        }
+                        html += renderPlayCompact(play, teams);
+                    });
+                }
 
                 if (html === '<div class="play-by-play-container">') {
                     html += '<div style="text-align:center;color:var(--text-muted);padding:20px;">No play data available yet</div>';
@@ -8291,6 +8465,38 @@
                         ${play.text || play.type?.text || 'Play'}
                         ${yardsGained !== 0 ? ` <span class="pbp-yards ${yardsClass}">(${yardsGained > 0 ? '+' : ''}${yardsGained} yds)</span>` : ''}
                     </div>
+                </div>
+            `;
+        }
+
+        // Compact play renderer for showing more plays
+        function renderPlayCompact(play, teams) {
+            const team = teams[play.teamId] || { logo: '', abbr: '', color: '#666' };
+            const isScoring = play.scoringPlay || play.type?.text?.toLowerCase().includes('touchdown') || play.type?.text?.toLowerCase().includes('field goal');
+            const isTurnover = play.type?.text?.toLowerCase().includes('interception') || play.type?.text?.toLowerCase().includes('fumble');
+
+            // Shorten the play text
+            let playText = play.text || play.type?.text || '';
+            if (playText.length > 80) {
+                playText = playText.substring(0, 77) + '...';
+            }
+
+            const yardsGained = play.statYardage || 0;
+            const clock = play.clock?.displayValue || '';
+
+            let icon = '🏈';
+            if (isScoring) icon = '🎯';
+            if (isTurnover) icon = '⚠️';
+            if (play.type?.text?.toLowerCase().includes('punt')) icon = '👟';
+            if (play.type?.text?.toLowerCase().includes('kick')) icon = '🦵';
+
+            return `
+                <div class="pbp-compact ${isScoring ? 'scoring' : ''} ${isTurnover ? 'turnover' : ''}">
+                    <span class="pbp-compact-time">${clock}</span>
+                    <span class="pbp-compact-icon">${icon}</span>
+                    <span class="pbp-compact-team">${team.abbr || ''}</span>
+                    <span class="pbp-compact-text">${playText}</span>
+                    ${yardsGained !== 0 ? `<span class="pbp-compact-yards ${yardsGained < 0 ? 'neg' : 'pos'}">${yardsGained > 0 ? '+' : ''}${yardsGained}</span>` : ''}
                 </div>
             `;
         }
@@ -8532,31 +8738,76 @@
                 return;
             }
 
-            const leaders = targetCategory.leaders.slice(0, 10);
+            // Show ALL players, not just top 10
+            const leaders = targetCategory.leaders;
             const statLabel = targetCategory.displayName || targetCategory.name;
+            const statUnit = targetCategory.unit || getStatUnit(targetCategory.name);
 
-            let html = `<div class="season-stat-category active">`;
+            let html = `
+                <div class="season-stat-header-row">
+                    <div class="stat-col-rank">#</div>
+                    <div class="stat-col-player">Player</div>
+                    <div class="stat-col-value">${statUnit}</div>
+                </div>
+                <div class="season-stat-category active">
+            `;
+
             leaders.forEach((leader, index) => {
                 const athlete = leader.athlete;
                 const value = leader.displayValue || leader.value || '0';
+                const teamLogo = leader.team?.logo || '';
+                const headshot = athlete.headshot?.href || '';
+                const position = athlete.position?.abbreviation || '';
+                const teamAbbr = leader.team?.abbreviation || '';
+
+                // Medal colors for top 3
+                let rankClass = '';
+                let rankIcon = '';
+                if (index === 0) { rankClass = 'gold'; rankIcon = '🥇'; }
+                else if (index === 1) { rankClass = 'silver'; rankIcon = '🥈'; }
+                else if (index === 2) { rankClass = 'bronze'; rankIcon = '🥉'; }
 
                 html += `
-                    <div class="season-stat-item" onclick="showPlayerSpotlight('${athlete.id}', '${(athlete.team?.displayName || '').replace(/'/g, "\\'")}')">
-                        <div class="season-stat-rank ${index < 3 ? 'top-3' : ''}">${index + 1}</div>
+                    <div class="season-stat-item ${index < 3 ? 'top-three' : ''}" onclick="showPlayerSpotlight('${athlete.id}', '${(leader.team?.displayName || '').replace(/'/g, "\\'")}')">
+                        <div class="season-stat-rank ${rankClass}">${index < 3 ? rankIcon : index + 1}</div>
                         <div class="season-stat-player">
-                            <img src="${athlete.headshot?.href || ''}" class="season-stat-headshot" alt="" onerror="this.style.display='none'">
+                            ${headshot ? `<img src="${headshot}" class="season-stat-headshot" alt="" onerror="this.style.display='none'">` : ''}
+                            ${!headshot && teamLogo ? `<img src="${teamLogo}" class="season-stat-team-logo" alt="">` : ''}
                             <div class="season-stat-info">
                                 <div class="season-stat-name">${athlete.shortName || athlete.displayName}</div>
-                                <div class="season-stat-team">${athlete.team?.abbreviation || ''} - ${athlete.position?.abbreviation || ''}</div>
+                                <div class="season-stat-team">
+                                    ${teamLogo ? `<img src="${teamLogo}" class="season-stat-team-icon" alt="">` : ''}
+                                    <span>${teamAbbr}${position ? ` • ${position}` : ''}</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="season-stat-value">${value}</div>
+                        <div class="season-stat-value">
+                            <span class="stat-number">${value}</span>
+                            <span class="stat-unit">${statUnit}</span>
+                        </div>
                     </div>
                 `;
             });
             html += '</div>';
 
             container.innerHTML = html;
+        }
+
+        // Helper to get stat unit label
+        function getStatUnit(categoryName) {
+            const units = {
+                passingYards: 'YDS',
+                rushingYards: 'YDS',
+                receivingYards: 'YDS',
+                passingTouchdowns: 'TD',
+                rushingTouchdowns: 'TD',
+                receivingTouchdowns: 'TD',
+                receptions: 'REC',
+                totalTackles: 'TCKL',
+                sacks: 'SACKS',
+                interceptions: 'INT'
+            };
+            return units[categoryName] || '';
         }
 
         // ============================================
@@ -9268,7 +9519,7 @@ END:VCALENDAR`;
     </script>
 
 <!-- Version Footer - Auto-updated by pre-commit hook -->
-<footer id="version-footer" data-version-footer data-version="v1.0.0-38-gaf4f177 (af4f177)" data-commit-time="Commit: 2026-01-14  3:22 PM CST" data-build-time="Build: 2026-01-14  3:51 PM CST" style="
+<footer id="version-footer" data-version-footer data-version="v1.0.0-39-g4059caf (4059caf)" data-commit-time="Commit: 2026-01-14  3:51 PM CST" data-build-time="Build: 2026-01-15  3:08 PM CST" style="
     background: #1a1a2e;
     color: #888;
     font-size: 11px;

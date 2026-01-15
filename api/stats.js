@@ -17,8 +17,8 @@ export default async function handler(req, res) {
         const month = now.getMonth();
         const season = month >= 8 ? now.getFullYear() : now.getFullYear() - 1;
 
-        // Fetch leaders from ESPN core API
-        const leadersUrl = `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/${season}/types/2/leaders`;
+        // Fetch leaders from ESPN core API with limit parameter
+        const leadersUrl = `https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/${season}/types/2/leaders?limit=50`;
         const leadersRes = await fetch(leadersUrl);
         const leadersData = await leadersRes.json();
 
@@ -26,53 +26,78 @@ export default async function handler(req, res) {
         const categories = leadersData.categories || [];
         const processedCategories = [];
 
-        for (const category of categories.slice(0, 8)) { // Limit to first 8 categories
+        // Stat unit labels
+        const statUnits = {
+            passingYards: 'YDS',
+            rushingYards: 'YDS',
+            receivingYards: 'YDS',
+            passingTouchdowns: 'TD',
+            rushingTouchdowns: 'TD',
+            receivingTouchdowns: 'TD',
+            receptions: 'REC',
+            totalTackles: 'TCKL',
+            sacks: 'SACKS',
+            interceptions: 'INT',
+            QBRating: 'RTG',
+            yardsPerPassAttempt: 'Y/A',
+            yardsPerRushAttempt: 'Y/A',
+            yardsPerReception: 'Y/R'
+        };
+
+        for (const category of categories.slice(0, 10)) { // 10 categories
             const leaders = category.leaders || [];
-            const processedLeaders = [];
 
-            for (const leader of leaders.slice(0, 5)) { // Top 5 per category
-                try {
-                    // Fetch athlete details
-                    const athleteRef = leader.athlete?.$ref?.replace('http://', 'https://');
-                    const teamRef = leader.team?.$ref?.replace('http://', 'https://');
+            // Get up to 15 leaders per category - fetch all in parallel for speed
+            const leadersToProcess = leaders.slice(0, 15);
 
-                    const [athleteRes, teamRes] = await Promise.all([
-                        athleteRef ? fetch(athleteRef) : null,
-                        teamRef ? fetch(teamRef) : null
-                    ]);
+            const processedLeaders = await Promise.all(
+                leadersToProcess.map(async (leader) => {
+                    try {
+                        const athleteRef = leader.athlete?.$ref?.replace('http://', 'https://');
+                        const teamRef = leader.team?.$ref?.replace('http://', 'https://');
 
-                    const athleteData = athleteRes ? await athleteRes.json() : {};
-                    const teamData = teamRes ? await teamRes.json() : {};
+                        const [athleteRes, teamRes] = await Promise.all([
+                            athleteRef ? fetch(athleteRef) : null,
+                            teamRef ? fetch(teamRef) : null
+                        ]);
 
-                    processedLeaders.push({
-                        displayValue: leader.displayValue,
-                        value: leader.value,
-                        athlete: {
-                            id: athleteData.id,
-                            displayName: athleteData.displayName || 'Unknown',
-                            shortName: athleteData.shortName,
-                            headshot: athleteData.headshot?.href || '',
-                            position: athleteData.position?.abbreviation || ''
-                        },
-                        team: {
-                            id: teamData.id,
-                            displayName: teamData.displayName || '',
-                            abbreviation: teamData.abbreviation || '',
-                            logo: teamData.logos?.[0]?.href || ''
-                        }
-                    });
-                } catch (e) {
-                    // Skip this leader if fetch fails
-                    console.error('Failed to fetch leader details:', e);
-                }
-            }
+                        const athleteData = athleteRes ? await athleteRes.json() : {};
+                        const teamData = teamRes ? await teamRes.json() : {};
 
-            if (processedLeaders.length > 0) {
+                        return {
+                            displayValue: leader.displayValue,
+                            value: leader.value,
+                            athlete: {
+                                id: athleteData.id,
+                                displayName: athleteData.displayName || 'Unknown',
+                                shortName: athleteData.shortName,
+                                headshot: athleteData.headshot,
+                                position: athleteData.position
+                            },
+                            team: {
+                                id: teamData.id,
+                                displayName: teamData.displayName || '',
+                                abbreviation: teamData.abbreviation || '',
+                                logo: teamData.logos?.[0]?.href || ''
+                            }
+                        };
+                    } catch (e) {
+                        console.error('Failed to fetch leader details:', e);
+                        return null;
+                    }
+                })
+            );
+
+            const validLeaders = processedLeaders.filter(l => l !== null);
+
+            if (validLeaders.length > 0) {
                 processedCategories.push({
                     name: category.name,
                     displayName: category.displayName,
                     shortDisplayName: category.shortDisplayName,
-                    leaders: processedLeaders
+                    abbreviation: category.abbreviation,
+                    unit: statUnits[category.name] || '',
+                    leaders: validLeaders
                 });
             }
         }
